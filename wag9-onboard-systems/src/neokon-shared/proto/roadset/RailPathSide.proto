@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+enum RailPathSide
+{
+    /**
+     * The left side of an observer that's facing the increasing RailPath distances.
+     */
+    LEFT_SIDE_ALONG_RAIL_PATH = 0;
+
+    /**
+     * The right side of an observer that's facing the increasing RailPath distances.
+     */
+    RIGHT_SIDE_ALONG_RAIL_PATH = 1;
+}

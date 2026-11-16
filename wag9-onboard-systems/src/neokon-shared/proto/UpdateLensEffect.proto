@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Syncker does not synchronize the lens flares parameters of the lights because it assumes that
+ * lens flares is a camera effect and can be different for each camera.
+ *
+ * We use it to show the "blinding" effect so we sync the train lights' lens flares to be consistent
+ * on all displays. In the future we can use this message to sync all scene lights.
+ */
+message UpdateLensEffect
+{
+    int32 light_master_node_id = 1;
+
+    bool lens_flares_enabled = 2;
+
+    float lens_flares_intensity = 3;
+}

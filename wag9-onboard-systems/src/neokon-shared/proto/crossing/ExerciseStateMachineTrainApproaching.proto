@@ -1,0 +1,19 @@
+syntax = "proto3";
+package proto;
+
+message ExerciseStateMachineTrainApproaching
+{
+    string detector_node_name = 1;
+
+    /**
+     * "Entering" means that train's head approaches against the X axis of the object.
+     */
+    repeated string states_activated_on_entering = 2;
+    repeated string states_deactivated_on_entering = 3;
+
+    /**
+     * "Leaving" means that train's head approaches towards the X axis of the object.
+     */
+    repeated string states_activated_on_leaving = 4;
+    repeated string states_deactivated_on_leaving = 5;
+}

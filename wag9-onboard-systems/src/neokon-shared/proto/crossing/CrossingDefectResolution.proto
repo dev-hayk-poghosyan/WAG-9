@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+enum CrossingDefectResolution
+{
+    NO_DEFECT = 0;
+    FIXED = 1;
+    ADDRESSED = 2;
+}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+package proto;
+
+import "RouteLabel.proto";
+
+message SafetySystemObjectAws
+{
+    bool connected_to_signal_ahead = 1;
+
+    /**
+     * If true, the AWS is located on both-direction line.
+     * In this case, AWS should not be triggered when the train crosses it in the wrong direction.
+     */
+    bool connected_on_both_directions = 2;
+
+    bool permanent_red_state = 3;
+
+    /**
+     * Some AWS object only triggers when there is route to attached labels.
+     */
+    repeated RouteLabel route_labels = 4;
+
+    /**
+     * True means that this magnet was created by the instructor within a scenario.
+     * Temporary AWS doesn't care about train moving direction and has main purpose to warning.
+     */
+    bool temporary = 5;
+}

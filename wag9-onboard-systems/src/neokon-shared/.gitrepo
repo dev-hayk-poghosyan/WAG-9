@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = neokon-shared
+	branch = master
+	commit = c489ebeba58517fc77dbfcad34fa3d1af0a2c15f
+	method = merge
+	cmdver = 0.4.3
+	parent = be1c2923ad7fb035dd1aba59e91fc84b283997c4

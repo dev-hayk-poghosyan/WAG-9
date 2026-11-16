@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectReaction.proto";
+
+/**
+ * A list of potential defect types possible for a given defect category.
+ */
+message CrossingDefectType
+{
+    string node_name_suffix = 1;
+    string text = 2;
+
+    /**
+     * An optional parameter for defects that don't show in the widget table,
+     * but can be manipulated by other means (e.g. plank height)
+     */
+    bool hide_in_table = 3;
+
+    repeated CrossingDefectReaction fix_reactions = 4;
+    repeated CrossingDefectReaction traffic_reactions = 5;
+}

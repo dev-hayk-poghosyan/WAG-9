@@ -1,0 +1,32 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Node state synchronization message. Passing master node id and node state. For now, only enabled
+ * state and object surface material names are supported.
+ */
+message SyncNodeState
+{
+    /**
+     * TODO: add material parameter support when needed.
+     */
+    message ObjectSurfaceMaterial
+    {
+        int32 surface_idx = 1;
+        string material_name = 2;
+    }
+
+    message ObjectSurfaceMaterials
+    {
+        repeated ObjectSurfaceMaterial object_surface_material = 1;
+    }
+
+    int32 master_node_id = 1;
+
+    oneof opt_node_state
+    {
+        bool node_enabled = 2;
+
+        ObjectSurfaceMaterials object_surface_materials = 3;
+    }
+}

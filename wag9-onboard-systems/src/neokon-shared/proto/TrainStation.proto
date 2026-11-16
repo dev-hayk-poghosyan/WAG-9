@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+
+message TrainStation
+{
+    string name = 1;
+    Vec3d location = 2;
+    reserved 3;
+    int32 node_id = 4;
+    string node_name = 5;
+}

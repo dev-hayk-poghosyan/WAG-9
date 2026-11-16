@@ -1,0 +1,138 @@
+syntax = "proto3";
+package proto;
+
+import "BlackBoxRecord.proto";
+import "CrossingBarriersState.proto";
+import "CurrentWeather.proto";
+import "DriverFaultReport.proto";
+import "EnvironmentHazard.proto";
+import "ExpendedEnergyReport.proto";
+import "ExpendedFuelReport.proto";
+import "GsmrInstructorGuiState.proto";
+import "PauseState.proto";
+import "PerronSituationToggleConfirm.proto";
+import "SetSeason.proto";
+import "SignalStateUpdate.proto";
+import "SignallerTypeChange.proto";
+import "SwitchStateUpdateList.proto";
+import "TrainSimReady.proto";
+import "TrainStatesUpdate.proto";
+import "TrainVehiclesPayloadWeightChange.proto";
+import "TriggerBarrierStateToggle.proto";
+import "WeatherTransition.proto";
+
+message InstructorServerIncomingMessage
+{
+    oneof msg // Think a union.
+    {
+        TrainSimReady train_sim_ready = 1;
+        TrainStatesUpdate train_states_update = 2;
+
+        // reserved 3;
+
+        // The following fields are being sent for replay recording purposes.
+        // They are often but not always first sent from RailroadControl to
+        // TrainSim and then back, in order to ensure the consistent order of
+        // replay events.
+        SignalStateUpdate signal_state_update = 4;
+        // reserved 5;
+        PauseState pause_state = 6;
+
+        // reserved 7;
+        // reserved 8;
+
+        DriverFaultReport driver_fault_report = 9;
+
+        BlackBoxRecord black_box_record = 10;
+
+        EnvironmentHazard environment_hazard_update = 11;
+
+        SetSeason set_season = 12;
+
+        GsmrInstructorGuiState gsmr_instructor_gui_state = 13;
+
+        // Previously, RailroadControl was toggling rail switches and notifying TrainSim.
+        // TrainSim would apply those changes and send them right back, for replay recording
+        // purposes.
+        // Now, RailroadControl merely requests new states for one or more switches, and then
+        // TrainSim decides whether it's safe to toggle each particular switch. It silently
+        // ignores requests to toggle a switch on which a train is currently positioned.
+        // For the requests that weren't ignored, this message is sent back. Now it's not
+        // just for replay purposes. RailroadControl will only apply the change on its side
+        // after receiving this message.
+        SwitchStateUpdateList switch_state_updates = 14;
+        
+        ExpendedEnergyReport expended_energy_report = 15;
+        
+        ExpendedFuelReport expended_fuel_report = 16;
+
+        /**
+         * Notifies the instructor station that the given weather trigger
+         * was activated. This means that transition to the weather specified
+         * by that trigger has started.
+         *
+         * @see WeatherTrigger.uuid_bytes
+         */
+        bytes weather_trigger_activated_uuid_bytes = 17;
+
+        /**
+         * TrainSim periodically reports the current weather to the instructor station
+         * for display purposes.
+         */
+        CurrentWeather current_weather_update = 18;
+
+        /**
+         * Informs the instructor station that transition to a new
+         * weather has started. This information is meant for replay
+         * recording purposes.
+         *
+         * @see ReplayEvent.new_weather_target
+         */
+        WeatherTransition new_target_weather = 19;
+
+        /**
+         * Informs the instructor station that weather transitions
+         * were blocked or unblocked. This information is meant for
+         * replay recording purposes.
+         *
+         * @see ReplayEvent.new_weather_target
+         */
+        bool weather_transitions_blocked = 20;
+
+        /**
+         * Notifies the instructor server that the crossing barrier state has changed.
+         * The message contains information about the crossing id and new barriers state.
+         * @see CrossingBarriersState.proto. 
+         */
+        CrossingBarriersState changed_crossing_barrier_state = 21;
+
+        /**
+         * Confirmation of animation trigger barrier state change.
+         */
+        TriggerBarrierStateToggle trigger_barrier_toggle_confirm = 22;
+
+        // reserved 23;
+
+        /**
+         * Confirmation that perron situation toggled.
+         */
+        PerronSituationToggleConfirm perron_situation_toggle_confirm = 24;
+
+        /**
+         * Transfers information about signaller type change.
+         * @see SignallerTypeChange.proto.
+         */
+        SignallerTypeChange signaller_type_change = 25;
+
+        /**
+         * Payload of a vehicle was changed during a drive session.
+         * For example a dumpcar is loaded/unloaded.
+         */
+        TrainVehiclesPayloadWeightChange  train_vehicles_payload_weight_change = 26;
+
+        /**
+         * Informs that the main train has passed the buzzer on road with the given UUID.
+         */
+        bytes buzzer_with_uuid_passed = 27;
+    };
+}

@@ -1,0 +1,31 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the compressor pneumatic element.
+ * @see CompressorComponent.h
+ */
+message CompressorDef
+{
+    string name = 1;
+    float maximum_rpm = 2;
+    float maximum_quality_lmin = 3;
+    string connected_reservoir_name = 4;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL.
+ */
+message CompressorSet
+{
+    float current_rpm = 1;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message CompressorState
+{
+    string name = 1;
+    float current_rpm = 2;
+}

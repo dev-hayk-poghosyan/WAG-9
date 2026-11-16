@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Generation parameters for pont rails.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 5
+ */
+message PointRail
+{
+    optional string directory = 1;
+
+    optional string node_name_pattern = 2;
+
+    optional int32 stock_offset = 3;
+
+    optional int32 x_middle_gap = 4;
+
+    optional int32 x_narrow_sharp_frog_max_offset = 5;
+
+    optional MaterialInfo material_info = 6;
+}

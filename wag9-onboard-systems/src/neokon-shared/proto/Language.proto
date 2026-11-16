@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Language enum.
+ */
+message Language
+{
+    enum Lang
+    {
+        En = 0;
+        Ru = 1;
+    }
+}

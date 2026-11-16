@@ -1,0 +1,28 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * This message describes "Rail Path Adjunct" domain term.
+ * Adjunct is an infrastructure addition (or modification) for railway paths
+ * (both branches or junctions). Each adjunct tied to his parent path which is identificated
+ * by its UUID. Also for adjunct specifies interval - pair of distance in meters
+ * from the path beginning (i.e. when looking along path towards its ending). As in case branches
+ * and junctions for adjuncts also specify mesh gen preset file index.
+ */
+message RailPathAdjunct
+{
+    enum Type
+    {
+       DEFAULT = 0;
+    }
+
+    Type type = 1;
+
+    string path_uuid = 2;
+
+    double distance_from = 3;
+
+    double distance_to = 4;
+
+    optional sint32 gen_preset_idx = 5;
+}

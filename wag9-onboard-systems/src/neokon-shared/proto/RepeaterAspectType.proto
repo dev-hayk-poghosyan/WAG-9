@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Permitted aspect type for repeater Signals.
+ */
+message RepeaterAspectType
+{
+    enum AspectType
+    {
+        DEFAULT = 0;
+        GREEN = 1;
+        WHITE = 2;
+    }
+}

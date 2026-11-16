@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "GraphicsQualityLevel.proto";
+import "WorldContentType.proto";
+
+/**
+ * Contains the current graphics quality setting for a specific season and time of day.
+ * This message is read from the config file that contains settings of graphics quality
+ * for each season and time of day.
+ */
+message GraphicsQualitySetting
+{
+    WorldContentType.Type world_content_type = 1;
+    GraphicsQualityLevel.Level quality = 2;
+}

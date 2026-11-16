@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+import "RailPathEndpoint.proto";
+import "RailPathSide.proto";
+import "RoadSegment.proto";
+import "EnvironmentHazard.proto";
+import "WorldPosition.proto";
+
+message EnvironmentHazardOnMap
+{
+    RoadSegment road_segment = 1;
+    float segment_length_fraction = 2;
+    RailPathSide rail_path_side = 3;
+    reserved 4;
+    EnvironmentHazard hazard = 5;
+    bytes instance_uuid_bytes = 6; // 16 bytes without hex encoding.
+    RailPathEndpoint.Endpoint extends_towards_path_endpoint = 7;
+    WorldPosition position = 8;
+}

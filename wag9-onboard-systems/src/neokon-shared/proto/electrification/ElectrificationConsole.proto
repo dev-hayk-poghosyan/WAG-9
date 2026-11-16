@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto.electrification;
+
+/**
+ * Блок данных для описания консоли или другой структуры для крепления проводов. 
+ */
+message Console
+{
+    enum Type //используется в TensionLength.
+    {
+        ISOLATED = 0;   //изолированная 
+        CANTILEVER = 1; //наклонная 
+        HORIZONTAL = 2; //горизонтальная 
+        BENT = 3; //изогнутая 
+    }
+}

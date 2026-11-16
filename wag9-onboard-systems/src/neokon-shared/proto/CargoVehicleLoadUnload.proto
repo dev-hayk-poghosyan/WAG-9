@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Used to send to TrainSim message about vehicle loading/unloading.
+ * What action needs to be performed the TrainSim determines by the current vehicle payload.
+ */
+message CargoVehicleLoadUnload
+{
+    bytes train_instance_uuid_bytes = 1;
+    bytes vehicle_instance_uuid_bytes = 2;
+}

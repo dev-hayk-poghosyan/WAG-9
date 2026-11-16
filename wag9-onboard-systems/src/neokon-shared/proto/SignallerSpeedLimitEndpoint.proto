@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "PointOnRoad.proto";
+import "RailPathEndpoint.proto";
+
+/**
+ * Stores information about the end point of the speed limit set by the signaller.
+ * Note: the starting point of the speed limit zone is set by the position of the signaller.
+ */
+message SignallerSpeedLimitEndpoint
+{
+    float speed_limit_value_ms = 1;
+    PointOnRoad position = 2;
+    RailPathEndpoint.Endpoint facing_endpoint = 3;
+}

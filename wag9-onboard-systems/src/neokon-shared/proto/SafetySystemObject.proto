@@ -1,0 +1,60 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "RailPathEndpoint.proto";
+import "SafetySystemObjectAws.proto";
+import "SafetySystemObjectMetroTrigger.proto";
+import "SafetySystemObjectSdo.proto";
+import "SafetySystemObjectTassSpeedLimit.proto";
+import "SafetySystemObjectTpwsTrigger.proto";
+import "WorldPosition.proto";
+
+message SafetySystemObject
+{
+    /**
+     * Values correspond to the "Safety-System" node property.
+     */
+    enum Type
+    {
+        AWS = 0;
+        TPWS_TRIGGER = 1;
+        TPWS_DOUBLE = 2;
+        SDO = 3;
+        ADD = 4;
+        TASS_SPEED = 5;
+
+        /**
+         * TPWS Arming at now is meaningless, i.e. it's static object,
+         * however for consistency with real world we place them in on the tracks.
+         */
+        TPWS_ARMING = 6;
+
+        METRO_TRIGGER = 7;
+    }
+
+    Type type = 1;
+
+    /**
+     * 16 bytes, no hex encoding. Used to be able to delete a dynamic safety object,
+     * though it's going to be set even for static ones.
+     */
+    bytes instance_uuid_bytes = 2;
+
+    RoadSegment road_segment = 3;
+
+    float segment_length_fraction = 4;
+
+    RailPathEndpoint.Endpoint applies_to_trains_moving_towards = 5;
+
+    oneof type_specific
+    {
+        SafetySystemObjectAws aws = 6;
+        SafetySystemObjectTpwsTrigger tpws_trigger = 7; // Also set for type == TPWS_DOUBLE.
+        SafetySystemObjectTassSpeedLimit tass_speed_limit = 8;
+        SafetySystemObjectSdo sdo = 9;
+        SafetySystemObjectMetroTrigger metro_trigger = 11;
+    }
+
+    WorldPosition position = 10;
+}

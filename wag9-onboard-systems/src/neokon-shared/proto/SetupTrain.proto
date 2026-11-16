@@ -1,0 +1,44 @@
+syntax = "proto3";
+package proto;
+
+import "VehicleNodes.proto";
+//import "NodeNameMap.proto";
+
+message SetupTrain
+{
+    // Used on slaves to setup environment processing the moving trains.
+    reserved 1;
+
+    // Syncker doesn't preserve node names for dynamically created nodes.
+    // However, Tracker locates the nodes it operates on by either ID or the name.
+    // We use names, as ID's will be different on master and on slave, and *.track
+    // files where they are specified are static.
+    // Therefore, the solution is to provide the mapping between master node ids
+    // and node names explicitly. As for the mapping between master and slave node ids,
+    // Syncker does provide that.
+    //repeated NodeNameMap node_names_by_master_node_id = 2;
+    reserved 2;
+
+    repeated string train_materials = 3;
+    repeated string train_bogie_materials = 4;
+    repeated VehicleNodes vehicle_interior_nodes = 5;
+    bool student_controlled = 6;
+    reserved 7;
+
+    // The parameter front_vehicle_connection_master_node_id has been used for slaves to setup
+    // environment processing the moving trains. Not used anymore.
+    reserved 8;
+
+    bytes train_uuid_bytes = 9; // 16 bytes, no hex encoding
+
+    /**
+     * Set up the viewport masks on the bot surfaces.
+     * First vehicle is used on slaves to setup environment processing the moving trains.
+     */
+    repeated int32 vehicle_master_root_node_ids = 10;
+
+    /**
+     * Used on student-controlled trains to skip viewport mask set up on them.
+     */
+    int32 driving_vehicle_index = 11;
+}

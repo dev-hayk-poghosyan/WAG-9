@@ -1,0 +1,47 @@
+syntax = "proto3";
+package proto.electrification.alternative_preset;
+
+import "ElectrificationAltPresetCatenary.proto";
+
+/** 
+ * Тип компенсации анкеров.
+ */
+message Tensioning
+{
+    enum Type
+    {
+        NONE = 0;    //анкеровка отсутствует.
+        FIXED = 1;   //жесткая анкеровка 
+        COMPENSATED = 2; //компенсировання 
+        SEMICOMPENSATED = 3; //полукомпенсированная
+    }
+}
+
+/**
+ * Общие параметры, затрагивающие все элементы контактной сети.
+ */
+message CommonParams
+{
+    /**
+     * Количество контактных проводов. Варианты значений: "2w", "1w".
+     * Значения используются для подстановки вместо символа '*' в шаблонах имен фалов нод.
+     */
+    string contact_wire_type = 2;
+
+    /**
+     * Тип подвески. Варианты значений 'simple' (безрессорная), 'stitched' (рессорная).
+     */
+    Catenary.Type catenary_type = 3;
+
+    /**
+     * Тип анкеровки. Варианты значений 'none' (анкеровка отсутствует),
+     * 'fixed' (жёсткая анкеровка), 'compebsated' (компенсированная),
+     * 'semicompensated' (полукомпенсированная).
+     */
+    Tensioning.Type tensioning_type = 12;
+
+    /**
+     * Число пролетов для сопряжения.
+     */
+    int32 overlap_spans = 5;
+}

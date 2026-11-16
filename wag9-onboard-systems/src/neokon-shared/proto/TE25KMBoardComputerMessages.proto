@@ -1,0 +1,352 @@
+syntax = "proto3";
+package proto.te25km.boardcomputer;
+option csharp_namespace = "board_computer_2te25km";
+
+message TcpToBoardComputerMessage
+{
+    enum Reverser
+    {
+        Neutral = 0;
+        Forward = 1;
+        Back = 2;
+    }
+
+    enum WorkingMode
+    {
+        //Стоп
+        Stop = 0;
+        //Прокачка
+        Pump = 1;
+        //Прокрутка
+        Scrolling = 2;
+        //Остановка
+        Stopping = 3;
+        //Холостой ход
+        Idling = 4;
+        //Тяга
+        Traction = 5;
+        //Эдт
+        Edt = 6;
+        //Выбег
+        Runout = 7;
+        //Замещение
+        Replacing = 8;
+    }
+
+    enum KeyboardButton
+    {
+        BTN_NONE = 0;
+        BTN_1 = 1;
+        BTN_2 = 2;
+        BTN_3 = 3;
+        BTN_4 = 4;
+        BTN_5 = 5;
+        BTN_6 = 6;
+        BTN_7 = 7;
+        BTN_8 = 8;
+        BTN_9 = 9;
+        BTN_0 = 10;
+        BTN_E = 11;
+        BTN_DOWN = 12;
+        BTN_UP = 13;
+        BTN_RIGHT = 14;
+        BTN_LEFT = 15;
+        BTN_C = 16;
+        BTN_UD = 17;
+        BTN_BRIGHTNESS = 18;
+        BTN_LIGHT = 19;
+        BTN_V0 = 20;
+        BTN_V = 21;
+        BTN_ST = 22;
+        BTN_I = 23;
+        BTN_S = 24;
+        BTN_AUS = 25;
+    }
+
+    message SectionParameters
+    {
+        message Engine
+        {
+           float current_a = 1; // I,(A)
+           float voltage_v = 2; // U,(V)
+           float speed_kmh = 3; // V,(Km\h)
+           bool contactor_p = 4;
+           int32 angle = 5;
+           bool pred_lit = 6; // Пред. лампа
+           bool boxing_lit = 7; // Боксование лампа
+        }
+
+        Section section = 1;
+        Reverser reverser = 2;
+        WorkingMode working_mode = 3;
+        int32 driving_controller_position = 4;
+        int32 speed_kph = 5;
+        int32 traction_force_ts = 6;
+        float traction_motors_current_a = 7; //ток тэд 0-1.5 kA
+        float current_a = 8; //ток 0-8 kA
+        float voltage_v = 9; //напряжение 0-1 kV
+        bool cart_1_jammed_lit = 10; //заторможенность 1 тележки лампа
+        bool cart_2_jammed_lit = 11; //заторможенность 2 тележки лампа
+        int32 diesel_speed_rpm = 12; //обороты дизеля
+        bool compressor = 13;
+        float oil_pressure_mpa = 14; //давление масла МПа
+        float water_temperature = 15; //температура воды С
+        float oil_temperature = 16; //температура масла С
+        float fuel_pressure_mpa = 17; //давление топлива МПа
+        int32 battery_charging_current_a = 18;
+        float traction_generator_voltage_v = 19; //напряжение тг
+        bool bu = 20; //БУ в выборе секции
+        bool contactor_kh_1 = 21;
+        bool contactor_kh_2 = 22;
+        bool rheostat = 23; //Реостат
+        repeated Engine engine_parameter = 24;
+        int32 current_distribution = 25; // токораспределение % + отключен
+        float pr_kvt = 26; //Pr (kVt)
+        int32 ambient_air_temperature = 27; //температура окружающего воздуха
+        bool start_mode = 28; //режим старта (0-автомат\1-ручное)
+        float generator_frequency_gc = 29; //частота генератора ГЦ
+        float voltage_1zb_v = 30; //Напряжение 1зв (V)
+        float voltage_2zb_v = 31; //Напряжение 2зв (V)
+        float water_temperature_diesel_outlet_uoi = 32; //температура воды на выходе дизеля УОИ
+        float water_temperature_diesel_outlet_ti = 33; //температура воды на выходе дизеля ТИ
+        float oil_temperature_diesel_outlet_uoi = 34; //температура масла на выходе дизеля УОИ
+        float oil_temperature_diesel_outlet_ti = 35; //температура масла на выходе дизеля ТИ
+        float holding_water_temperature = 36; //температура воды хол контура
+        bool water_level_lit = 37; //уровень воды лампа (ДРУ)
+        bool fan_motor_1_lit = 38; //1МВ лампа
+        bool fan_motor_2_lit = 39; //2МВ лампа
+        bool fan_motor_3_lit = 40; //3МВ лампа
+        bool fan_motor_4_lit = 41; //4МВ лампа
+        bool contactor_km4 = 42; //КМ4
+        bool contactor_km5 = 43; //КМ5
+        bool contactor_km6 = 44; //КМ6
+        bool contactor_km7 = 45; //КМ7
+        bool contactor_qf1 = 46; //QF1
+        bool contactor_qf2 = 47; //QF2
+        bool contactor_qf3 = 48; //QF3
+        bool contactor_qf4 = 49; //QF4
+        float diesel_operation_for_traction_kvth = 50; //работа дизеля на тягу кВтЧ
+        float gas_pressure_mpa = 51; //давление газов Мпа
+        float power_kvh = 52; //Мощность
+        int32 cycle_feed_code = 53; //Код цикловой подачи
+        float oil_pressure_diesel_inlet_mpa = 54; //давление масла на вх в диз Мпа
+        float charge_air_pressure_mpa = 55; //давление наддувочн воздуха Мпа
+        float turbine_speed_rpm = 56; //частота вращения турбины Об\мин
+        bool sign_failure = 57; //признак аварии нет\да
+        bool sign_diesel_work = 58; //признак работы дизеля нет\да
+        bool sign_diesel_stop = 59; //признак останова дизеля нет\да
+        bool rpm_limit = 60; //ограничение по частоте вращения нет\да
+        bool boost_restriction = 61; //ограничение по наддуву нет\да
+        bool cylinder_errors = 62; //наличие ошибок цилиндров нет\да
+        bool low_oil_pressure_warning = 63; //предупреждение о низком давлении масла нет\да
+        bool stop_at_low_oil_pressure = 64; //останов при низком давлении масла нет\да
+        bool stop_at_overspeed_rpm = 65; //останов при превышении оборотов нет\да
+        float diesel_starting_current_a = 66; //ток пуска дизеля
+        int32 battery_charging_voltage_v = 67; //напряжение аккумуляторной батареи
+        int32 onboard_voltage_v = 68; //напряжение бортовой сети
+        bool contactor_d1 = 69; //Д1
+        bool contactor_d2 = 70; //Д2
+        bool contactor_krn = 71; //КРН
+        int32 r_minus_power_circuit_kohm = 72; //Р изоляции +
+        int32 r_plus_power_circuit_kohm = 73; //Р изоляции -
+        int32 r_general_power_circuit_kohm = 74; //Р общее
+        bool contactor_sf10 = 75; //сф10
+        bool contactor_km2 = 76; //км2
+        bool contactor_km3 = 77; //км3
+        float excitation_current_of_exciter_a = 78; //ток возбуждения возбудителя
+        float first_star_voltage = 79; //напряжение первой звезды В
+        float second_star_voltage = 80; //напряжение второй звезды В
+        float excitation_current_a = 81; //ток возбуждения
+        bool field_switch_position = 82; //положение переключателя возбуждения 0-не рабочее\1-рабочее
+        int32 bwc_angle = 83;//угол БВК
+        bool contactor_qf5 = 84; //QF5
+        bool contactor_qf6 = 85; //QF6
+        bool contactor_qf7 = 86; //Qf7
+        bool axial_regulation = 87; //поосное регулирование
+    }
+
+    enum MessageId
+    {
+        Message_0 = 0;
+        Message_1 = 1;
+        Message_2 = 2;
+        Message_3 = 3;
+        Message_4 = 4;
+        Message_5 = 5;
+        Message_6 = 6;
+        Message_7 = 7;
+        Message_8 = 8;
+        Message_9 = 9;
+        Message_10 = 10;
+        Message_11 = 11;
+        Message_12 = 12;
+        Message_13 = 13;
+        Message_14 = 14;
+        Message_15 = 15;
+        Message_16 = 16;
+        Message_17 = 17;
+        Message_18 = 18;
+        Message_19 = 19;
+        Message_20 = 20;
+        Message_21 = 21;
+        Message_22 = 22;
+        Message_23 = 23;
+        Message_24 = 24;
+        Message_25 = 25;
+        Message_26 = 26;
+        Message_27 = 27;
+        Message_28 = 28;
+        Message_29 = 29;
+        Message_30 = 30;
+        Message_31 = 31;
+        Message_32 = 32;
+        Message_33 = 33;
+        Message_34 = 34;
+        Message_35 = 35;
+        Message_36 = 36;
+        Message_37 = 37;
+        Message_38 = 38;
+        Message_39 = 39;
+        Message_40 = 40;
+        Message_41 = 41;
+        Message_42 = 42;
+        Message_43 = 43;
+        Message_44 = 44;
+        Message_45 = 45;
+        Message_46 = 46;
+        Message_47 = 47;
+        Message_48 = 48;
+        Message_49 = 49;
+        Message_50 = 50;
+        Message_51 = 51;
+        Message_52 = 52;
+        Message_53 = 53;
+        Message_54 = 54;
+        Message_55 = 55;
+        Message_56 = 56;
+        Message_57 = 57;
+        Message_58 = 58;
+        Message_59 = 59;
+        Message_60 = 60;
+        Message_61 = 61;
+        Message_62 = 62;
+        Message_63 = 63;
+        Message_64 = 64;
+        Message_65 = 65;
+        Message_66 = 66;
+        Message_67 = 67;
+        Message_68 = 68;
+        Message_69 = 69;
+        Message_70 = 70;
+        Message_71 = 71;
+        Message_72 = 72;
+        Message_73 = 73;
+        Message_74 = 74;
+        Message_75 = 75;
+        Message_76 = 76;
+        Message_77 = 77;
+        Message_78 = 78;
+        Message_79 = 79;
+        Message_80 = 80;
+        Message_81 = 81;
+        Message_82 = 82;
+        Message_83 = 83;
+        Message_84 = 84;
+        Message_85 = 85;
+        Message_86 = 86;
+        Message_87 = 87;
+        Message_88 = 88;
+        Message_89 = 89;
+        Message_90 = 90;
+        Message_91 = 91;
+        Message_92 = 92;
+        Message_93 = 93;
+        Message_94 = 94;
+        Message_95 = 95;
+        Message_96 = 96;
+        Message_97 = 97;
+        Message_98 = 98;
+        Message_99 = 99;
+        Message_100 = 100;
+        Message_101 = 101;
+        Message_102 = 102;
+        Message_103 = 103;
+        Message_104 = 104;
+        Message_105 = 105;
+        Message_106 = 106;
+        Message_107 = 107;
+        Message_108 = 108;
+        Message_109 = 109;
+        Message_110 = 110;
+        Message_111 = 111;
+        Message_112 = 112;
+        Message_113 = 113;
+        Message_114 = 114;
+        Message_115 = 115;
+        Message_116 = 116;
+        Message_117 = 117;
+        Message_118 = 118;
+        Message_119 = 119;
+        Message_120 = 120;
+        Message_121 = 121;
+        Message_122 = 122;
+        Message_123 = 123;
+        Message_124 = 124;
+        Message_125 = 125;
+        Message_126 = 126;
+        Message_127 = 127;
+        Message_128 = 128;
+        Message_129 = 129;
+        Message_130 = 130;
+        Message_131 = 131;
+        Message_132 = 132;
+        Message_133 = 133;
+        Message_134 = 134;
+        Message_135 = 135;
+        Message_136 = 136;
+        Message_137 = 137;
+        Message_138 = 138;
+        Message_139 = 139;
+        Message_140 = 140;
+        Message_141 = 141;
+        Message_142 = 142;
+        Message_143 = 143;
+        Message_144 = 144;
+    }
+
+    message Message
+    {
+        MessageId id = 1;
+        int32 number = 2;
+        Section section = 3;
+    }
+
+    int64 trenager_datetime = 1;
+    oneof value
+    {
+        KeyboardButton keyboard_button = 2;
+        SectionParameters section_parameters = 3;
+        bool boar_computer_power = 4; // питание бортового компьютера
+        Message message = 5;
+    }
+}
+
+message TcpFromBoardComputerMessage
+{
+    Section section = 1;
+    oneof value
+    {
+        bool fuel_pumping = 2; // прокачка топлива
+        bool oil_pumping = 3; // прокачка масла
+        bool power_level = 4; // уровень мощности 0-полный 1-селективный
+        bool Selective_targer_power = 5; // заданая мощность
+        bool Selective_limit_power = 6; // ограничение мощности
+        bool idling = 7; //холостой ход
+    }
+}
+
+enum Section
+{
+    A = 0;
+    B = 1;
+}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+package proto.meshgen;
+
+/**
+ * Generation parameters for guard rails.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 7
+ */
+message GuardRails
+{
+    optional string directory = 1;
+
+    optional string left_node = 2;
+
+    optional string right_node = 3;
+
+    optional string middle_node = 4;
+
+    optional string mount_node = 5;
+
+    optional int32 offset = 6;
+
+    optional int32 start_gap = 7;
+
+    optional int32 end_gap = 8;
+
+    optional float visible_distance = 9;
+}

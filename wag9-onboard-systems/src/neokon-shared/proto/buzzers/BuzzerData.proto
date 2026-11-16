@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+import "Buzzer.proto";
+import "TranslatedString.proto";
+
+/**
+ * One bell-buzzer message content.
+ */
+message BuzzerData
+{
+    /**
+     * Morse message.
+     */
+    Buzzer buzzer = 1;
+
+    /**
+     * Message names on different languages.
+     */
+    repeated TranslatedString localized_names = 2;
+}

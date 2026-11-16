@@ -1,0 +1,29 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Corresponds to class SignalStateUkSplittingDistant::PartialState.
+ *
+ * See its serialization / deserialization code for details on how individual fields are encoded.
+ */
+message SignalStateUkSplittingDistant
+{
+    message MainSectionsState
+    {
+        int32 right_section_state = 1;
+
+        int32 straight_section_state = 2;
+
+        int32 diverging_section_state = 3;
+    }
+
+    oneof optional_main_sections_state
+    {
+        MainSectionsState main_sections_state = 1;
+    }
+
+    oneof optional_red_state_requested_manually
+    {
+        bool red_state_requested_manually = 3;
+    }
+}

@@ -1,0 +1,30 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Generation parameters for heel blocks.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 11
+ */
+message HeelBlock
+{
+    optional string directory = 1;
+
+    optional string left_inner_part = 2;
+
+    optional bool left_inner_flip = 3;
+
+    optional string right_inner_part = 4;
+
+    optional bool right_inner_flip = 5;
+
+    optional string middle_part = 6;
+
+    optional string outer_part = 7;
+
+    optional MaterialInfo material_info = 8;
+
+    optional float half_size = 9;
+}

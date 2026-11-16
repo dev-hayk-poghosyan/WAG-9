@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "TrainFeatures.proto";
+import "VehicleInstance.proto";
+
+message TrainInstance
+{
+    reserved 1;
+
+    TrainFeatures train_features = 2;
+    repeated VehicleInstance vehicles = 3;
+}

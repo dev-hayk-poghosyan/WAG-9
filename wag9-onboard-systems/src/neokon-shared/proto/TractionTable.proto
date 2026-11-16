@@ -1,0 +1,33 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A set of correctional factors for the controller on th sim.
+ * These items are set by the senior engineer at the SMC side and
+ * passed to the controller on every session start.
+ * See TractionTable aspect processor VehicleTractionTableAspect.h.
+ */
+message TractionTable
+{
+    message TractionTableRecord
+    {
+        float speed_start_kmh = 1;
+        float speed_end_kmh = 2;
+        float factor = 3;
+    }
+
+    /**
+     * Factors that are used when a train speeds up.
+     */
+    repeated TractionTableRecord traction_table = 4;
+
+    /**
+     * Factors that are used when a train is braking via electrodynamic brakes.
+     */
+    repeated TractionTableRecord edt_braking_table = 5;
+
+    /**
+     * Factors that are used when a train is braking via pneumatic brakes.
+     */
+    repeated TractionTableRecord pneumatic_braking_table = 6;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingConversationMessage.proto";
+
+/**
+ * Provides data for the callee of the communication for the general phone device.
+ */
+message CrossingConversationRemoteParty
+{
+    /**
+     * The text shown when opening the phone menu, i.e. thee text for the root menu item.
+     */
+    string name = 1;
+
+    /**
+     * Messages shown in the nested menu.
+     */
+    repeated CrossingConversationMessage messages = 2;
+}

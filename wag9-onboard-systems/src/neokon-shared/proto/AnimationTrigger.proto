@@ -1,0 +1,77 @@
+syntax = "proto3";
+package proto;
+
+import "AnimationTriggerPlaybackType.proto";
+import "AnimationTriggerType.proto";
+import "TriggerAnimationParameters.proto";
+import "TriggerBarrier.proto";
+import "Vec3d.proto";
+
+/**
+ * Used to represent animation trigger as proto message.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/world/anim-switch-triggers
+ */
+message AnimationTrigger
+{
+    /**
+     * Name in layer Layer_Animation_triggers.
+     */
+    string node_name = 1;
+
+    /**
+     * Node world position.
+     */
+    Vec3d location = 2;
+
+    /**
+     * Node id in layer Layer_Animation_triggers.
+     */
+    int32 node_id = 3;
+
+    /**
+     * For now supported only two trigger types: 0 - train, 1 - camera.
+     */
+    AnimationTriggerType.Type trigger_type = 4;
+
+    /**
+     * Actual for triggers of type train. If true, trigger may be activeted only by main train.
+     */
+    bool main_train_only = 5;
+
+    /**
+     * Actual for triggers of type camera. The distance that player need to get close
+     * to the trigger to activate it.
+     */
+    float enable_distance = 6;
+
+    /**
+     * Actual for triggers of type camera. The distance the player need to move away from
+     * the trigger to reactivate it.
+     */
+    float reactivation_distance = 7;
+
+    /**
+     * If true, trigger may be activated only one time.
+     */
+    bool one_time_action = 8;
+
+    /**
+     * List of barriers associated with the trigger, @see TriggerBarrier.proto.
+     */
+    repeated TriggerBarrier barriers = 9;
+
+    /**
+     * List of animations associated with the trigger, @see TriggerAnimationParameters.proto.
+     */
+    repeated TriggerAnimationParameters animations = 10;
+
+    /**
+     * Animation playback type, @see AnimationTriggerPlaybackType.proto.
+     */
+    AnimationTriggerPlaybackType.Type playback_type = 11;
+
+    /**
+     * Trigger activation occurs after the specified number of seconds in this field has elapsed.
+     */
+    float activation_delay_sec = 12;
+}

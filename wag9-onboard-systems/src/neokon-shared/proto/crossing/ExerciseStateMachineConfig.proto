@@ -1,0 +1,43 @@
+syntax = "proto3";
+package proto;
+
+import "AutoStateTransition.proto";
+import "InteractiveObject.proto";
+
+message ExerciseStateMachineConfig
+{
+    string exercise_uuid = 1;
+
+    /**
+     * The names of nodes in the world under which we search for animated objects.
+     * Animated objects are identified by them having one or more "AnimationForStates"
+     * properties.
+     */
+    repeated string root_nodes_with_animated_objects = 2;
+
+    /**
+     * The objects indexed by their node name that can be interacted with.
+     */
+    map<string, InteractiveObject> interactive_objects = 3;
+
+    /**
+     * From some states there can be automatic transitions to other states.
+     * Such transitions usually happen when all animations associated with
+     * the current state or the set of states have finished playing.
+     * This map maps the source state's name or states separated by '&' to the information about the
+     * automatic transition from that state (if any).
+     */
+    map<string, AutoStateTransition> auto_state_transitions = 4;
+
+    /**
+     * The state machine supports multiple active states simultaneously. The current implementation
+     * has only one-to-one state transitions, so, for the beginning, allow using several initial
+     * states.
+     */
+    repeated string initial_states = 5;
+
+    /**
+     * Delay before activating states from 'initial_states'. Before that no state is active.
+     */
+    float start_delay_sec = 6;
+}

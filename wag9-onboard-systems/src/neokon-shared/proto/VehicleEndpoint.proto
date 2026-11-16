@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+message VehicleEndpoint
+{
+    enum Endpoint
+    {
+        /**
+         * The side of the vehicle that's closer to the head of the train.
+         */
+        HEAD = 0;
+
+        /**
+         * The side of the vehicle that's closer to the tail of the train.
+         */
+        TAIL = 1;
+    }
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+package proto;
+
+message SlaveBrokenRailCommand
+{
+    message BreakRail
+    {
+        reserved 1 to 3;
+        bytes rail_path_uuid_bytes = 4; // 16 bytes, no hex encoding.
+        double distance_into_rail_path = 5;
+    }
+
+    message UnbreakRail
+    {
+        bytes rail_path_uuid_bytes = 1; // 16 bytes, no hex encoding.
+    }
+
+    oneof command
+    {
+        BreakRail break_rail = 1;
+        UnbreakRail unbreak_rail = 2;
+    }
+}

@@ -1,0 +1,30 @@
+syntax = "proto3";
+package proto;
+
+import "PointOnRoad.proto";
+import "WeatherTransition.proto";
+
+message WeatherTrigger
+{
+    /**
+      * 16 bytes, no hex encoding.
+      */
+    bytes uuid_bytes = 1; 
+
+    oneof trigger_type
+    {
+        /**
+         * The weather condition in question is to be applied when the specified time of day
+         * (expressed as seconds since midnight) is reached.
+         */
+        int32 seconds_since_midnight_trigger = 2;
+
+        /**
+          * This weather condition is position trigger. It should be applied if main train
+          * runs into this.
+          */
+        PointOnRoad road_position_trigger = 3;
+    }
+
+    WeatherTransition weather_transition = 4;
+}

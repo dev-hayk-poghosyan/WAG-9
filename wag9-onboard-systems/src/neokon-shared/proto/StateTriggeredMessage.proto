@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+
+import "StateMachineActions.proto";
+
+message StateTriggeredMessage
+{
+    string title = 1;
+    string text = 2;
+
+    /**
+     * The elements of this array may be individual states or "must-have-all-of-them state sets",
+     * like this: "state1 & state2 & state3".
+     */
+    repeated string show_trigger_states = 3;
+
+    /**
+     * The elements of this array may be individual states or "must-have-all-of-them state sets",
+     * like this: "state1 & state2 & state3".
+     */
+    repeated string show_blocking_states = 4;
+
+    StateMachineActions manual_close_actions = 5;
+}

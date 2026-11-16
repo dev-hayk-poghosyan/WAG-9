@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "Vec2f.proto";
+
+/**
+ * Represents axis-aligned box in 2d coordinates.
+ */
+message AlignedBox2D
+{
+    Vec2f min_coords = 1;
+    Vec2f max_coords = 2;
+}

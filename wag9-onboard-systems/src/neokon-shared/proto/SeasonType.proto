@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+message SeasonType
+{
+    enum Season
+    {
+        SEASON_SPRING    = 0;
+        SEASON_SUMMER    = 1;
+        SEASON_AUTUMN    = 2;
+        SEASON_WINTER    = 3;
+    }
+}

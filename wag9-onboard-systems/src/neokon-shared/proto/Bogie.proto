@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto;
+import "Mat4d.proto";
+import "Vec4f.proto";
+import "Vec3d.proto";
+import "RoadPosition.proto";
+
+/**
+ * Bogie saved state.
+ * @see Bogie.h
+ */
+message Bogie
+{
+    Mat4d bogie_node_transform = 1;
+    Vec4f bogie_normalized_from_bogie_local = 2;
+    Mat4d bogie_local_from_normalized = 3;
+    Vec3d attachment_pos = 4;
+    oneof RoadPos
+    {
+        RoadPosition road_pos = 5;
+    }
+}

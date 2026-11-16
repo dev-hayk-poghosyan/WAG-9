@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Request to connect all hoses and open correspond angle cocks between vehicles in main train.
+ */
+message ShuntingConnectAllRequest
+{
+    uint64 train_incarnation = 1;
+}

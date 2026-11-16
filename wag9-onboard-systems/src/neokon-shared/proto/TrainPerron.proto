@@ -1,0 +1,43 @@
+syntax = "proto3";
+package proto;
+
+import "TrainPlatformSituationType.proto";
+
+/**
+ * Message to store train perron params in scenario.
+ * Train perrons are parsing on RailroadControl and should be transfered to TrainSim via scenario message.
+ */
+message TrainPerron
+{
+    /**
+     * The name of perron's NodeReference in Layer_Perrons.
+     * Node names are assumed to be unique and act as an identifier.
+     * Uniqueness check is performed when loading platforms in RailroadControl.
+     */
+    string node_name = 1;
+
+    /**
+     * Perron payload. Stored in PassengerStationPerron property.
+     */
+    float payload = 2;
+
+    reserved 3;
+
+    /**
+     * Current situation on perron. @see TrainPlatformSituationType.
+     */
+    TrainPlatformSituationType.Type current_situation = 4;
+
+    /**
+     * The available situation on perron are set via PassengerStationPerron property.
+     */
+    repeated TrainPlatformSituationType.Type available_situations = 5;
+
+    /**
+     * The name of the WorldSplineGraph of perron's outline in Layer_PerronOutlines.
+     * We have to store platform name as unique identifier of the platform as long as in large worlds
+     * Unigine may update node IDs unpredictably.
+     * Name uniqueness is checked during parsing process in RailroadControl.
+     */
+    string platform_node_name = 6;
+}

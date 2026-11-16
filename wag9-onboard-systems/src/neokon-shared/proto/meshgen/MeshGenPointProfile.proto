@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenProfilePoint.proto";
+
+/**
+ * Profile config entry.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 9
+ */
+message PointProfile
+{
+    optional string name = 1;
+
+    repeated ProfilePoint points = 2;
+}

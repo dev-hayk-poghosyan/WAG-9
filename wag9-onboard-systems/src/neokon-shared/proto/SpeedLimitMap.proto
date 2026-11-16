@@ -1,0 +1,51 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+
+message SpeedLimitMap
+{
+    message SpeedLimits
+    {
+        /**
+         * There may be more than one speed limit defined for an
+         * interval. Different speed limits apply to different
+         * trains or in different circumstances. The key in
+         * this map is the type of a speed limit. Its interpretation
+         * is up to TrainSim. The value is the speed limit in either
+         * kmh or mph. The speed unit may be retrieved from railway_lines.json
+         * by reading it from a railway line to which the given RailPath
+         * is assigned.
+         */
+        map<int32, int32> limit_by_type = 1;
+    }
+
+    message Interval
+    {
+        reserved 1;
+        reserved 2;
+
+        /**
+         * The speed limits that apply when moving front to back
+         * along the RailPath.
+         */
+        SpeedLimits forward_direction_limits = 3;
+
+        /**
+         * The speed limits that apply when moving back to front
+         * along the RailPath.
+         */
+        SpeedLimits backward_direction_limits = 4;
+
+        /**
+         * The start and the end distances along the RailPath
+         * represented in the world coordinates.
+         */
+        Vec3d start_point = 5;
+        Vec3d stop_point = 6;
+    }
+
+    reserved 1;
+
+    repeated Interval intervals = 2;
+}

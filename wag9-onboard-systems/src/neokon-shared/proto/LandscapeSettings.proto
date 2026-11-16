@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+import "SeasonType.proto";
+
+message LandscapeSettings
+{
+    SeasonType.Season season = 1;
+
+    bool grass_enabled = 2;
+
+    /**
+     * Value is between [0..1.0].
+     */
+    float grass_height = 3;
+
+    /**
+     * Value is between [0..1.0].
+     */
+    float grass_density = 4;
+
+    /**
+     * Enabled only if it's a winter.
+     */
+    bool rime_ice_enabled = 5;
+}

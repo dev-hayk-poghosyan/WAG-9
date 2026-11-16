@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * @note To be kept in sync with CommonCabinSignalColor.h in TrainSim.
+ */
+enum CommonCabinSignalColor
+{
+    COMMON_CABIN_SIGNAL_COLOR_OFF = 0;
+    COMMON_CABIN_SIGNAL_COLOR_GREEN = 1;
+    COMMON_CABIN_SIGNAL_COLOR_YELLOW = 2;
+    COMMON_CABIN_SIGNAL_COLOR_WHITE = 3;
+    COMMON_CABIN_SIGNAL_COLOR_RED_YELLOW = 4;
+    COMMON_CABIN_SIGNAL_COLOR_RED = 5;
+}

@@ -1,0 +1,36 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3f.proto";
+
+message SetupMirror
+{
+    int32 master_node_id = 1;
+
+    string data_node_path = 2;
+
+    string player_name = 3;
+
+    string mirror_surface_name = 4;
+
+    Vec3f node_pos_offset = 5;
+
+    Vec3f player_pos_offset = 6;
+
+    Vec3f camera_fwd_dir = 7;
+
+    Vec3f mirror_node_euler_angles = 8;
+
+    string display_name = 9;
+
+    /**
+     * Must be a child of fake mirror node
+     */
+    string probe_node_name = 10;
+
+    /**
+     * If true, do not create mirror surface and manual frame rendering. Instead, use light 
+     * environment probes and place them over the real mirrors
+     */
+    bool use_real_mirror_node = 11;
+}

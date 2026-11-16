@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Type of an exercise test.
+ */
+enum CrossingExerciseTest
+{
+    EQUIPMENT_CLOTHES = 0;
+    EQUIPMENT_ACCESSORIES = 1;
+    CHECK_EQUIPMENT = 2;
+    TEST_CONNECTION = 3;
+    TEST_TRAIN_SIGNALS = 4;
+    CHECK_RAIL_DEFECTS = 5;
+    TEST_CROSSING_SIGNALS = 6;
+    TEST_TEMPERATURE_SIGNED = 7;
+}

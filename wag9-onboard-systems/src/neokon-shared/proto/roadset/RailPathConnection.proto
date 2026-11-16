@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "RailPathConnectionPoint.proto";
+
+/**
+ * Connection between two enpoints of two paths.
+ *
+ * Note that a single path endpoint may be connected to more than one path (think of a branch
+ * connecting to both the left and the right paths of a switch).
+ */
+message RailPathConnection
+{
+    RailPathConnectionPoint point1 = 1;
+    RailPathConnectionPoint point2 = 2;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "TriggerBarrierState.proto";
+import "Vec3d.proto";
+
+/**
+ * Represents barrier that may be associated with animation trigger as proto message.
+ */
+message TriggerBarrier
+{
+    int32 node_id = 1;
+    string node_name = 2;
+    Vec3d location = 3;
+    TriggerBarrierState.State state = 4;
+}

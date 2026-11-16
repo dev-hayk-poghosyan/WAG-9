@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+message SingleLineHeightMap
+{
+    message Entry
+    {
+        double route_position_m = 1;
+        double height_above_sea_level_m = 2;
+    }
+
+    repeated Entry entries = 1;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+import "ZoneEndpoint.proto";
+
+message TassTiltZone
+{
+    ZoneEndpoint endpoint1 = 1;
+    ZoneEndpoint endpoint2 = 2;
+
+    float max_tilt_angle_deg = 3;
+
+    int32 endpoint1_node_id = 4;
+    int32 endpoint2_node_id = 5;
+}

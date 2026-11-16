@@ -1,0 +1,409 @@
+syntax = "proto3";
+package proto.class800.boardcomputer;
+option csharp_namespace = "Class800_TMS";
+
+/**
+ * Это сообщение-контейнер. Передается в бортовой компьютер из контроллера
+ * поезда TrainSim.
+ */
+message TcpToBoardComputerMessage
+{
+    // Присылать обязательно в начале. Лучще даже до подачи питания.
+    repeated TrainUnit train_composition_array = 1;
+    // Присылать обязательно в начале. Лучще даже до подачи питания.
+    // Список всех станций с их платформами.
+    repeated Station all_stations_array = 2;
+
+    // если не посылалось train_composition до дверей, то эти данные отбросятся.
+    repeated DoorState right_doors_array = 3;
+    repeated DoorState left_doors_array = 4;
+    repeated bool guard_panel_active_array = 5;
+    repeated CabinState cabin_state_array = 6;
+    repeated bool pantograph_raised_array = 7;
+    repeated WagonParemeters wagon_parameters_array = 8;
+
+    oneof value
+    {
+        int64 trenager_datetime_sec = 9;
+        bool login_correct = 10;
+        TrainIdResponse train_id_response = 11;
+        bool device_power = 12;
+        bool key = 13;
+        string current_station_name = 14;
+        string next_station_name = 15;
+        int32 speed_mph = 16;
+        int32 line_voltage_kv = 17;
+        float outdoor_temperature = 18;
+        string time_delta_from_the_schedule = 19;
+        bool low_speed_active = 20;
+        bool current_front_dual_mode_settings_electric = 21;
+        bool current_rear_dual_mode_settings_electric = 22;
+        SdoMessage next_station_sdo_information = 23;
+        bool door_release_buttons_pressed = 24;
+        EventMessage event = 25;
+        StationPlate station_plate_visible = 26;
+        HomeStatusString home_status_string = 27;
+        bool show_select_pa_cars_screen = 28;
+        bool door_interlock_on = 29;
+        Reverse reverse = 30;
+        bool apco_isol_active = 31;
+        bool air_low_active = 32;
+        bool coupler_active = 33;
+        DasMessage das = 34;
+        bool train_unwrap = 35;
+    }
+}
+
+/**
+ * Это сообщение-контейнер. Передается из бортового компьютера в контроллер
+ * поезда TrainSim.
+ */
+message TcpFromBoardComputerMessage
+{
+    oneof value
+    {
+        string login_personal_id = 1;
+        string login_train_id_login = 2;
+        string login_train_id_check_stations = 3;
+        TrainIdWithStations edited_stations = 4;
+        // TODO имена вагонов [A,B,...] если изменили
+        // TODO bool pis auto annonce
+        // TODO bool pis display blank
+        // TODO bool pis display not in service
+        // Передний состав передний пантограф выбран
+        bool front_first_pan_selected = 5;
+        // Задний состав передний пантограф выбран
+        bool rear_first_pan_selected = 6;
+        bool dual_mode_electric_plus_diesel = 7;
+        bool dual_mode_cancel_confirm = 8;
+        bool cab_air_intake_open = 9;
+        bool saloon_air_intake_open = 10;
+        AutoPowerChangeover auto_power_changeover_changed = 11;
+        bool speed_limiter_active = 12;
+        int32 speed_limiter_mph = 13;
+
+        // Название станции которое машинист выбрал как текущее положение.
+        string edited_current_station = 14;
+
+        // Команда что произошол сброс Train Id.
+        bool reset_train_id = 15;
+
+        // Название плытформы которое машинист выбрал как текущее положение.
+        string edited_current_platform = 16;
+
+        LockOutUnit lock_out_values = 17;
+        bool logout_engine_stop_command = 18;
+        bool saloon_light_bright = 20;
+        bool saloon_light_warm = 21;
+        bool saloon_light_night = 22;
+
+        bool pre_heat_start = 23;
+
+        EventMessage ack_event_pressed = 24;
+    }
+    repeated bool sdo_manual_door_selector = 19;
+
+    message LockOutUnit
+    {
+        bool locked_out_first = 1;
+        bool locked_out_second = 2;
+        bool unlock_all = 3;
+    }
+}
+
+/**
+ * Это сообщение иформации о еденице сотава.
+ */
+message TrainUnit
+{
+    // Example: DPTS
+    string type = 1;
+    // Example: 800001
+    string number = 2;
+    TrainFormation length_in_cars = 3;
+    // unique, can not be used in another train unit
+    // Example: [811001,812001,...]
+    repeated string car_numbers_array = 4;
+    // Example: [A,B,...] unique!
+    repeated string car_names_array = 5;
+
+    enum TrainFormation
+    {
+        Five = 0;
+        Seven = 1;
+    }
+}
+
+/**
+ * Сообщение содержащие данные о станции
+ */
+message Station
+{
+    enum StopState
+    {
+        Stop = 0;
+        Pass = 1;
+    }
+    StopState state = 1;
+    string name = 2;
+    repeated string platforms = 3;
+}
+
+message SrsElement
+{
+    // номер вагона по порядку от головы начиная с 1
+    int32 car_number = 1;
+    // номер кресла
+    int32 seat_number = 2;
+    // станция посадки имя
+    string boarding_station = 3;
+    // станция высадки имя
+    string alighting_station = 4;
+}
+
+/**
+ * Сообщение содержащие список остановок относящийся к TrainId
+ */
+message TrainIdWithStations
+{
+    // Train_id fo each unit
+    string train_id = 1;
+    repeated Station stations_array = 2;
+    // данные от системы резервирования мест
+    repeated SrsElement srs_data_array = 3;
+}
+
+/**
+ * Это сообщение контейнер для ответа на запрос информации о TrainID
+ * и о корректности TrainID и возврате списке станций если корректен.
+ */
+message TrainIdResponse
+{
+    message TsdbInfoMessage
+    {
+        // Example: Thuday
+        optional string tsdb = 2;
+        // Example: 10th Sep 2012
+        optional string loaded_For = 3;
+        // Example: 10:00hrs
+        optional string dep_Time = 4;
+        // Example: Hereford
+        optional string origin = 5;
+        // Example: Paddington
+        optional string destination = 6;
+    }
+
+    /**
+     * Сообщение содержащие ответ на запрос информации о TrainID.
+     */
+    message LoadTsdbInfo
+    {
+        bool train_id_correct = 1;
+        repeated TsdbInfoMessage tsdb_info_array = 2;
+    }
+
+    /**
+     * Сообщение содержащие ответ о корректности TrainID и возвращает список
+     * остановок на маршруте (станции со статусом Stop) если TrainID корректен.
+     */
+    message CheckStationsMessage
+    {
+        bool train_id_correct = 1;
+        // Если состав состоит из 2 сцепленных поездов то массив должен
+        // содержать 2 сообщения для каждого поезда (потому что у сторой части
+        // может оказаться другой маршрут)
+        repeated TrainIdWithStations train_ids_array = 2;
+    }
+
+    oneof message
+    {
+        LoadTsdbInfo tsdb_load_info_message = 1;
+        CheckStationsMessage check_stations_message = 2;
+    }
+}
+
+enum DoorState
+{
+    Closed = 0;
+    OpenOrReleased = 1;
+    Fault = 2;
+    SdoDisabled = 3;
+    OutOfUse = 4;
+}
+
+enum CabinState
+{
+    Deactive = 0;
+    Active = 1;
+    LoginInNonActiveCab = 2;
+}
+
+enum PantographStatus
+{
+    Ok = 0;
+    Overheight = 1;
+    Add = 2;
+}
+
+enum EngineStatus
+{
+    Cold = 0;
+    PreHeating = 1;
+    Ready = 2;
+    Noload = 3;
+    Running = 4;
+    Boost = 5;
+    Cool = 6;
+    Oou = 7;
+}
+
+message WagonParemeters
+{
+    optional int32 tm_torque = 1;
+    optional int32 aps_output = 2;
+    optional bool vcb1 = 3;
+    optional bool vcb2 = 4;
+    optional bool vcb3 = 5;
+    optional int32 line_volts = 6;
+    optional EngineStatus eng_status = 7;
+    optional bool emer_stop = 8;
+    optional int32 power = 9;
+    optional int32 cool_temp = 10;
+    optional int32 remain_fuel = 11;
+    float brake_cylinder_pressure_bar = 12;
+    float mr_pressure_bar = 13;
+    optional bool toilet = 14;
+    optional int32 water_tank = 15;
+    optional int32 cet_tank = 16;
+    bool saloon_hvac = 17;
+    optional float saloon_temp = 18;
+    bool power_sockets = 19;
+    optional int32 passengers_number_standard = 20;
+    optional int32 passengers_number_first = 21;
+    optional PantographStatus pan_status = 22;
+    optional bool bright_welcome = 23;
+    optional bool warm_welcome = 24;
+    optional bool night_mode = 25;
+}
+
+enum AutoPowerChangeover
+{
+    Normal = 0;
+    Off = 1;
+    OnlyElectricToDiesel = 2;
+}
+
+message SdoMessage
+{
+    // тригер для срабатывания "Door opening flow"
+    optional bool ballise_information_valide = 1;
+
+    repeated string stations_array = 2;
+    repeated string platforms_array = 3;
+}
+
+message EventMessage
+{
+    string event_name = 1;
+    string displayed_event_name = 2;
+    string description_action = 3;
+    string code = 4;
+    int32 wagon_index = 5;
+    EventStatus status = 6;
+    EventType type = 7;
+}
+
+enum EventStatus
+{
+    Occurred = 0;
+    Recovered = 1;
+}
+
+enum EventType
+{
+    AbnormalSwitchStatus = 0;
+    Major = 1;
+    Minor = 2;
+}
+
+enum StationPlate
+{
+    None = 0;
+    NextStationPlate = 1;
+    NowApproachingStationPlate = 2;
+}
+
+/**
+ * Руководство TMS. Table 4.1 Guidance list.
+ */
+enum HomeStatusString
+{
+    Empty = 0;
+    TrainPowerSupply = 1;
+    DoNotAttemptTo = 2;
+    RescueModeSelection = 3;
+    PantographStillRaised = 4;
+    ApcoFailed = 5;
+    MpcoFailed = 6;
+    PowerChangeover1 = 7;
+    PowerChangeover2 = 8;
+    PowerChangeover3 = 9;
+    AutomaticPowerChangeover = 10;
+    OverSpeed = 11;
+    PantographPattern = 12;
+    SnowBrakeApplied = 13;
+    SnowBrakeActiveMode = 14;
+    EngineShutDownInProgress = 15;
+    EngineShutDownIsCompleted = 16;
+    EnginePreHeatInProgress = 17;
+    EnginePreHeatIsCompleted = 18;
+    EngineStartUpIsCompleted = 19;
+    NoTrainId = 20;
+}
+
+enum Reverse
+{
+    Neutral = 0;
+    Forward = 1;
+    Back = 2;
+}
+
+message DasMessage
+{
+    enum DasType
+    {
+        Advice = 0;
+        Coast = 1;
+        AdviceNotAvailable = 2;
+        Tsr = 3;
+        MinimumSpeed = 4;
+        SuppressedArea = 5;
+        ApproachingStation = 6;
+        AtStation = 7;
+        NonCompliance = 8;
+        LateRunning = 9;
+        SafetySystem = 10;
+        DriverControl = 11;
+        DualMode = 12;
+        LocoHauled = 13;
+        OffRoute = 14;
+        DasFault = 15;
+        NonSetUp = 16;
+    }
+
+    enum DasNextAdvice
+    {
+        None = 0;
+        NextAdvice = 1;
+        NextCoast = 2;
+        NextTsr = 3;
+    }
+
+    optional DasType type = 1;
+    optional int32 advice_speed = 2;
+    optional DasNextAdvice next_advice = 3;
+    optional string next_advice_data = 4;
+    optional string due_in = 5;
+    optional string eta = 6;
+    optional string train_is_currently = 7;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "Fault.proto";
+import "RoadSegment.proto";
+import "WorldPosition.proto";
+
+message FaultOnMap
+{
+    reserved 1 to 3;
+    RoadSegment road_segment = 4;
+    float segment_fraction = 5;
+    bytes placement_uuid_bytes = 6;
+    Fault fault = 7;
+    WorldPosition position = 8;
+}

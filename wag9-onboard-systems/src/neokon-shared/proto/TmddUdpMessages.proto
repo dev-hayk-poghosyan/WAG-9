@@ -1,0 +1,74 @@
+syntax = "proto3";
+package proto.class390.tmdd;
+
+message UdpToTMDDMessage {
+    // Текущее время в unix_time
+    int64 time = 1;
+
+    // Процент загрузки пассажирами (0-250) [11]
+    repeated int32 pass_load = 2;
+
+    // Текущая скорость
+    int32 actual_speed = 3;
+
+    // Свет в пассажирском салоне (ON/OFF/FLT) [11]
+    repeated SystemState salon_light = 4;
+
+    // Свет технический (ON/OFF) [11]
+    repeated SystemState emergency_light = 5;
+
+    // Температура в салоне [11]
+    repeated float salon_temperature = 6;
+
+    // Состояние пантографов (UP/DOWN) [2]
+    repeated SystemState pantograph = 7;
+
+    // Состояние VCB (OPEN/CLSD) [4]
+    repeated SystemState vcb = 8;
+
+    // Состояние Traction (STOP/OK/ISOL/LOCK/RUN) [7]
+    repeated SystemState traction = 9;
+
+    // Состояние тормозов (0.0 - 4.0 else > ISOL) [11]
+    repeated float brakes = 10;
+
+    // Состояние Aux.conv (OK/STOP/ISOL/102V) [7]
+    repeated SystemState aux_conv = 11;
+
+    // Состояние зарядки батарей (OK/ISOL) [11]
+    repeated SystemState charger = 12;
+
+    // Состояние воздушной подушки (OK/FAIL) [11]
+    repeated SystemState air_bag = 13;
+
+    // Состояние нагрева букс (OK/FAIL/HOT) [11]
+    repeated SystemState hot_axle = 14;
+
+    // Потребленная энергия kWh
+    int32 energy_consumed = 15;
+
+    // Процент регенерированной энергии %
+    float regenerated_energy = 16;
+}
+message UdpFromTMDDMessage {
+    // Звучит ли сирена
+    bool alarm_sound = 1;
+}
+
+enum SystemState {
+    SYSTEM_STATE_ON = 0;
+    SYSTEM_STATE_OFF = 1;
+    SYSTEM_STATE_FLT = 2;
+    SYSTEM_STATE_UP = 3;
+    SYSTEM_STATE_DOWN = 4;
+    SYSTEM_STATE_OPEN = 5;
+    SYSTEM_STATE_CLSD = 6;
+    SYSTEM_STATE_STOP = 7;
+    SYSTEM_STATE_OK = 8;
+    SYSTEM_STATE_ISOL = 9;
+    SYSTEM_STATE_LOCK = 10;
+    SYSTEM_STATE_102V = 11;
+    SYSTEM_STATE_FAIL = 12;
+    SYSTEM_STATE_HOT = 13;
+    SYSTEM_STATE_RUN = 14;
+}

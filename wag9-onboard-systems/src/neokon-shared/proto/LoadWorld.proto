@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+import "Scenario.proto";
+import "ObjectsOfInterest.proto";
+
+message LoadWorld
+{
+    Scenario scenario = 1;
+    ObjectsOfInterest objects_of_interest = 2;
+}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+message SyncCameras
+{
+    int32 driving_mode_camera_master_node_id = 1;
+    int32 driving_mode_spectator_camera_master_node_id = 2;
+
+    // Currently, Syncker is only used with driving mode.
+    // If it's ever used with other modes, we can take a couple of
+    // possible approaches:
+    // 1. Use different messages for different modes.
+    // 2. Use only this message but make all fields optional.
+}

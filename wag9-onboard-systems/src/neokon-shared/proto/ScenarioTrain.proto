@@ -1,0 +1,37 @@
+syntax = "proto3";
+package proto;
+
+import "RailPathEndpoint.proto";
+import "RoadSegment.proto";
+import "RouteSchedule.proto";
+import "TrainInstance.proto";
+import "WorldPosition.proto";
+
+message ScenarioTrain
+{
+    reserved 1;
+
+    /**
+     * The road segment where the train is located.
+     */
+    RoadSegment road_segment = 2;
+
+    /**
+     * The position of the train's front connection point.
+     */
+    float head_segment_length_fraction = 3;
+
+    reserved 4;
+    string controller_xml_config = 5;
+    TrainInstance train_instance = 6;
+    bytes train_uuid_bytes = 7; // 16 bytes, no hex encoding
+
+    /**
+     * The road segment's endpoint the train is facing.
+     */
+    RailPathEndpoint.Endpoint facing_path_endpoint = 8;
+
+    RouteSchedule route_schedule = 9;
+
+    WorldPosition position = 10;
+}

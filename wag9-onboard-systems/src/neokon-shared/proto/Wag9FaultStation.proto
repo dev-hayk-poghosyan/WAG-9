@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto.wag9.fs;
+
+message FaultStationIncomingMessage
+{
+}
+
+message FaultStationOutgoingMessage
+{
+}

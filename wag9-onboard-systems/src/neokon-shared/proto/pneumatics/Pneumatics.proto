@@ -1,0 +1,60 @@
+syntax = "proto3";
+package proto;
+
+import "Reservoir.proto";
+import "Compressor.proto";
+import "PneumoPipe.proto";
+import "Valve013.proto";
+import "Valve254.proto";
+import "Valve334.proto";
+import "Valve394.proto";
+import "AirDistributor337.proto";
+import "AirDistributor483.proto";
+import "EPK150.proto";
+
+/**
+ * Definition for the compressor pneumatic element.
+ * @see PneumaticsProcessor.h
+ */
+message PneumaticsDef
+{
+    repeated ReservoirDef reservoir_def = 1;
+    repeated CompressorDef compressor_def = 2;
+    repeated PneumoPipeDef pneumopipe_def = 3;
+    repeated Valve013Def valve013_def = 4;
+    repeated AirDistributor337Def air_distributor337_def = 5;
+    repeated Valve254Def valve254_def = 6;
+    repeated Valve394Def valve394_def = 7;
+    repeated AirDistributor483Def air_distributor483_def = 8;
+    repeated EPK150Def epk150_def = 9;
+    repeated Valve334Def valve334_def = 10;
+}
+
+/**
+ * Definition of the value to be passed to the plugin DLL.
+ */
+message PneumaticsValue
+{
+    repeated ReservoirValue reservoir_value = 1;
+    repeated AirDistributor337Value air_distributor337_value = 2;
+    repeated Valve394Value valve394_value = 3;
+    repeated AirDistributor483Value air_distributor483_value = 4;
+    repeated Valve254Value valve254_value = 5;
+    repeated EPK150Value epk150_value = 6;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message PneumaticsState
+{
+    repeated AirDistributor337State air_distributor337_state = 1;
+    repeated CompressorState compressor_state = 2;
+    repeated ReservoirState reservoir_state = 3;
+    repeated Valve013State valve013_state = 4;
+    repeated Valve254State valve254_state = 5;
+    repeated Valve394State valve394_state = 6;
+    repeated AirDistributor483State air_distributor483_state = 7;
+    repeated EPK150State epk150_state = 8;
+    repeated Valve334State valve334_state = 9;
+}

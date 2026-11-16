@@ -1,0 +1,98 @@
+syntax = "proto3";
+package proto;
+
+import "AirDistributorProps.proto";
+import "BrakeAutoMode.proto";
+import "ChargingPressure.proto";
+import "Etcs.proto";
+import "EtcsStartMode.proto";
+import "HazardWarningLights.proto";
+import "PayloadWeight.proto";
+import "RearLights.proto";
+import "TractionTable.proto";
+
+/**
+ * Holds the properties that apply to a particular vehicle in a particular train.
+ *
+ * Each oneof section normally corresponds to a subclass of VehiclePropertyAspect
+ * in SMC.
+ */
+message VehicleProperties
+{
+    oneof opt_air_distributor_props
+    {
+        AirDistributorProps air_distributor_props = 1;
+    }
+
+    oneof opt_break_auto_mode
+    {
+        BrakeAutoMode brake_auto_mode = 2;
+    }
+
+    oneof opt_overcharge_pressure
+    {
+        ChargingPressure charging_pressure = 3;
+    }
+
+    oneof opt_payload_weight
+    {
+        PayloadWeight payload_weight = 4;
+    }
+
+    reserved 5;
+    reserved 6;
+
+    oneof opt_start_mode
+    {
+        string start_mode = 7;
+    }
+
+    oneof opt_rear_light_props
+    {
+        RearLights rear_lights = 8;
+    }
+
+    oneof opt_number
+    {
+        /**
+         * The vehicle number can contain numbers and letters.
+         * The number must be unique in the scenario.
+         */
+        string number = 9;
+    }
+
+    oneof opt_etcs
+    {
+        /**
+         * UK Train related option for indicating ETCS working mode.
+         */
+         Etcs etcs = 10; 
+    }
+
+    oneof opt_hazard_lights
+    {
+         HazardWarningLights hazard_lights = 11; 
+    }
+
+    oneof opt_traction_table
+    {
+         TractionTable traction_table = 12; 
+    }
+
+    oneof opt_broken_bot
+    {
+        /**
+         * Can be set on the driving vehicle of a train. Such a train is considered to be broken down.
+         * Can be set on bot trains only, if set anyway, ignored on non-bot trains.
+         */
+        bool broken_bot = 13;
+    }
+
+    oneof opt_etcs_start_mode
+    {
+        /**
+         * UK Train related option for indicating ETCS start mode in level 2.
+         */
+        EtcsStartMode etcs_start_mode = 14; 
+    }
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+message ShuntingHoseStateRequest
+{
+    uint64 train_incarnation = 1;
+
+    /**
+     * Index from the front of train.
+     * Set the state of hose between `vehicle_gap_index` and `vehicle_gap_index + 1` indices.
+     */
+    int32 vehicle_gap_index  = 2;
+
+    /**
+     * <true> stands for connected hose.
+     */
+    bool connected = 3;
+}

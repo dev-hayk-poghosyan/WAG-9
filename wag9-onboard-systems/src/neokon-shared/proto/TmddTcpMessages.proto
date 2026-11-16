@@ -1,0 +1,517 @@
+syntax = "proto3";
+package proto.class390.tmdd;
+
+message TcpToTMDDMessage {
+    // Массив состояния дверей состава
+    repeated Door doors = 1;
+
+    oneof value {
+        // Состояние автомата CB-TMDD (Вкл/Выкл)
+        bool initialization = 2;
+
+        // Положение ключа реверса
+        ReverseKey reverse_key = 3;
+
+        // Нажатая клавиша на пленочной клавиатуре
+        KeyboardButton keyboard_button = 4;
+
+        // Состояние определённой ошибки
+        Fault fault = 5;
+
+        // Сброс программы (Вкл)
+        bool reset = 6;
+
+        // Доступность системы наклона поезда (Tilt system) (Вкл/Выкл)
+        bool tilt_available = 7;
+
+        // Значение установленной скорости
+        int32 set_speed = 8;
+
+        // Перейти на экран SDO
+        bool move_to_screen_sdo = 9;
+
+        // Включить тусклый режим
+        bool screen_dim = 10;
+
+        // Принудительный буст мод
+        bool forced_boost_mod = 11;
+
+        RepeaterConfig new_repeater_config = 12;
+    }
+
+    message RepeaterConfig
+    {
+        int32 repeatTcpPort = 1;
+        int32 repeatUdpPort = 2;
+        string repeatIP = 3;
+    }
+}
+
+message TcpFromTMDDMessage {
+    oneof value {
+        // Состояние эко мода (Вкл/Выкл)
+        bool eco_mode = 1;
+
+        // Возвращает введеный оператором код
+        string operator_code = 2;
+
+        // Возвращает введеный оператором номер "VT...."
+        string operator_number = 3;
+
+        // Авторизован ли пользователь
+        bool logged_in = 4;
+
+        // Авторизирована ли программа
+        bool is_initialized = 5;
+    }
+}
+
+enum ReverseKey {
+    REVERSE_OFF = 0;
+    REVERSE_FORWARD = 1;
+    REVERSE_NEUTRAL = 2;
+    REVERSE_REVERSE = 3;
+}
+
+enum KeyboardButton {
+    BTN_NONE = 0;
+    BTN_4 = 1;
+    BTN_3 = 2;
+    BTN_2 = 3;
+    BTN_1 = 4;
+    BTN_5 = 5;
+    BTN_RIGHT = 6;
+    BTN_DOWN = 7;
+    BTN_UP = 8;
+    BTN_LEFT = 9;
+    BTN_ENTER = 10;
+    BTN_F4 = 11;
+    BTN_F3 = 12;
+    BTN_F2 = 13;
+    BTN_F1 = 14;
+    BTN_CLEAR = 15;
+    BTN_9 = 16;
+    BTN_8 = 17;
+    BTN_7 = 18;
+    BTN_6 = 19;
+    BTN_0 = 20;
+}
+
+message Fault {
+    // идентификационный номер ошибки
+    FaultId fault_id = 1;
+
+    // индекс вагона (0-10) {K, J, H, G, U, F, E, D, C, B, A}
+    int32 coach_index = 2;
+
+    // действие над ошибкой (Включить/Выключить)
+    bool state = 3;
+}
+
+enum FaultId {
+    FAULT_1001 = 0;
+    FAULT_1002 = 1;
+    FAULT_1003 = 2;
+    FAULT_1004 = 3;
+    FAULT_1005 = 4;
+    FAULT_1006 = 5;
+    FAULT_1007 = 6;
+    FAULT_1008 = 7;
+    FAULT_1009 = 8;
+    FAULT_1010 = 9;
+    FAULT_1011 = 10;
+    FAULT_2001 = 11;
+    FAULT_2002 = 12;
+    FAULT_2003 = 13;
+    FAULT_2004 = 14;
+    FAULT_2005 = 15;
+    FAULT_2006 = 16;
+    FAULT_2007 = 17;
+    FAULT_2008 = 18;
+    FAULT_2009 = 19;
+    FAULT_2010 = 20;
+    FAULT_2011 = 21;
+    FAULT_2012 = 22;
+    FAULT_2013 = 23;
+    FAULT_2014 = 24;
+    FAULT_2015 = 25;
+    FAULT_2016 = 26;
+    FAULT_3007 = 27;
+    FAULT_3008 = 28;
+    FAULT_3010 = 29;
+    FAULT_3011 = 30;
+    FAULT_3012 = 31;
+    FAULT_3013 = 32;
+    FAULT_3014 = 33;
+    FAULT_3015 = 34;
+    FAULT_3016 = 35;
+    FAULT_3017 = 36;
+    FAULT_3018 = 37;
+    FAULT_3019 = 38;
+    FAULT_4001 = 39;
+    FAULT_5001 = 40;
+    FAULT_5002 = 41;
+    FAULT_5003 = 42;
+    FAULT_5004 = 43;
+    FAULT_5005 = 44;
+    FAULT_5006 = 45;
+    FAULT_5007 = 46;
+    FAULT_5007_1 = 47;
+    FAULT_5008 = 48;
+    FAULT_5008_1 = 49;
+    FAULT_5009 = 50;
+    FAULT_5010 = 51;
+    FAULT_5011 = 52;
+    FAULT_5012 = 53;
+    FAULT_5013 = 54;
+    FAULT_5014 = 55;
+    FAULT_5015 = 56;
+    FAULT_5016 = 57;
+    FAULT_5017 = 58;
+    FAULT_5018 = 59;
+    FAULT_5019 = 60;
+    FAULT_5020 = 61;
+    FAULT_5021 = 62;
+    FAULT_5022 = 63;
+    FAULT_5023 = 64;
+    FAULT_5024 = 65;
+    FAULT_5025 = 66;
+    FAULT_5026 = 67;
+    FAULT_5027 = 68;
+    FAULT_5028 = 69;
+    FAULT_5029 = 70;
+    FAULT_5030 = 71;
+    FAULT_5031 = 72;
+    FAULT_5032 = 73;
+    FAULT_5033 = 74;
+    FAULT_5034 = 75;
+    FAULT_5035 = 76;
+    FAULT_5036 = 77;
+    FAULT_5037 = 78;
+    FAULT_5038 = 79;
+    FAULT_5039 = 80;
+    FAULT_5040 = 81;
+    FAULT_5041 = 82;
+    FAULT_5042 = 83;
+    FAULT_5043 = 84;
+    FAULT_5044 = 85;
+    FAULT_5045 = 86;
+    FAULT_5046 = 87;
+    FAULT_5047 = 88;
+    FAULT_5048 = 89;
+    FAULT_5049 = 90;
+    FAULT_5050 = 91;
+    FAULT_5056 = 92;
+    FAULT_5057 = 93;
+    FAULT_5058 = 94;
+    FAULT_5080 = 95;
+    FAULT_5081 = 96;
+    FAULT_5082 = 97;
+    FAULT_5083 = 98;
+    FAULT_5084 = 99;
+    FAULT_5085 = 100;
+    FAULT_5086 = 101;
+    FAULT_5087 = 102;
+    FAULT_5088 = 103;
+    FAULT_5089 = 104;
+    FAULT_5090 = 105;
+    FAULT_5091 = 106;
+    FAULT_5092 = 107;
+    FAULT_5093 = 108;
+    FAULT_5094 = 109;
+    FAULT_5095 = 110;
+    FAULT_5096 = 111;
+    FAULT_5097 = 112;
+    FAULT_5098 = 113;
+    FAULT_5099 = 114;
+    FAULT_6002 = 115;
+    FAULT_6003 = 116;
+    FAULT_6004 = 117;
+    FAULT_6005 = 118;
+    FAULT_6006 = 119;
+    FAULT_6007 = 120;
+    FAULT_6008 = 121;
+    FAULT_6009 = 122;
+    FAULT_6014 = 123;
+    FAULT_6015 = 124;
+    FAULT_6016 = 125;
+    FAULT_6017 = 126;
+    FAULT_6022 = 127;
+    FAULT_6023 = 128;
+    FAULT_6024 = 129;
+    FAULT_6025 = 130;
+    FAULT_6032 = 131;
+    FAULT_6033 = 132;
+    FAULT_6034 = 133;
+    FAULT_6035 = 134;
+    FAULT_6042 = 135;
+    FAULT_6047 = 136;
+    FAULT_6048 = 137;
+    FAULT_6049 = 138;
+    FAULT_6050 = 139;
+    FAULT_6051 = 140;
+    FAULT_6052 = 141;
+    FAULT_6053 = 142;
+    FAULT_6054 = 143;
+    FAULT_6055 = 144;
+    FAULT_6056 = 145;
+    FAULT_6057 = 146;
+    FAULT_6058 = 147;
+    FAULT_7001 = 148;
+    FAULT_8001 = 149;
+    FAULT_8002 = 150;
+    FAULT_8003 = 151;
+    FAULT_8004 = 152;
+    FAULT_8005 = 153;
+    FAULT_8006 = 154;
+    FAULT_8007 = 155;
+    FAULT_8008 = 156;
+    FAULT_8009 = 157;
+    FAULT_8010 = 158;
+    FAULT_8011 = 159;
+    FAULT_8012 = 160;
+    FAULT_8013 = 161;
+    FAULT_8014 = 162;
+    FAULT_8015 = 163;
+    FAULT_8016 = 164;
+    FAULT_8017 = 165;
+    FAULT_8018 = 166;
+    FAULT_8019 = 167;
+    FAULT_8020 = 168;
+    FAULT_8021 = 169;
+    FAULT_8022 = 170;
+    FAULT_8023 = 171;
+    FAULT_8024 = 172;
+    FAULT_8025 = 173;
+    FAULT_8026 = 174;
+    FAULT_8027 = 175;
+    FAULT_8028 = 176;
+    FAULT_8029 = 177;
+    FAULT_8030 = 178;
+    FAULT_8031 = 179;
+    FAULT_8032 = 180;
+    FAULT_8033 = 181;
+    FAULT_8034 = 182;
+    FAULT_8035 = 183;
+    FAULT_8036 = 184;
+    FAULT_8037 = 185;
+    FAULT_8038 = 186;
+    FAULT_8039 = 187;
+    FAULT_8040 = 188;
+    FAULT_8041 = 189;
+    FAULT_8042 = 190;
+    FAULT_8043 = 191;
+    FAULT_8044 = 192;
+    FAULT_8045 = 193;
+    FAULT_8046 = 194;
+    FAULT_8047 = 195;
+    FAULT_8048 = 196;
+    FAULT_8050 = 197;
+    FAULT_8051 = 198;
+    FAULT_8052 = 199;
+    FAULT_8053 = 200;
+    FAULT_8054 = 201;
+    FAULT_8055 = 202;
+    FAULT_8056 = 203;
+    FAULT_8057 = 204;
+    FAULT_8067 = 205;
+    FAULT_8068 = 206;
+    FAULT_8069 = 207;
+    FAULT_8070 = 208;
+    FAULT_8072 = 209;
+    FAULT_8073 = 210;
+    FAULT_8074 = 211;
+    FAULT_8075 = 212;
+    FAULT_8076 = 213;
+    FAULT_8077 = 214;
+    FAULT_8078 = 215;
+    FAULT_8079 = 216;
+    FAULT_8080 = 217;
+    FAULT_8081 = 218;
+    FAULT_8082 = 219;
+    FAULT_8083 = 220;
+    FAULT_8084 = 221;
+    FAULT_8085 = 222;
+    FAULT_8086 = 223;
+    FAULT_8087 = 224;
+    FAULT_8088 = 225;
+    FAULT_8089 = 226;
+    FAULT_8090 = 227;
+    FAULT_9001 = 228;
+    FAULT_9002 = 229;
+    FAULT_9003 = 230;
+    FAULT_9004 = 231;
+    FAULT_9005 = 232;
+    FAULT_10001 = 233;
+    FAULT_10002 = 234;
+    FAULT_10003 = 235;
+    FAULT_10004 = 236;
+    FAULT_10005 = 237;
+    FAULT_12001 = 238;
+    FAULT_12002 = 239;
+    FAULT_13001 = 240;
+    FAULT_13002 = 241;
+    FAULT_13003 = 242;
+    FAULT_13004 = 243;
+    FAULT_13005 = 244;
+    FAULT_13006 = 245;
+    FAULT_13007 = 246;
+    FAULT_13008 = 247;
+    FAULT_13009 = 248;
+    FAULT_13010 = 249;
+    FAULT_13011 = 250;
+    FAULT_13012 = 251;
+    FAULT_14001 = 252;
+    FAULT_14002 = 253;
+    FAULT_14003 = 254;
+    FAULT_14004 = 255;
+    FAULT_15001 = 256;
+    FAULT_15002 = 257;
+    FAULT_15003 = 258;
+    FAULT_18001 = 259;
+    FAULT_18002 = 260;
+    FAULT_18003 = 261;
+    FAULT_18007 = 262;
+    FAULT_18008 = 263;
+    FAULT_18009 = 264;
+    FAULT_18010 = 265;
+    FAULT_18011 = 266;
+    FAULT_18012 = 267;
+    FAULT_18020 = 268;
+    FAULT_18024 = 269;
+    FAULT_18025 = 270;
+    FAULT_18026 = 271;
+    FAULT_18030 = 272;
+    FAULT_18031 = 273;
+    FAULT_18032 = 274;
+    FAULT_18033 = 275;
+    FAULT_18034 = 276;
+    FAULT_18035 = 277;
+    FAULT_18036 = 278;
+    FAULT_18037 = 279;
+    FAULT_18038 = 280;
+    FAULT_18039 = 281;
+    FAULT_18040 = 282;
+    FAULT_19002 = 283;
+    FAULT_19003 = 284;
+    FAULT_19004 = 285;
+    FAULT_19005 = 286;
+    FAULT_19006 = 287;
+    FAULT_19007 = 288;
+    FAULT_19008 = 289;
+    FAULT_19010 = 290;
+    FAULT_19011 = 291;
+    FAULT_19012 = 292;
+    FAULT_19014 = 293;
+    FAULT_19022 = 294;
+    FAULT_19023 = 295;
+    FAULT_19024 = 296;
+    FAULT_19025 = 297;
+    FAULT_19026 = 298;
+    FAULT_19027 = 299;
+    FAULT_20001 = 300;
+    FAULT_20002 = 301;
+    FAULT_20003 = 302;
+    FAULT_20004 = 303;
+    FAULT_20005 = 304;
+    FAULT_20006 = 305;
+    FAULT_21002 = 306;
+    FAULT_21003 = 307;
+    FAULT_21004 = 308;
+    FAULT_21005 = 309;
+    FAULT_21006 = 310;
+    FAULT_21011 = 311;
+    FAULT_21012 = 312;
+    FAULT_21014 = 313;
+    FAULT_21015 = 314;
+    FAULT_21016 = 315;
+    FAULT_21017 = 316;
+    FAULT_21018 = 317;
+    FAULT_22001 = 318;
+    FAULT_22002 = 319;
+    FAULT_22003 = 320;
+    FAULT_22004 = 321;
+    FAULT_22005 = 322;
+    FAULT_22006 = 323;
+    FAULT_22007 = 324;
+    FAULT_22008 = 325;
+    FAULT_22009 = 326;
+    FAULT_22010 = 327;
+    FAULT_22011 = 328;
+    FAULT_22012 = 329;
+    FAULT_22013 = 330;
+    FAULT_22014 = 331;
+    FAULT_22015 = 332;
+    FAULT_22016 = 333;
+    FAULT_23001 = 334;
+    FAULT_23002 = 335;
+    FAULT_24001 = 336;
+    FAULT_24002 = 337;
+    FAULT_24003 = 338;
+    FAULT_24004 = 339;
+    FAULT_30001 = 340;
+    FAULT_30002 = 341;
+    FAULT_31002 = 342;
+    FAULT_31003 = 343;
+    FAULT_31004 = 344;
+    FAULT_31005 = 345;
+    FAULT_31006 = 346;
+    FAULT_31007 = 347;
+    FAULT_31008 = 348;
+    FAULT_31009 = 349;
+    FAULT_31020 = 350;
+    FAULT_33001 = 351;
+    FAULT_33002 = 352;
+    FAULT_33003 = 353;
+    FAULT_33004 = 354;
+    FAULT_2101 = 355;
+    FAULT_5102 = 356;
+    FAULT_5103 = 357;
+    FAULT_6100 = 358;
+    FAULT_6101 = 359;
+    FAULT_6102 = 360;
+    FAULT_6103 = 361;
+    FAULT_6104 = 362;
+    FAULT_6105 = 363;
+    FAULT_6106 = 364;
+    FAULT_6107 = 365;
+    FAULT_6108 = 366;
+    FAULT_8101 = 367;
+    FAULT_8102 = 368;
+    FAULT_8103 = 369;
+    FAULT_8104 = 370;
+    FAULT_8105 = 371;
+    FAULT_8106 = 372;
+    FAULT_8107 = 373;
+    FAULT_8108 = 374;
+    FAULT_8109 = 375;
+    FAULT_8110 = 376;
+    FAULT_8111 = 377;
+    FAULT_8112 = 378;
+    FAULT_8113 = 379;
+    FAULT_8114 = 380;
+    FAULT_8115 = 381;
+    FAULT_8116 = 382;
+    FAULT_12101 = 383;
+    FAULT_18101 = 384;
+    FAULT_19101 = 385;
+    FAULT_19102 = 386;
+    FAULT_19103 = 387;
+    FAULT_19104 = 388;
+    FAULT_19106 = 389;
+    FAULT_19109 = 390;
+    FAULT_19110 = 391;
+    FAULT_21101 = 392;
+    FAULT_21102 = 393;
+}
+
+message Door {
+    // индекс вагона (0-10) {K, J, H, G, U, F, E, D, C, B, A}
+    int32 coach_index = 1;
+
+    // номер двери (0-3) (передняя правая/задняя правая/передняя левая/задняя левая)
+    int32 number = 2;
+
+    //Состояние двери (0-6) {CLOSED, OPENED, IN_PROCESS, FAULT, OUT_OF_USE, INHIBITED, ENABLED}
+    int32 state = 3;
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+message DoorControlButton
+{
+    enum Button
+    {
+        CONDUCTOR_LEFT = 0;
+        CONDUCTOR_RIGHT = 1;
+        INTERLOCK_CLOSE = 2;
+    }
+}

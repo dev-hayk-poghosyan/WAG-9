@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+message ExerciseStateMachineDutyJournal
+{
+    /**
+     * Logical expression. When satisfied, the journal is shown.
+     */
+    string show_expression = 1;
+
+    repeated string activate_states_when_shown = 2;
+    repeated string deactivate_states_when_shown = 3;
+    repeated string activate_states_when_hidden = 4;
+    repeated string deactivate_states_when_hidden = 5;
+}

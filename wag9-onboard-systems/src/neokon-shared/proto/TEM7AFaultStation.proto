@@ -1,0 +1,254 @@
+syntax = "proto3";
+package proto.tem7a.faultstation;
+option csharp_namespace = "SchemeFaultStations.TEM7A";
+
+message ToFaultStation
+{
+    oneof message
+    {
+        ElectricValues electric_values = 1;
+        ToPanelValues panel_values = 2;
+        SectionValues section_values = 3;
+        bool reset_fault_station_values = 4;
+        PneumaticValues pneumatic_values = 5;
+    }
+}
+
+/**
+ * Это сообщение-контейнер. Передается из Fault Station в контроллер поезда TrainSim.
+ */
+ message FromFaultStation
+ {
+     FromPanelValues panel_values = 1;
+ }
+
+/**
+ * Это сообщение - набор параметров для электрических схем в Fault Station.
+ * Переключатели, реле, состояния проводов, ламп и т.д.
+ */
+message ElectricValues
+{
+    bool prb = 1;
+    bool starter = 2;
+    bool r32_km4 = 3;
+    bool r32_km3 = 4;
+    bool prg = 5;
+    bool r12_qf1 = 6;
+    bool r34_km2 = 7;
+    bool w12105 = 8;
+    bool compressor = 9;
+    bool r34_km1 = 10;
+    bool rzb = 11;
+    bool r32_km2 = 12;
+    bool oilpump = 13;
+    bool fuelpump = 14;
+    bool r32_km1 = 15;
+    bool r12_sf2 = 16;
+    bool w11305 = 17;
+    bool alternatorcur = 18;
+    bool exalternatorcur = 19;
+    bool km3 = 20;
+    bool w24406 = 21;
+    bool km1 = 22;
+    bool km2 = 23;
+    bool enginecur1 = 24;
+    bool enginecur2 = 25;
+    bool rev1 = 26;
+    bool revnot1 = 27;
+    bool traction = 28;
+    bool brake = 29;
+    bool ksh11 = 30;
+    bool ksh12 = 31;
+    bool ksh21 = 32;
+    bool ksh22 = 33;
+    bool km4 = 34;
+    bool enginecur3 = 35;
+    bool enginecur4 = 36;
+    bool ksh31 = 37;
+    bool ksh32 = 38;
+    bool ksh41 = 39;
+    bool ksh42 = 40;
+    bool km5 = 41;
+    bool km6 = 42;
+    bool enginecur5 = 43;
+    bool enginecur6 = 44;
+    bool ksh51 = 45;
+    bool ksh52 = 46;
+    bool ksh61 = 47;
+    bool ksh62 = 48;
+    bool km7 = 49;
+    bool km8 = 50;
+    bool enginecur7 = 51;
+    bool enginecur8 = 52;
+    bool ksh71 = 53;
+    bool ksh72 = 54;
+    bool ksh81 = 55;
+    bool ksh82 = 56;
+    bool mwirew11211 = 57;
+    bool controlayo = 58;
+    bool controlayow11211 = 59;
+    bool controlrvs = 60;
+    int32 controltmm = 61;
+    bool w31103 = 62;
+    bool w31107 = 63;
+    bool rzbk = 64;
+    bool throttle = 65;
+    bool ktn = 66;
+    bool kmn = 67;
+    bool kd1 = 68;
+    bool kd2 = 69;
+    bool krn1 = 70;
+    bool krn2 = 71;
+    bool kp1 = 72;
+    bool controladv = 73;
+    bool w35207 = 74;
+    bool kp2 = 75;
+    bool kp3 = 76;
+    bool kp4 = 77;
+    bool kp5 = 78;
+    bool kp6 = 79;
+    bool kp7 = 80;
+    bool kp8 = 81;
+    bool revf = 82;
+    bool revb = 83;
+    bool control355_sf2 = 84;
+    bool rkvv = 85;
+    bool rkvg = 86;
+    bool controlt = 87;
+    bool w35438 = 88;
+    bool w35423 = 89;
+    bool rop1 = 90;
+    bool rop2 = 91;
+    bool w11202 = 92;
+    bool w35305 = 93;
+    bool r1_ksh1 = 94;
+    bool r1_ksh2 = 95;
+    bool r2_ksh1 = 96;
+    bool r2_ksh2 = 97;
+    bool r3_ksh1 = 98;
+    bool r3_ksh2 = 99;
+    bool r4_ksh1 = 100;
+    bool r4_ksh2 = 101;
+    bool r5_ksh1 = 102;
+    bool r5_ksh2 = 103;
+    bool r6_ksh1 = 104;
+    bool r6_ksh2 = 105;
+    bool r7_ksh1 = 106;
+    bool r7_ksh2 = 107;
+    bool r8_ksh1 = 108;
+    bool r8_ksh2 = 109;
+    bool kpk1 = 110;
+    bool kpk2 = 111;
+    bool exalternatorcur_error = 112;
+    bool kd1_error = 113;
+    bool compressor_error = 114;
+    bool oilpump_error = 115;
+}
+
+message ToPanelValues
+{
+    oneof value
+    {
+        bool heated_washbasin_water = 1;
+        bool compressor_oil_heating = 2;
+        bool lighting_diesel_room = 3;
+        bool battery_room_lighting = 4;
+        bool lighting_podkuzovnoe = 5;
+        bool high_voltage_camera_lighting = 6;
+        bool mirror_heating = 7;
+        bool cabin_lighting = 8;
+        bool outdoor_alarm_system = 9;
+        bool windscreen_wiper = 10;
+        bool converter = 11;
+        bool excitement = 12;
+        bool auxiliary_load = 13;
+        bool fuel_pump = 14;
+        bool searchlight = 15;
+        bool power_mskud = 16;
+        bool general_management = 17;
+        bool movement = 18;
+        bool td1 = 19;
+        bool td2 = 20;
+        bool td3 = 21;
+        bool td4 = 22;
+        bool td5 = 23;
+        bool td6 = 24;
+        bool td7 = 25;
+        bool td8 = 26;
+        bool fuse1 = 27;
+        bool fuse2 = 28;
+        bool fuse3 = 29;
+        bool fuse4 = 30;
+        bool fuse5 = 31;
+        bool fuse6 = 32;
+    }
+}
+
+message FromPanelValues
+{
+    oneof value
+    {
+        bool heated_washbasin_water = 1;
+        bool compressor_oil_heating = 2;
+        bool lighting_diesel_room = 3;
+        bool battery_room_lighting = 4;
+        bool body_lighting = 5;
+        bool high_voltage_camera_lighting = 6;
+        bool mirror_heating = 7;
+        bool cabin_lighting = 8;
+        bool outdoor_alarm_system = 9;
+        bool windscreen_wiper = 10;
+        bool converter_apn = 11;
+        bool excitement = 12;
+        bool auxiliary_load = 13;
+        bool fuel_pump = 14;
+        bool searchlight = 15;
+        bool power_mskud = 16;
+        bool general_management = 17;
+        bool movement = 18;
+        bool td1 = 19;
+        bool td2 = 20;
+        bool td3 = 21;
+        bool td4 = 22;
+        bool td5 = 23;
+        bool td6 = 24;
+        bool td7 = 25;
+        bool td8 = 26;
+        bool fuse1 = 27;
+        bool fuse2 = 28;
+        bool fuse3 = 29;
+        bool fuse4 = 30;
+        bool fuse5 = 31;
+        bool fuse6 = 32;
+    }
+}
+
+message SectionValues
+{
+    bool spotlight_lit = 1;
+    bool buffer_left_white_lit = 2;
+    bool buffer_right_white_lit = 3;
+    bool buffer_left_red_lit = 4;
+    bool buffer_right_red_lit = 5;
+    bool spotlight_lit_back = 6;
+    bool buffer_left_white_lit_back = 7;
+    bool buffer_right_white_lit_back = 8;
+    bool buffer_left_red_lit_back = 9;
+    bool buffer_right_red_lit_back = 10;
+    bool lamp_driver_seat_right = 11;
+    bool lamp_driver_seat_left = 12;
+}
+
+message PneumaticValues
+{
+    bool compressor = 1;
+    float tc = 2;
+    float pipe254 = 3;
+    float pipe254367 = 4;
+    float vr = 5;
+    float zr = 6;
+    float tm367 = 7;
+    float tm = 8;
+    float gr367 = 9;
+    float gr = 10;
+}

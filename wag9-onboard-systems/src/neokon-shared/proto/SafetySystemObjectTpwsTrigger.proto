@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+message SafetySystemObjectTpwsTrigger
+{
+    /**
+     * This field is effectively optional: a value of zero indicates no connection.
+     */
+    int32 connected_signal_id = 1;
+}

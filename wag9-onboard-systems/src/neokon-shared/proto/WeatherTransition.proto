@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+import "WeatherDefinition.proto";
+
+message WeatherTransition
+{
+    WeatherDefinition weather_definition = 1;
+
+    /**
+     * The transition period in seconds, between the previous weather and this one.
+     */
+    uint32 settle_duration_seconds = 2;
+}

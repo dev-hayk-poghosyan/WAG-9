@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Corresponds to class SignalStateSimpleSemiAuto::PartialState.
+ *
+ * See its serialization / deserialization code for details on how individual fields are encoded.
+ */
+message SignalStateSimpleSemiAuto
+{
+    reserved  1;
+
+    int32 actual_state = 2;
+    int32 manual_state_request = 3;
+}

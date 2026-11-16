@@ -1,0 +1,29 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * This request is sent to TrainSim to change bot speed only when TrainSim is connected.
+ */
+message TrainControlRequest
+{
+    /**
+     * 16 bytes, no hex encoding
+     */
+    bytes train_uuid_bytes = 1;
+
+    /**
+     * Change maximum allowed speed for bot.
+     */
+    oneof speed_msg
+    {
+        float speed_ms = 2;
+    }
+
+    /**
+     * Reverse train direction if @p reverse is true. Not supported on bots yet.
+     */
+    oneof reverse_msg
+    {
+        bool reverse = 3;
+    }
+}

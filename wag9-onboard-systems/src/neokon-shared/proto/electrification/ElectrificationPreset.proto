@@ -1,0 +1,47 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+import "ElectrificationPresetAnchor.proto";
+import "ElectrificationPresetCatenary.proto";
+import "ElectrificationPresetCommonParams.proto";
+import "ElectrificationPresetPole.proto";
+import "ElectrificationPresetPortal.proto";
+import "ElectrificationPresetPortalSuspension.proto";
+
+/**
+ * Корневой блок данных для пресетов -
+ * конфигурационных файлов для генерации отдельных
+ * элементов контактной сети.
+ */
+message ElectrificationPreset
+{
+    /**
+     * Общие параметры, затрагивающие все объекты КС.
+     */
+    CommonParams common_params = 1;
+
+    /**
+     * Блок данных для проводных подвесок.
+     */
+    Catenary catenary = 2;
+
+    /**
+     * Опоры.
+     */
+    Pole pole = 3;
+
+    /**
+     * Жесткие поперечины.
+     */
+    Portal portal = 4;
+
+    /**
+     * Подвесы под жесткими поперечиными.
+     */
+    PortalSuspension portal_suspension = 5;
+
+    /**
+     * Анкеровка.
+     */
+    Anchor anchor = 6;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto.radio;
+
+/**
+ * Used for audio(voice) transmission between instructor's station and driver's sim.
+ */
+message AudioStreaming
+{
+    /**
+     * Communication line's input endpoint attached audio frame(s) fetched from.
+     * in_gsmr, in_train, in_direct
+     */
+    string input_source_device_role_name = 1;
+    
+    /**
+     * Raw frames from the input audio device.
+     * See AudioEncodingParams::defaultStreaminEncodingSettings for encoding params.
+     */
+    bytes audio_data = 2;
+}

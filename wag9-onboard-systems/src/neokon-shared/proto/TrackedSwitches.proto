@@ -1,0 +1,7 @@
+syntax = "proto3";
+package proto;
+
+message TrackedSwitches
+{
+    repeated int32 tracked_switches = 1;
+}

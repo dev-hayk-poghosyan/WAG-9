@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "TogglerState.proto";
+
+/**
+ * Used to activate/deactivate neutral section marks.
+ */
+message NeutralSectionToggleRequest
+{
+    /**
+     * The name of the marks root node in Layer_ElectrificationMarks.
+     */
+    string group_node_name = 1;
+
+    TogglerState.State switch_command = 2;
+}

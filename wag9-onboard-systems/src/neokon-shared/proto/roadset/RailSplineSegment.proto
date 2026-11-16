@@ -1,0 +1,29 @@
+syntax = "proto3";
+package proto;
+
+import "BezierSegment.proto";
+
+message RailSplineSegment
+{
+    /**
+     * An index into RoadSet::all_track_models.
+     */
+    int32 track_model_idx = 1;
+
+    /**
+     * An index into RoadSet::all_tie_models. Value -1 means that we do not have separate ties on 
+     * this segment
+     */
+    sint32 tie_model_idx = 2;
+
+    /**
+     * A cubic Bezier spline.
+     */
+    BezierSegment bezier = 3;
+
+    /**
+     * An index into RoadSet::all_gen_presets. 
+     */
+    optional sint32 gen_preset_idx = 4;
+
+}

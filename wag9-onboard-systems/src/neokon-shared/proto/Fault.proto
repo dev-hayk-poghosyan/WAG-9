@@ -1,0 +1,40 @@
+syntax = "proto3";
+package proto;
+
+import "Subfault.proto";
+
+message Fault
+{
+    enum Category
+    {
+        BRAKES = 0;
+        CIRCUITS = 1;
+        SIGNAL_INDICATOR = 2;
+        RADIO = 3;
+        DEVICES = 4;
+        AUTOMATONS = 5;
+        ETCS = 6;
+    };
+
+    /**
+     * An empty uuid stands for "no-fault" fault, i.e. all preceedings faults are canceled.
+     */
+    string uuid = 1;
+
+    string name = 2;
+    Category category = 3;
+
+    bool canceled = 4;
+
+    /**
+     * Stores additional info about fault.
+     */
+    repeated Subfault subfaults = 5;
+
+    /**
+     * Indicates whether the fault may have subfaults.
+     * This field helps determine if a subfault dialog should be created when
+     * dragging a fault onto railroads in RailroadControl.
+     */
+    bool is_base = 6;
+}

@@ -1,0 +1,100 @@
+syntax = "proto3";
+package proto;
+
+import "PointOnRoad.proto";
+import "RailPathEndpoint.proto";
+import "RepeaterAspectType.proto";
+import "RestrictiveAspectType.proto";
+import "RouteLabel.proto";
+import "SignalLightSpeedLimit.proto";
+
+message SignalLight
+{
+    int32 node_id = 1;
+
+    reserved 2 to 3;
+
+    string type_string = 4;
+
+    reserved 5 to 7;
+
+    string label = 8;
+
+    /**
+     * If this signal is a repeater, specifies the node id of the signal it repeats.
+     */
+    int32 repeated_signal_node_id = 9;
+
+    repeated RouteLabel junction_indicator_labels = 10;
+
+    repeated RouteLabel symbolic_route_indicator_labels = 11;
+
+    /**
+     * See comments in tl.prop for the UK signalling variant.
+     */
+    bool uk_longer_notification_segment_ahead = 12;
+
+    /**
+     * The facing direction of the signal. Not to be confused with the facing direction
+     * of a train that faces the signal.
+     */
+    RailPathEndpoint.Endpoint facing_path_endpoint = 13;
+
+    /**
+     * Used for signal lights with green bars to designate the divergence by the switch with
+     * a low curvature, for example 1/18, 1/22, which allows to enter on it with higher speed.
+     *
+     * Note that in the real world it might be a 1/11 or 1/9 rail switch between
+     * this signal light and the further switch with a low curvature.
+     */
+    repeated RouteLabel green_line_divergence_markers = 14;
+
+    /**
+     * Used for shunt Signals to define restrictive aspect type.
+     */
+    RestrictiveAspectType.AspectType restrictive_aspect_type = 15;
+
+    PointOnRoad position = 16;
+
+    /**
+     * Specifies related signal node id for Barrier signal.
+     */
+    int32 barrier_signal_node_id = 17;
+    
+    /**
+     * Speed limits for some states of this signal light grouped by type.
+     */
+    SignalLightSpeedLimit speed_limit = 18;
+
+    /**
+     * Specifies whether the signal is a Track Circuit signal which is placed on the rails
+     * and does't have any lamps but has the same signal states as the common signal.
+     * Signal states are sent to train by rails.
+     */
+    bool track_circuit = 19;
+
+    /**
+     * Used for repeater Signals to define aspect type.
+     */
+    RepeaterAspectType.AspectType repeater_aspect_type = 20;
+
+    /**
+     * Signal node which red state blocks UK Preliminary Route Indicator signal display.
+     * For now, used only for PRI signals and optional.
+     */
+    int32 uk_pri_blocking_signal_node_id = 21;
+
+    /**
+     * Relevant for UK worlds.
+     * ETCS Release speed limit in mph at this signal light.
+     */
+    oneof etcs_release_speed
+    {
+        int32 uk_etcs_release_speed_limit_mph = 22;
+    }
+
+    /**
+     * Specifies Signal doesn't calculate Als frequency.
+     */
+    bool no_frequency = 23;
+}

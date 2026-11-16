@@ -1,0 +1,48 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingConversationMessageType.proto";
+import "CrossingRailDirection.proto";
+
+/**
+ * The message item for the conversation via communication device.
+ */
+message CrossingConversationMessage
+{
+    /**
+     * Type of conversation to be used when checking if the user selected the correct action.
+     */
+    CrossingConversationMessageType type = 1;
+
+    /**
+     * Text to be displayed in the context menu when clicking on the device or selecting the remote
+     * party item.
+     */
+    string text = 2;
+
+    /**
+     * The rail direction used for crossings to check whether the user selected the correct
+     * menu item. For exUSSR countries, this is a train direction.
+     */
+    CrossingRailDirection direction = 3;
+
+    /**
+     * The part of the sound path.
+     */
+    string sound_path = 4;
+
+    /**
+     * State Machine states which will be activated when the user would call with this message.
+     */
+    repeated string activate_states = 5;
+
+    /**
+     * State Machine states which will be deactivated when the user would call with this message.
+     */
+    repeated string deactivate_states = 6;
+
+    /**
+     * State Machine states which must be all active to make this message visible.
+     */
+    repeated string required_active_states = 7;
+}

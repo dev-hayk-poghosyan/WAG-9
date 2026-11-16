@@ -1,0 +1,54 @@
+syntax = "proto3";
+package proto;
+
+message BranchSegmentOptions
+{
+   /**
+    * Direction of the segment relatively to the parent branch: same direction or the opposite.
+    * Direction of branch is defined by points iteration (from first point to last).
+    */
+    enum Direction
+    {
+        DIRECT = 0;
+        OPPOSITE = 1;
+    }
+
+    /**
+     * Segment tiling mode is equivalent of one in Unigine::SplineSegment.
+     * See documentation: https://developer.unigine.com/en/docs/2.10/api/library/worlds/class.splinesegment?rlang=cpp#setSegmentMode_cstr_int_void
+     */
+    enum Mode
+    {
+        STRETCH = 0;
+        TILING = 1;
+        ADAPTIVE = 2;
+    }
+
+    /**
+     * A string representation of a UUID, without the curly brackets.
+     */
+    string path_uuid = 1;
+
+    /**
+     * Index into SplineBasedRailPath::segments.
+     */
+    int32 spline_segment_idx = 2;
+
+    /**
+     * Informs the editor that this segment shouldn't be stretched.
+     * The preferred length for this segment is taken from the track model
+     * referenced by RailSplineSegment.track_model_idx.
+     */
+    bool fixed_length_segment = 3;
+
+
+    /**
+     * A direction of segment (along direction of whole branch or opposite).
+     */
+    Direction direction = 4;
+
+    /**
+     * A tiling mode of segment.
+     */
+    Mode mode = 5;
+}

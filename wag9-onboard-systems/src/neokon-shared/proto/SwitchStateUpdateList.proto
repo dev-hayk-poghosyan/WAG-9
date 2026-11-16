@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+import "SwitchStateUpdate.proto";
+
+message SwitchStateUpdateList
+{
+    repeated SwitchStateUpdate switch_state_updates = 1;
+}

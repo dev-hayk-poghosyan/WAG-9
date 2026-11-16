@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+import "DoorsCommand.proto";
+
+message MainTrainDoorsCommand
+{
+    DoorsCommand doors_command = 1;
+}

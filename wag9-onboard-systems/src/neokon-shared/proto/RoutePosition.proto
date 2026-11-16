@@ -1,0 +1,39 @@
+syntax = "proto3";
+package proto;
+
+message RoutePosition
+{
+    /**
+     * Railroad line index, starts from 0.
+     */
+    int32 line_idx = 1;
+
+    /**
+     * A major interval is a kilometer or a mile. It's further divided into minor intervals.
+     *
+     * Railway lines typically start at a station, and the station is assumed to be at distance 0
+     * along the line. After 1 kilometer or 1 mile, there will be a major pole. That major pole
+     * will mark the distance of 1 along the line. Everything in between is major interval 0.
+     * In general, everything between the major poles with route position N and N+1 belongs to
+     * the major interval N.
+     */
+    int32 major_interval_idx = 2;
+
+    /**
+     * The sub-interval index within a large interval of major_interval_idx.
+     * A sub-interval is either a picket or a quarter mile.
+     * The index of the first is 0.
+     */
+    int32 minor_interval_idx = 3;
+
+    /**
+     * The number of minor intervals within this major interval.
+     */
+    int32 num_minor_intervals = 4;
+
+    /**
+     * Interpolation factor of location between minor poles.
+     * Value in range: [0.0, 1.0].
+     */
+    double minor_interval_fraction = 5;
+}

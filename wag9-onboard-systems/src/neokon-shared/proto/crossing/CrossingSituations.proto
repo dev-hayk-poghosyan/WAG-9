@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingSituation.proto";
+
+message CrossingSituations
+{
+    /**
+     * Used to load all situations from GTE/data/RailwayCrossing/situations.json.
+     */
+    repeated CrossingSituation situations = 1;
+}

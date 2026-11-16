@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Common generation parameters for branches.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 3.
+ */
+message BranchCommon
+{
+    optional string fish_plate_node = 1;
+
+    optional double gap_step = 2;
+
+    optional double gap_length = 3;
+
+    optional double max_segment_length = 4;
+
+    optional MaterialInfo fish_plate_material_info = 5;
+}

@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+message SignalStateUpdate
+{
+    int32 signal_id = 1;
+    reserved 2;
+    bytes serialized_partial_state = 3;
+}

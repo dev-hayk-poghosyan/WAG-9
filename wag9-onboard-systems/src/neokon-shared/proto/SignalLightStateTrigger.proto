@@ -1,0 +1,71 @@
+syntax = "proto3";
+package proto;
+
+import "PointOnRoad.proto";
+import "RailPathEndpoint.proto";
+
+/**
+ * A state switcher of a particular signal light placed on the rails.
+ * A train hits it and the referenced signal light takes the specified state.
+ */
+message SignalLightStateTrigger
+{
+    enum React
+    {
+        /**
+         * By default a trigger will react on all trains.
+         */
+        REACT_ALL = 0;
+
+        /**
+         * A trigger will react only on bots.
+         */
+        REACT_BOTS_ONLY = 1;
+
+        /**
+         * A trigger will react only on student-controlled train.
+         */
+        REACT_STUDENT_ONLY = 2;
+    }
+
+    /**
+     * Signal light id.
+     */
+    uint32 signal_id = 1;
+
+    /**
+     * uuid of this trigger.
+     */
+    bytes uuid = 2;
+
+    /**
+     * Trigger position.
+     */
+    PointOnRoad point_on_road = 3;
+    
+    /**
+     *  Serialized partial of target state.
+     */
+    bytes target_serialized_state = 4;
+    
+    /**
+     * This trigger fires after this time.
+     */
+    uint32 fire_delay_sec = 5;
+    
+    /**
+     * If true trigger must fire only once.
+     */
+    bool fire_once = 6;
+    
+    /**
+     * The endpoint is faced by this trigger.
+     * Trigger will fire only if a train  moves _from_ this endpoint.
+     */
+    RailPathEndpoint.Endpoint facing_path_endpoint = 7;
+
+    /**
+     * Defines the reaction mode of this trigger.
+     */
+    React react = 8;
+}

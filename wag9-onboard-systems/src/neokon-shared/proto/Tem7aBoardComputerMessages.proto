@@ -1,0 +1,399 @@
+syntax = "proto3";
+package proto.tem7a.boardcomputer;
+option csharp_namespace = "board_computer_tem7a";
+
+/**
+ * Это сообщение-контейнер. Передается в бортовой компьютер из контроллера поезда TrainSim.
+ */
+message TcpToBoardComputerMessage
+{
+    enum KeyboardButton
+    {
+        BTN_NONE = 0;
+        BTN_1 = 1;
+        BTN_2 = 2;
+        BTN_3 = 3;
+        BTN_4 = 4;
+        BTN_5 = 5;
+        BTN_6 = 6;
+        BTN_7 = 7;
+        BTN_8 = 8;
+        BTN_9 = 9;
+        BTN_0 = 10;
+        BTN_E = 11;
+        BTN_DOWN = 12;
+        BTN_UP = 13;
+        BTN_RIGHT = 14;
+        BTN_LEFT = 15;
+        BTN_C = 16;
+        BTN_ESC = 17;
+    }
+
+    enum Reverse
+    {
+        Neutral = 0;
+        Forward = 1;
+        Back = 2;
+    }
+
+    enum SchemeMode
+    {
+        None = 0;
+        Idle = 1;
+        Traction = 2;
+        Recuperation = 3;
+    }
+
+    oneof value
+    {
+        //выводимое время и дата unixtime
+        int64 trenager_datetime_sec = 1;
+
+        // включение питания программы
+        bool board_computer_power = 2;
+
+        // нажатие на кнопку пленочной клавиатуры
+        KeyboardButton keyboard_button = 3;
+
+        int32 speed_kmh = 4;
+        int32 target_speed_kmh = 5;
+
+        //реверс
+        Reverse reverse_pos = 6;
+
+        //тяга или торможение
+        SchemeMode scheme_mod = 7;
+
+        bool boxing_lit = 8;
+        bool yuz_lit = 9;
+        bool rpm_low6_atm_lit = 10;
+        bool rm_low1_atm_lit = 11;
+        bool tm_high84_degree_lit = 12;
+        bool dvu_lit = 13;
+
+        float generator_amperage = 14;
+        float generator_voltage = 15;
+        float battery_charging_amperage = 16;
+        int32 power_kW = 17;
+        int32 diesel_rpm = 18;
+        float water_temperature = 19;
+        float additional_circuit_water_temperature = 20;
+        float oil_temperature = 21;
+
+        // Дизель
+        bool kd1_out = 22;
+        bool kd2_out = 23;
+        bool kmn_out = 24;
+        bool ktn_out = 25;
+        bool rmc_out = 26;
+        bool mr1_out = 27;
+        bool mr2_out = 28;
+        bool mr3_out = 29;
+        bool mr4_out = 30;
+        bool bm_out = 31;
+        bool va_out = 32;
+        bool votn_out = 33;
+        bool vv_out = 34;
+        bool vzhp_out = 35;
+        bool vzhl_out = 36;
+
+        bool kd1_in = 37;
+        bool kd2_in = 38;
+        bool kmn_in = 39;
+        bool ktn_in = 40;
+        bool duv_in = 41;
+        bool dzf_in = 42;
+        bool bvu_in = 43;
+        bool rdm1_in = 44;
+        bool rdm2_in = 45;
+        bool rdm3_in = 46;
+        bool rdm4_in = 47;
+        bool kdm_in = 48;
+
+        int32 r_t_in = 49;
+        int32 r_m_in = 50;
+        int32 t_ok_in = 51;
+        int32 t_dk_in = 52;
+        int32 t_m_in = 53;
+        int32 pd_in = 54;
+        int32 pkm_in = 55;
+
+        //Электропередача
+        bool kp1_out = 56;
+        bool kp2_out = 57;
+        bool kp3_out = 58;
+        bool kp4_out = 59;
+        bool kp5_out = 60;
+        bool kp6_out = 61;
+        bool kp7_out = 62;
+        bool kp8_out = 63;
+        bool rop1_out = 64;
+        bool rop2_out = 65;
+        bool pt_out = 66;
+        bool ptr_out = 67;
+        bool prv_out = 68;
+        bool prn_out = 69;
+        bool kvv_out = 70;
+        bool kvg_out = 71;
+        bool kvt_out = 72;
+        bool vuid_out = 73;
+        bool krn1_out = 74;
+        bool krn2_out = 75;
+        bool vzhtr_out = 76;
+
+        bool kp1_in = 77;
+        bool kp2_in = 78;
+        bool kp3_in = 79;
+        bool kp4_in = 80;
+        bool kp5_in = 81;
+        bool kp6_in = 82;
+        bool kp7_in = 83;
+        bool kp8_in = 84;
+        bool rop1_in = 85;
+        bool rop2_in = 86;
+        bool krn1_in = 87;
+        bool pt_in = 88;
+        bool krn2_in = 89;
+        bool ptr_in = 90;
+        bool prv_in = 91;
+        bool bd18_in = 92;
+        bool dot_in = 93;
+        bool prn_in = 94;
+        bool kvv_in = 95;
+        bool kvg_in = 96;
+        bool kvt_in = 97;
+        bool rpv_in = 98;
+        bool rz_in = 99;
+        bool rst_in = 100;
+
+        int32 i_1_in = 101; //ток тэд1
+        int32 i_2_in = 102; //ток тэд2
+        int32 i_3_in = 103; //ток тэд3
+        int32 i_4_in = 104; //ток тэд4
+        int32 i_5_in = 105; //ток тэд5
+        int32 i_6_in = 106; //ток тэд6
+        int32 i_7_in = 107; //ток тэд7
+        int32 i_8_in = 108; //ток тэд8
+        int32 i_vg_in = 109; //ток возбуждения генератора
+        int32 i_vt_in = 110; //ток возбуждения ТЭД в тормозе
+        int32 u_r_in = 111; //напряжение генератора
+        int32 u_v_in = 112; //напряжение возбудителя
+        int32 u_id_in = 113; 
+        int32 u_bs_in = 114;
+        int32 i_zb_in = 115; //ток заряда АБ
+        int32 v_zad_in = 116;
+        int32 v_izm_in = 117;
+        int32 p_zad_in = 118; //заданная мощность
+        int32 p_izm_in = 119; //мощность измеренная
+        int32 pv_in = 120;
+        int32 ret_in = 121;
+        int32 a_in = 122;
+
+        //Разное
+        bool km0_out = 123;
+        bool rok_out = 124;
+        bool rkb_out = 125;
+        bool rpom_out = 126;
+        bool rvs_out = 127;
+        bool vp1_out = 128;
+        bool vzp1_out = 129;
+        bool vp2_out = 130;
+        bool vzp2_out = 131;
+        bool vrp_out = 132;
+        bool vrz_out = 133;
+        bool vdp_out = 134;
+        bool vdz_out = 135;
+        bool vtf_out = 136;
+        bool rpya_out = 137;
+        bool rpp_out = 138;
+        bool rpz_out = 139;
+
+        bool dvu_in = 140;
+        bool pi1_in = 141;
+        bool p1_in = 142;
+        bool uv1_in = 143;
+        bool pn1_in = 144;
+        bool pi2_in = 145;
+        bool p2_in = 146;
+        bool uv2_in = 147;
+        bool pn2_in = 148;
+
+        int32 t_kab = 149;
+        int32 t_voz = 150;
+
+        //моторесурс
+        float mileage = 151;
+
+        //Пневматика
+        bool kpk1_out = 152;
+        bool kpk3_out = 153;
+        bool vrk1_out = 154;
+        bool vsk_out = 155;
+        bool vsko_out = 156;
+        bool vov_out = 157;
+        bool rnsk_out = 158;
+        bool kns1_out = 159;
+        bool kns2_out = 160;
+        bool kss1_out = 161;
+        bool kss2_out = 162;
+        bool vt1_out = 163;
+        bool rte2_out = 164;
+
+        bool kpk1_in = 165;
+        bool kpk3_in = 166;
+        bool drt2_in = 167;
+        bool drt1_in = 168;
+        bool rdk_in = 169;
+        bool dov_in = 170;
+        bool ddva_in = 171;
+        bool ddvt_in = 172;
+        bool ddr_in = 173;
+        bool ddc_in = 174;
+        bool ddmk1_in = 175;
+        bool amk_in = 176;
+
+        float p_tc1_in_kgssm2 = 177;
+        float p_tc2_in_kgssm2 = 178;
+        float p_tm_in_kgssm2 = 179;
+        float p_av_in_kgssm2 = 180;
+        float p_pm_in_kgssm2 = 181;
+        float p_tc_in_kgssm2 = 182;
+
+        //состояние органов управления
+        //общее
+        bool zbk = 183;
+        bool tru1 = 184;
+        bool tru2 = 185;
+        bool kts = 186;
+        //дизель
+        bool tpt1 = 187;
+        bool tpt2 = 188;
+        bool pzp1 = 189;
+        bool pzp2 = 190;
+        bool pzpd1 = 191;
+        bool pzpd2 = 192;
+        bool ksd1 = 193;
+        bool ksd2 = 194;
+        bool kad1 = 195;
+        bool kpr = 196;
+        bool tvo1 = 197;
+        bool tvo2 = 198;
+        bool pka1 = 199;
+        bool pka2 = 200;
+        bool tjp1 = 201;
+        bool tjl1 = 202;
+        bool tjp2 = 203;
+        bool tjl2 = 204;
+        //прочее
+        bool tvk1 = 205;
+        bool tvk2 = 206;
+        bool tok2 = 207;
+        bool pok2 = 208;
+        bool pok1 = 209;
+        bool pok0 = 210;
+        bool tpt = 211;
+        bool tpy = 212;
+        bool ktm = 213;
+        bool kpom = 214;
+        bool krpm = 215;
+        bool krzm = 216;
+        //тяга
+        bool trd = 217;
+        bool top = 218;
+        bool om1 = 219;
+        bool om2 = 220;
+        bool om3 = 221;
+        bool om4 = 222;
+        bool om5 = 223;
+        bool om6 = 224;
+        bool om7 = 225;
+        bool om8 = 226;
+        bool km_v = 227;
+        bool km_n = 228;
+        bool km_plus = 229;
+        bool km_minus = 230;
+        bool km_0 = 231;
+        bool km_t = 232;
+        bool km_tr = 233;
+        bool kps1 = 234;
+        bool tps = 235;
+        bool tpepp = 236;
+        bool tpep = 237;
+        bool ket = 238;
+        bool tdog = 239;
+        bool tpa = 240;
+        bool pes2 = 241;
+        bool ppm = 242;
+
+        //дискретные датчики 1/5
+        //дизель
+        bool kdm = 243;
+        bool rdm1 = 244;
+        bool rdm2 = 245;
+        bool rdm3 = 246;
+        bool rdm4 = 247;
+        bool duv = 248;
+        bool dzf = 249;
+        bool bvu = 250;
+        //компрессора
+        bool amk = 251;
+        bool ddmk = 252;
+        bool dov = 253;
+        bool ddva = 254;
+        bool ddvt = 255;
+        bool ddr = 256;
+        bool ddc = 257;
+        bool rdk = 258;
+        //тяга
+        bool rpv = 259;
+        bool rz = 260;
+        bool bd18 = 261;
+        bool dot = 262;
+        bool rst = 263;
+        //4/5
+        //РЭТ
+        bool pi1 = 264;
+        bool pi2 = 265;
+        bool p1 = 266;
+        bool p2 = 267;
+        bool uv1 = 268;
+        bool uv2 = 269;
+        bool pn1 = 270;
+        bool pn2 = 271;
+        bool drt1 = 272;
+        bool drt2 = 273;
+        //прочее
+        bool dvu = 274;
+
+        //Аналоговые входы
+        float diesel_fuel_pressure_kgssm2 = 275;
+        float oil_pressure_diesel_inlet_kgssm2 = 276;
+        int32 water_temperature_diesel_outlet = 277;
+        float tank_fuel_pressure_kgssm2 = 278;
+        int32 temperature_in_the_booth_at_the_auxiliary_console = 279;
+        int32 outdoor_air_temperature = 280;
+        int32 oil_temperature_diesel_outlet = 281;
+        int32 temperature_in_the_cabin_of_the_main_panel = 282;
+        int32 diesel_crankshaft_speed_rpm = 283;
+        int32 controller_position = 284;
+        int32 diesel_position = 285;
+        int32 inductive_gate_code = 286;
+        int32 onboard_voltage = 287;
+        int32 exciter_output_voltage_frequency_rpm = 288;
+        int32 braking_force_set_kgs = 289;
+        int32 braking_force_measured_kgs = 290;
+    }
+    //каждый массив содержит 5 значений
+    //3 значения моточасов в секундах для 0-холостого хода 1-Тяги 2-Тормоза
+    //2 значения электроэнергии в кВт*ч 3-тяга 4-тормоз
+    repeated float pos8 = 291;
+    repeated float pos7 = 292;
+    repeated float pos6 = 293;
+    repeated float pos5 = 294;
+    repeated float pos4 = 295;
+    repeated float pos3 = 296;
+    repeated float pos2 = 297;
+    repeated float pos1 = 298;
+    repeated float pos0 = 299;
+}
+

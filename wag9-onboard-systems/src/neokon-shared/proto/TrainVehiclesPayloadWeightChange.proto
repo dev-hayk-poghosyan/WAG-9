@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto;
+
+import "VehiclePayloadWeightChange.proto";
+
+message TrainVehiclesPayloadWeightChange
+{
+    /**
+      * 16 bytes, no hex encoding.
+      */
+    bytes train_uuid_bytes = 1;
+
+    /**
+     * This doesn't have to contain all of the train's vehicles, but only
+     * those for which the payload weight has changed. It's allowed to contain
+     * vehicles for which the payload weight didn't change. It's also allowed
+     * to contain vehicles that don't belong to this train at all. That's done
+     * to deal with a possible race condition between train splitting and
+     * changing the payload weight.
+     */
+    repeated VehiclePayloadWeightChange vehicle_payload_changes = 2;
+}

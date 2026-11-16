@@ -1,0 +1,45 @@
+syntax = "proto3";
+package proto;
+
+import "VehicleProperties.proto";
+
+message VehicleInstance
+{
+    /**
+     * 16 bytes of the UUID that uniquely identifies the vehicle.
+     */
+    bytes instance_uuid_bytes = 1;
+
+    /**
+     * Id value for the vehicle from Trains.xml
+     */
+    string vehicle_id = 2;
+
+    /**
+     * Payload value from Trains.xml
+     */
+    string payload_type = 3;
+
+    reserved 4 to 10;
+
+    /**
+     * Whether the vehicle is placed in the reversed direction relatively to the train's head.
+     * Corresponds to Reversed from Trains.xml
+     */
+    bool reversed = 11;
+
+    VehicleProperties properties = 12;
+
+    /**
+     * Whether the cylinders of pneumatic brake system are free of the air.
+     */
+    bool brake_air_present = 13;
+
+    /**
+     * Content of <RelNodePath></RelNodePath> in vehicle descriptor file *.xml.
+     * Empty state means the default *.node.
+     */
+    string node_path = 14;
+
+    string reserved = 15;
+}

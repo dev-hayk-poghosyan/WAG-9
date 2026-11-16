@@ -1,0 +1,43 @@
+syntax = "proto3";
+package proto;
+
+import "EnvironmentHazard.proto";
+import "PauseState.proto";
+import "SetSeason.proto";
+import "SignalStateUpdate.proto";
+import "SwitchStateUpdate.proto";
+import "SwitchStateUpdateList.proto";
+import "TrainStatesUpdate.proto";
+import "WeatherTransition.proto";
+
+message ReplayEvent
+{
+    oneof evt // Think a union.
+    {
+        TrainStatesUpdate train_states_update = 1;
+
+        // May be present in old replays, but we no longer write them.
+        // Instead, we now write switch_state_updates (note the plural form).
+        SwitchStateUpdate legacy_switch_state_update = 2;
+
+        SignalStateUpdate signal_state_update = 3;
+
+        // reserved 4;
+
+        PauseState pause_state = 5;
+        EnvironmentHazard environment_hazard_update = 6;
+        SetSeason set_season = 7;
+        SwitchStateUpdateList switch_state_updates = 8;
+
+        /**
+         * Starts the transition to the specified weather.
+         * If weather transitions were blocked, unblocks them.
+         */
+        WeatherTransition start_weather_transition = 9;
+
+        /**
+         * Blocks or unblocks weather transitions.
+         */
+        bool weather_transitions_blocked = 10;
+    }
+}

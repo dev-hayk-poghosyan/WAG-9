@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto.meshgen;
+
+/**
+ * Custom material config entry.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 9.8.1
+ */
+message CustomMaterial
+{
+    string surface_name = 1;
+
+    string material = 2;
+}

@@ -1,0 +1,50 @@
+syntax = "proto3";
+package proto.electrification.alternative_preset;
+
+/**
+ * Данный блок данных содержит пути к файлам относительно папки data для нод анкеровки.
+ * Каждое значение содержит имя файла с символом замены *, где вместо звездочки
+ * проставляется количество проводов ('2w', '1w')
+ */
+message Anchor
+{
+    /**
+     * Компенсатор жесткой анкеровки.
+     */
+    string fixed_anchor_block_node = 1;
+
+    /**
+     * Оттяжка жесткой анкеровки.
+     */
+    string fixed_back_tie_node = 2;
+
+    /**
+     * Компенсатор компенсированной анкеровки.
+     */
+    string compensated_anchor_block_node = 3;
+
+    /**
+     * Оттяжка компенсированной анкеровки.
+     */
+    string compensated_back_tie_node = 4;
+
+    /**
+     * Компенсатор полу-компенсированной анкеровки.
+     */
+    string semi_compensated_anchor_block_node = 5;
+
+    /**
+     * Оттяжка полу-компенсированной анкеровки.
+     */
+    string semi_compensated_back_tie_node = 6;
+
+    /**
+     * Средняя анкеровка, только для компенсированной подвески.
+     */
+    string mid_anchor_node = 7;
+
+    /**
+     * Оттяжка средней анкеровки.
+     */
+    string mid_back_tie = 8;
+}

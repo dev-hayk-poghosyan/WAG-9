@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+message CarStateVL10
+{
+    float impact_force = 1;
+    float brake_pressure = 2;
+    float friction_braking_efficiency = 3;
+    float utechka = 4;
+}

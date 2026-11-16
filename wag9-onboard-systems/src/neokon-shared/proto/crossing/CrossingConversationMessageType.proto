@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Type of the conversation to be used when checking if the user selected the correct action.
+ */
+enum CrossingConversationMessageType
+{
+    MESSAGE_CONNECTION_TEST = 0;
+    MESSAGE_SAFETY_MEASURES = 1;
+    MESSAGE_TRAIN_SIGNALS_TEST_REQUEST = 2;
+    MESSAGE_TRAIN_SIGNALS_TEST_RESPONSE = 3;
+    MESSAGE_CARGO_UNLOAD_EMERGENCY = 4;
+    MESSAGE_CARGO_UNLOAD_RESOLVED = 5;
+    MESSAGE_WIRE_BREAK_EMERGENCY = 6;
+    MESSAGE_WIRE_BREAK_RESOLVED = 7;
+}

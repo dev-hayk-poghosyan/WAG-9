@@ -1,0 +1,32 @@
+syntax = "proto3";
+package proto;
+
+import "AnimationTrigger.proto";
+import "BasicObjectOfInterest.proto";
+import "LoadUnloadMark.proto";
+import "OldStylePole.proto";
+import "Pole.proto";
+import "RailSign.proto";
+import "RailwayCrossing.proto";
+import "SignalLight.proto";
+import "TassTiltZone.proto";
+import "TrainStation.proto";
+import "SafetySystemObject.proto";
+ 
+message ObjectsOfInterest
+{
+    repeated BasicObjectOfInterest bridges = 1;
+    repeated BasicObjectOfInterest tunnels = 2;
+    repeated TrainStation train_stations = 3;
+    repeated SignalLight signal_lights = 4;
+    repeated RailwayCrossing crossings = 5;
+    reserved 6 to 7;
+    repeated OldStylePole old_style_poles = 8;
+    repeated RailSign static_rail_signs = 9; // Dynamic ones are stored in Scenario
+    reserved 10 to 12;
+    repeated SafetySystemObject static_safety_objects = 13; // Dynamic ones are stored in Scenario.
+    repeated TassTiltZone tass_tilt_zones = 14;
+    repeated Pole poles = 15;
+    repeated AnimationTrigger animation_triggers = 16;
+    repeated LoadUnloadMark load_unload_marks = 17;
+}

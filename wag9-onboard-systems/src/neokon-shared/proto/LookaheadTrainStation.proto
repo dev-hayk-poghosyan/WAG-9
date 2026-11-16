@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+
+message LookaheadTrainStation
+{
+    /**
+     * Position in meters of the station's center relative to the train head's position.
+     * Negative positions are valid and indicate the object is behind the train's head.
+     */
+    float train_relative_position_m = 1;
+
+    /**
+     * The station length, in meters. The near end of the station will be
+     * @code
+     * train_relative_position_m - 0.5 * length_m
+     * @endcode
+     */
+    float length_m = 2;
+    
+    /**
+     * In C++ that's going to be a UTF-8 encoded string.
+     */
+    string name = 3;
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Generation parameters for branch guard rails (inside and dual type).
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 11
+ */
+message BranchGuardRail
+{
+    optional bool enable_outside_rail = 1;
+
+    optional int32 rail_gap = 2;
+
+    optional int32 end_part_length = 3;
+
+    optional string fish_plate_node = 4;
+
+    optional string mount_node = 5;
+
+    optional MaterialInfo fish_plate_material_info = 6;
+}

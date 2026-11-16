@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+message WorldConfig
+{
+    enum WorldTypeEnum
+    {
+        Unknown = 0;
+        Default = 1;
+        Partial = 2;
+    }
+    WorldTypeEnum type = 1;
+    string file_world_full = 2;
+    string file_world_no_graphics = 3;
+}

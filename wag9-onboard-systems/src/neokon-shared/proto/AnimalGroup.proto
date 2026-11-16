@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+
+import "PointOnRoad.proto";
+
+message AnimalGroup
+{
+    /**
+     * Animal type requested to create.
+     */
+    string type_string = 1;
+
+    int32 animals_count = 2;
+
+    /**
+     * Center position of this group of animals.
+     */
+    PointOnRoad center_position = 3;
+
+    /**
+     * 16 bytes, no hex encoding.
+     */
+    bytes placement_uuid_bytes = 4;
+}

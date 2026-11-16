@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+enum CrossingRadioType
+{
+    CROSSING_RADIO = 0;
+    CROSSING_PHONE = 1;
+    CROSSING_PHONE_DSP = 2;
+}

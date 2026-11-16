@@ -1,0 +1,28 @@
+syntax = "proto3";
+package proto.electrification.alternative_preset;
+
+/**
+ * Пара изоляторов для несущего тросса и контактного провода.
+ */
+message WireInsulators
+{
+    /**
+     * Нода изолятора для несущего тросса (НТ).
+     */
+    string node_upper = 1;
+
+    /**
+     * Нода изолятора для контактного провода (КП).
+     */
+    string node_lower = 2;
+
+    /**
+     * Расстояние от опоры, м.
+     */
+    double distance = 3;
+
+    /**
+     * Использовать струны (true для составных изоляторов)
+     */
+    bool use_droppers = 4;
+}

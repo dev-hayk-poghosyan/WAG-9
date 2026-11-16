@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Defines a possible state transition of an interactive object,
+ * by clicking a menu item while being in a particular state.
+ */
+message InteractiveStateTransition
+{
+    /**
+     * The expression must be satisfied for transition's menu item to appear.
+     */
+    string expression = 1;
+
+    string menu_text = 2;
+
+    /**
+     * Disable all these states on transition.
+     */
+    repeated string source_states = 3;
+
+    /**
+     * Enable all these states on transition.
+     */
+    repeated string target_states = 4;
+}

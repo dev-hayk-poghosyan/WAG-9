@@ -1,0 +1,71 @@
+syntax = "proto3";
+package proto.electrification;
+
+import "ElectrificationManualPole.proto";
+import "ElectrificationManualWire.proto";
+import "ElectrificationTensionLength.proto";
+import "ElectrificationTensionOverlap.proto";
+import "ElectrificationTensionPath.proto";
+import "ElectrificationPole.proto";
+import "ElectrificationPortal.proto";
+import "ElectrificationPortalPillar.proto";
+import "ElectrificationPortalSuspension.proto";
+
+/**
+ *  Корневой блок данных для описания объектов электрификации мира в ElectrificationSet.json.
+ */
+message ElectrificationSet
+{
+    /**
+     * Массив путей файлов пресетов для генерации/подбора модели.
+     * Каждый путь указывается относительно папки data.
+     */
+    repeated string preset_paths = 1;
+
+    /**
+     * Массив блоков данных участков КС.
+     */
+    repeated TensionLength tension_lengths = 2;
+
+    /**
+     * Массив блоков данных сопряжений между участками КС.
+     */
+    repeated TensionOverlap tension_overlaps = 3;
+
+    /**
+     * Массив блоков данных электрифицированных путей.
+     */
+    repeated TensionPath tension_paths = 4;
+
+    /**
+     * Массив блоков данных опор расставленных/модифицированных пользователем.
+     * ВАЖНО: данное поле устарело и оставлено для обратной совместимости.
+     * Теперь информация о кастомных опорах находится в разделе manual_poles.
+     */
+    repeated Pole custom_poles = 5;
+
+    /**
+     * Массив блоков данных для жестких поперечин.
+     */
+    repeated Portal custom_portals = 6;
+
+    /**
+     * Массив опор, расставляемых вручную.
+     */
+    repeated ManualPole manual_poles = 7;
+
+    /**
+     * Массив подвесов под жесткими поперечинами.
+     */
+    repeated PortalSuspension portal_suspensions = 8;
+
+    /**
+     * Массив боковых опор жестких поперечин с анкеровками.
+     */
+    repeated PortalPillar portal_pillars = 9;
+
+    /**
+     * Массив соединений, созданных вручную.
+     */
+    repeated ManualWire manual_wires = 10;
+}

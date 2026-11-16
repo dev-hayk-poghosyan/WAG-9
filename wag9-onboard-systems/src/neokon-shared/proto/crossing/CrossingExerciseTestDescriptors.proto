@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingExerciseCommonTestDescriptor.proto";
+import "CrossingExerciseGoalTestDescriptor.proto";
+
+/**
+ * All checklists for all exercises tested and displayed on the exercises-finished screen.
+ */
+message CrossingExerciseTestDescriptors
+{
+    /**
+     * Tests performed for the all exercises.
+     */
+    repeated CrossingExerciseCommonTestDescriptor common_exercise_tests = 1;
+
+    /**
+     * Tests performed for the exercise with the given UUID. In general, there is only one test for
+     * each exercise, but there can be several tests with the single exercise UUID.
+     */
+    repeated CrossingExerciseGoalTestDescriptor exercise_goal_tests = 2;
+}

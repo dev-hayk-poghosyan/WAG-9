@@ -1,0 +1,209 @@
+syntax = "proto3";
+package proto;
+
+import "Animal.proto";
+import "AnimalGroup.proto";
+import "BuzzerOnRoad.proto";
+import "CrossingExercise.proto";
+import "CustomAdhesionZoneEndpoint.proto";
+import "DateSettings.proto";
+import "EnvironmentHazardOnMap.proto";
+import "Fault.proto";
+import "FaultOnMap.proto";
+import "LandscapeSettings.proto";
+import "Obstacle.proto";
+import "RailSign.proto";
+import "RailwayCrossingSituation.proto";
+import "SafetySystemObject.proto";
+import "ScenarioAccess.proto";
+import "ScenarioTrain.proto";
+import "SignalLightStateTrigger.proto";
+import "Signaller.proto";
+import "Teleport.proto";
+import "TrainPerron.proto";
+import "TrainRoutePoints.proto";
+import "TriggerBarrierStateToggle.proto";
+import "WeatherDefinition.proto";
+import "WeatherTrigger.proto";
+import "WorldGroupType.proto";
+
+message Scenario
+{
+    string id = 1;
+    string name = 2;
+    repeated ScenarioTrain trains = 3;
+    reserved 4;
+    string author = 5;
+    string difficulty = 6;
+    string topic = 7;
+    string comments = 8;
+    uint32 time_of_day_hh = 9;
+    uint32 time_of_day_mm = 10;
+    reserved 11 to 14;
+    repeated Signaller signallers = 15;
+    bool mudflow_on = 16;
+    bool passengers_on = 17;
+    uint32 passengers_count = 18;
+    repeated uint32 broken_crossings = 19;
+    
+    /**
+     * This is the world's directory name, located in data/WorldRelease/.
+     * The world name can't contain any slashes or colons.
+     */
+    string world_name = 20;
+    reserved 21;
+
+    reserved 22;
+
+    bool man_on_rails_on = 23;
+    bool station_collapse_on = 24;
+    bool wagon_smoke_on = 25;
+    bool wheel_stuck_on = 26;
+    bool tilting_allowed = 27;
+
+    reserved 28;
+
+    WorldGroupType.WorldGroup world_group = 29;
+
+    reserved 30 to 33;
+
+    repeated FaultOnMap faults = 34;
+
+    repeated EnvironmentHazardOnMap environment_hazards = 35;
+
+    repeated CustomAdhesionZoneEndpoint custom_adhesion_zone_endpoints = 36;
+
+    /**
+     * Dynamically placed railroad signs.
+     * The static ones are stored in ObjectsOfInterest.
+     */
+    repeated RailSign dynamic_rail_signs = 37;
+
+    /**
+     * Dynamically placed safety objects.
+     * The static ones are stored in ObjectsOfInterest.
+     */
+    repeated SafetySystemObject dynamic_safety_objects = 38;
+
+    repeated Teleport teleports = 39;
+
+    repeated Animal animals = 40;
+
+    repeated Obstacle obstacles = 41;
+
+    repeated TrainRoutePoints routes = 42;
+
+    /**
+     * If set, we start in crossing caretaker mode.
+     */
+    oneof crossing_caretaker_mode
+    {
+        /**
+         * The Layer_CrossingSites (if present) contains a list of dummy child nodes,
+         * each of them corresponding to a particular rail crossing site. The location
+         * of such dummy node corresponds to the initial player's position.
+         * When you prepend the "Layer_" prefix to the name of that node, you'll get
+         * the layer's name corresponding to that rail crossing site.
+         *
+         * The id of the selected dummy node is stored here. If it's not set, that means
+         * the crossing caretaker mode is not active.
+         */
+        uint32 rail_crossing_node_id = 43;
+    };
+
+    /**
+     * Collection of exercises engaged on selected @start_point_id
+     */
+    repeated CrossingExercise crossing_exercises = 44;
+
+    reserved 45;
+
+    reserved 46;
+
+    LandscapeSettings landscape_settings = 47;
+
+    DateSettings date_settings = 48;
+
+    repeated WeatherTrigger weather_triggers = 49;
+
+    /**
+     * The weather to be applied on start-up, except in crossing caretaker mode,
+     * where the weather is specified per exercise.
+     */
+    WeatherDefinition initial_weather_definition = 50;
+
+    repeated AnimalGroup animal_groups = 51;
+
+    repeated RailwayCrossingSituation crossing_situations = 52;
+
+    /**
+     * Id's of stations that accepts trains by registered order of station duty.
+     * Station Id is an Id in Layer_Stations_metka.
+     */
+    repeated uint32 accepting_by_order_stations = 53;
+
+    ScenarioAccess.Grant access_grant = 54;
+
+    /**
+     * Instructor'id who created this scenario.
+     */
+    int32 instructor_id = 55;
+
+    repeated TriggerBarrierStateToggle trigger_barriers = 56;
+
+    /**
+     * These faults should be enabled on the startup of session.
+     */
+    repeated Fault startup_faults = 57;
+
+    /**
+     * This option is set in the season menu of the RailroadControl.
+     */
+    bool cracked_windshield_on_startup = 58;
+
+    reserved 59;
+
+    reserved 60;
+
+    /**
+     * Stores the information loaded during perron parsing process on RailroadControl.
+     */
+    repeated TrainPerron perrons = 61;
+
+    oneof optional_startup_teleport
+    {
+        /**
+         * Startup teleport for the main train. If specified a student-controlled train
+         * starts a session from it.
+         */
+        Teleport startup_teleport = 62;
+    }
+
+    /**
+     * Collection of signal light triggers that are placed on the rails.
+     */
+    repeated SignalLightStateTrigger signal_state_triggers = 63;
+
+    /**
+     * The list of the station names that should be displayed on the train computer screen.
+     */
+    repeated string tms_perrons_info_visible_station_names = 64;
+
+    /**
+     * Disabled signal lights are present in the world, i.e. according 3D object is placed,
+     * but it is out of world-wide signaling logic.
+     * Values are exactly the same "name" attribute of a signal light xml-node.
+     */
+    repeated string disabled_signal_light_names = 65;
+
+    /**
+     * Ignored traffic lights are invisible in the world but present in logic.
+     * Values are exactly the same "name" attribute of a signal light xml-node.
+     */
+    repeated string hidden_signal_light_names = 66;
+
+    /**
+     * Objects on path that can be used to trigger morse code buzzer.
+     */
+    repeated BuzzerOnRoad buzzers_on_road = 67;
+}

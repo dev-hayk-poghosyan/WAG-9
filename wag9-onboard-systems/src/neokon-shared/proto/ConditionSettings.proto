@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Various driving conditions
+ */
+message ConditionSettings
+{
+    /**
+     * Used as the current value of the railroad adhesion. 
+     * This will be applied at zones beyond of ones with explicit assigned adhesion.
+     * Note that the value is [0.2...1.5]. 1.0 is a normal.
+     */
+    float rail_adhesion_level = 1;
+}

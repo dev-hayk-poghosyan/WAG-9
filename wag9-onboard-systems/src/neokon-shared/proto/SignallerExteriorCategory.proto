@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * For now signallers has two exterior category.
+ * These categories affect the signallers uniform, and therefore, their visual model.
+ */
+message SignallerExteriorCategory
+{
+    enum Category
+    {
+        Subordinate = 0;
+        Superior = 1;
+    }
+}

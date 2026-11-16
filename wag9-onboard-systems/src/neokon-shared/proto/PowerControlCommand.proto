@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+message PowerControlCommand
+{
+    enum Command
+    {
+        SHUTDOWN = 0;
+        RESTART  = 1;
+    };
+
+    Command command = 1;
+}

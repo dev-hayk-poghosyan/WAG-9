@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto;
+
+import "DoorControlButtonState.proto";
+import "EtcsModeControlButtonState.proto";
+import "RoutePosition.proto";
+import "TrainState.proto";
+
+message TrainStatesUpdate
+{
+    /**
+     * This time is ticking even in paused state.
+     */
+    uint64 simulation_time_ns = 1;
+
+    repeated TrainState train_states = 2;
+
+    /**
+     * This time is not ticking in paused state.
+     */
+    uint64 nonpaused_simulation_time_ns = 3;
+
+    double main_train_distance_travelled = 4;
+
+    reserved 5;
+
+    RoutePosition main_train_route_position = 6;
+
+    /**
+     * Update of some door control button's state.
+     */
+    repeated DoorControlButtonState door_control_button_states = 7;
+
+    /**
+     * Update of ETCS button's state.
+     */
+    repeated EtcsModeControlButtonState etcs_buttons_states = 8;
+}

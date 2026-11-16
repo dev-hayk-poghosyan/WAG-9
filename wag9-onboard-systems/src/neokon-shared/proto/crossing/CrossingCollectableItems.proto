@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingCollectableItem.proto";
+
+message CrossingCollectableItems
+{
+    repeated CrossingCollectableItem inventories = 1;
+
+    string left_hand_caption = 2;
+
+    string right_hand_caption = 3;
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+
+/**
+ * Auxiliary structure.
+ * Used to transfer crossing gates from RailroadControl to TrainSim.
+ * @p node_id - id of the gate node in the World.
+ * @p world_position - world position of the gate.
+ * @p broken - if true the gate is considered faulty.
+ */
+message RailwayCrossingGate
+{
+    int32 node_id = 1;
+    Vec3d world_position = 2;
+    bool broken = 3;
+}

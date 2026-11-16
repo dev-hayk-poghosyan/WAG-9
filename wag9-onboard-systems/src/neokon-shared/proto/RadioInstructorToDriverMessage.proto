@@ -1,0 +1,49 @@
+syntax = "proto3";
+package proto.radio;
+
+import "RadioLineState.proto";
+import "RadioButtonState.proto";
+import "FileTransferMessage.proto";
+import "RadioAudioStreaming.proto";
+import "RadioAudioEndpointSetup.proto";
+
+/**
+ * SMC runs the radio communication server.
+ * This is used for command transfer from the server to a client.
+ */
+message InstructorToDriverMessage
+{
+    oneof msg
+    {
+        ButtonState call_button_state_changed = 1;
+
+        LineState line_state_changed = 2;
+
+        /**
+         * File name of the broadcast message without extension.
+         */
+        string broadcast_name_request = 3;
+
+        bool message_wait_request = 4;
+
+        bool message_contact_signaller_request = 5;
+
+        bool message_contact_toc_request = 6;
+        
+        string update_signaller_name_request = 7;
+        
+        string update_other_driver_name_request = 8;
+        
+        FileTransferMessage file_transfer = 9;
+
+        bool request_broadcast_messages_list = 10;
+
+        string request_broadcast_message_delete = 11;
+
+        AudioStreaming audio_streaming = 12;
+
+        bool request_audio_devices_list = 13;
+
+        AudioEndpointSetup audio_endpoint_setup = 14;
+    };
+}

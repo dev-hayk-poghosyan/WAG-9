@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the valve013 pneumatic element.
+ * @see Valve013Component.h
+ */
+message Valve013Def
+{
+    string name = 1;
+    string connected_tm_reservoir_name = 2;
+    string connected_gr_reservoir_name = 3;
+    repeated string sound_source_names = 4;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL.
+ */
+message Valve013Set
+{
+    bool tm_cock = 1;
+    bool gr_cock = 2;
+    float lever_position = 3;
+
+    float flow_rate_tm_real = 4;
+    float flow_rate_tm_release_real = 5;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message Valve013State
+{
+    string name = 1;
+    int32 state = 2;
+    bool cock_tm = 3;
+    bool cock_gr = 4;
+}

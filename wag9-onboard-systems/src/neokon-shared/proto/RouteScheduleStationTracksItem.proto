@@ -1,0 +1,27 @@
+syntax = "proto3";
+package proto;
+
+message RouteScheduleStationTracksItem
+{
+    /**
+      * Exactly name from the TrainStation::name().
+      * i.e. extracted name from node of Layer_Stations_Metka.node.
+      */
+    string train_station_name = 1;
+
+    /**
+      * These are exactly names from StationTrack.proto.
+      * It is allowed to stop on any free one of these tracks.
+      */
+    repeated string stop_at_tracks = 2;
+
+    /**
+     * Node Id in Layer_Stations_Metka.
+     */
+    int32 train_station_root_node_id = 3;
+
+    /**
+     * Station node name in Layer_Stations_Metka.
+     */
+    string train_station_root_node_name = 4;
+}

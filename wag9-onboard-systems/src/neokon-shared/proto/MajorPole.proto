@@ -1,0 +1,25 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A railway line is basically a curve with distance marks. The major and minor
+ * poles correspond to whole and fractional distance marks. The distance units
+ * are either kilometers or miles.
+ */
+message MajorPole
+{
+    /**
+     * A railway line is basically a curve with distance marks. This field is precisely
+     * that distance mark.
+     *
+     * Lines typically start at a station, and the station is assumed to be at distance 0.
+     * If there was a pole at a station (in practice, no one puts poles at stations), its
+     * route_position would have been 0. The next kilometer or mile pole will have a
+     * route_position of 1.
+     *
+     * In the UK, the route position is written on the pole itself. In Russia, a kilometer
+     * pole has two numbers on it, N and N+1. The route_position is the smaller of the two,
+     * that is N. 
+     */
+    int32 route_position = 1;
+}

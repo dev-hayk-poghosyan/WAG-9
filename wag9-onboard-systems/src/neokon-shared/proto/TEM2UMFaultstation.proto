@@ -1,0 +1,364 @@
+syntax = "proto3";
+package proto.tem2um.faultstation;
+
+/**
+ * For FaultStation applications <noesis-scheme.git branch EvgeniyD\t2um> for TEM2UM and
+ * TrainSim <TrainSim.git>, the message format must match.
+ *
+ * Для приложений FaultStation <noesis-scheme.git branch EvgeniyD\t2um> для ТЭМ2УМ и
+ * TrainSim <TrainSim.git> формат сообщений должен совпадать.
+ */
+
+/**
+ * This message is a container from TrainSim train controller to FaultStation.
+ * It has 2 sets of parameters: data for electrical and pneumatic circuits.
+ *
+ * Это сообщение-контейнер из контроллера поезда TrainSim в FaultStation. В нем 2 набора
+ * параметров: данные для электрической и пневматической схем.
+ */
+message ToFaultStation
+{
+    ElectricValues electric_values = 1;
+    PneumaticValues pneumatic_values = 2;
+}
+
+/**
+ * This message is a set of parameters for the pneumatic circuit in Fault Station from the
+ * pneumatic circuit. Switches, relays, states of wires, lamps, etc.
+ *
+ * Это сообщение - набор параметров для пневматической схемы в Fault Station
+ * из пневматической схемы. Переключатели, реле, состояния проводов, ламп и т.д.
+ */
+message ElectricValues
+{
+    bool controlsakb = 1;
+    bool j14 = 2;
+    bool relayd1 = 3;
+    bool dieselvg = 4;
+    bool relayp1 = 5;
+    bool relayp2 = 6;
+    bool forcepowerited1 = 7;
+    bool forcepowerited6 = 8;
+    bool forcepowerreversorited1 = 9;
+    bool forcepowerreversorited6 = 10;
+    bool notforcepowerreversorited6 = 11;
+    bool notforcepowerreversorited1 = 12;
+    bool relaysh1 = 13;
+    bool relaysh2 = 14;
+    bool relayvvauxgeneratorvoltage = 15;
+    bool relaykv = 16;
+    bool auxgeneratorvoltage = 17;
+    bool relayvv = 18;
+    bool dieselrt6 = 20;
+    bool dieselrt6j14 = 21;
+    bool controlsp8 = 22;
+    bool dieselrt7 = 23;
+    bool dieselrt4 = 24;
+    bool dieselrt1 = 25;
+    bool dieselrt8 = 26;
+    bool dieselrt2 = 27;
+    bool dieselrt5 = 28;
+    bool j14controlsp8 = 29;
+    bool controlsb6 = 30;
+    bool controlsb7 = 31;
+    bool controlsb8 = 32;
+    bool controlsb9 = 33;
+    bool controlsb10 = 34;
+    bool relayru11 = 35;
+    bool relayru1 = 36;
+    bool relayru4 = 37;
+    bool relayrd2 = 38;
+    bool relayru19 = 39;
+    bool dieselvp4 = 40;
+    bool dieselvp4controlsb10 = 41;
+    bool wiresw437 = 42;
+    bool dieselvp5 = 43;
+    bool j14conrolsp8dieselrt7 = 44;
+    bool j14controlsb6 = 45;
+    bool j14controlsp8dieselrt8 = 46;
+    bool j14controlsp8dieselrt8relayru1 = 47;
+    bool dieselvp5notcontrolb6 = 48;
+    bool dieselvp3 = 49;
+    bool dieselvp3controlsb7 = 50;
+    bool dieselvp3relayru19 = 51;
+    bool dieselvp3relayru11 = 52;
+    bool dieselvp2 = 53;
+    bool dieselvp2controlsb8 = 54;
+    bool dieselvp2relayru11 = 55;
+    bool dieselvp1 = 56;
+    bool dieselvp1controlsb9 = 57;
+    bool dieselvp1relayru19 = 58;
+    bool controlsab1 = 60;
+    bool controlsab2 = 61;
+    bool controlsab3 = 62;
+    bool fuelpump = 63;
+    bool oilpump = 64;
+    bool relayktn = 65;
+    bool relaykmn = 66;
+    bool J14controlsab1 = 67;
+    bool J14controlsab2 = 68;
+    bool wiresw139 = 69;
+    bool controlskmthrottlewiresw139 = 70;
+    bool wires2804 = 71;
+    bool controlsb4 = 72;
+    bool controlsb28 = 73;
+    bool controlsb27 = 74;
+    bool controlskp = 75;
+    bool controlsb2ko = 76;
+    bool relayru12 = 77;
+    bool wiresw894 = 78;
+    bool wiresw150 = 79;
+    bool wiresw804controlsb28 = 80;
+    bool relayku17 = 82;
+    bool notrelayru14relayktncontrolsb28wiresw804 = 83;
+    bool notrelayku17relayktncontrolsb28wiresw804 = 84;
+    bool trelayspb2 = 85;
+    bool wiresw804controlsb27 = 88;
+    bool wiresw425 = 90;
+    bool relayru5 = 91;
+    bool notrelayktnwiresw425 = 92;
+    bool relayru5wiresw425 = 93;
+    bool trelayspb3power = 94;
+    bool trelayspb5power = 96;
+    bool trelayspb5 = 97;
+    bool dieselrdm = 98;
+    bool relaysru12controlsb27wiresw804 = 99;
+    bool relaysd1relaysru12controlsb27wiresw804 = 100;
+    bool trelayspb2power = 101;
+    bool controlsb3wiresw17notrelaysh3 = 102;
+    bool dieselrt3 = 103;
+    bool relayru14 = 104;
+    bool wiresw183 = 105;
+    bool wiresw183notrelayd1 = 106;
+    bool wiresw183notrelayd1notrelayru14 = 107;
+    bool controlsb3 = 108;
+    bool wiresw177 = 109;
+    bool controlsb3wiresw177 = 110;
+    bool relayku2 = 111;
+    bool trelayspb4power = 112;
+    bool trelayspb4 = 113;
+    bool controlsb2 = 117;
+    bool relayku10 = 118;
+    bool controlsepk = 119;
+    bool relayku10controlsepk = 120;
+    bool dieselvt1 = 121;
+    bool dieselvt2 = 122;
+    bool dieselvt3 = 123;
+    bool dieselvt4 = 124;
+    bool wiresw139controlskmreversornotrelayku10 = 125;
+}
+
+/**
+ * This message contains data for Fault Station related to the pneumatic circuit.
+ * Angle cocks, pressure gauges, pneumatic cylinders, air flows, air outlet into the atmosphere,
+ * the condition of brake hoses, etc.
+ *
+ * В этом сообщении содержатся данные для Fault Station относящиеся к пневматической схеме.
+ * Краны, манометры, пневмоцилиндры, потоки воздуха, выход воздуха в отмосферу,
+ * состояние тормозных шлангов и др.
+ */
+message PneumaticValues
+{
+    // краны
+    bool kr1 = 1;
+    bool kr2 = 2;
+    bool kr3 = 3;
+    bool kr4 = 4;
+    bool kr5 = 5;
+    bool kr6 = 6;
+    bool kr7 = 7;
+    bool kr8 = 8;
+    bool kr9 = 9;
+    bool kr10 = 10;
+    bool kr11 = 11;
+    bool kr12 = 12;
+    bool kr13 = 13;
+    bool kr14 = 14;
+    bool kr15 = 15;
+    bool kr16 = 16;
+    bool kr17 = 17;
+    bool kr18 = 18;
+    bool kr19 = 19;
+    bool kr20 = 20;
+    bool kr21 = 21;
+    bool kr22 = 22;
+    bool kr23 = 23;
+    bool kr24 = 24;
+    bool kr25 = 25;
+    bool kr26 = 26;
+    bool kr27 = 27;
+    bool kr28 = 28;
+    bool kr29 = 29;
+    bool kr30 = 30;
+    bool kr31 = 31;
+    bool rs7 = 32;
+    // манометры
+    float mh1 = 34;
+    float mh2 = 35;
+    float mh3 = 36;
+    float mh4 = 37;
+    float mh5 = 38;
+    // штоки цилиндров
+    bool ct1 = 39;
+    bool ct2 = 40;
+    bool ct3 = 41;
+    bool ct4 = 42;
+    // скорость
+    int32 speed = 43;
+    // тормозные краны
+    int32 km = 44;
+    int32 kvt1 = 45;
+    int32 kvt2 = 46;
+    // трубы
+    int32 p1 = 47;
+    int32 p2 = 48;
+    int32 p3 = 49;
+    int32 p4 = 50;
+    int32 p5 = 51;
+    int32 p6 = 52;
+    int32 p7 = 53;
+    int32 p8 = 54;
+    int32 p9 = 55;
+    int32 p10 = 56;
+    int32 p11 = 57;
+    int32 p12 = 58;
+    int32 p13 = 59;
+    int32 p14 = 60;
+    int32 p15 = 61;
+    int32 p16 = 62;
+    int32 p17 = 63;
+    int32 p18 = 64;
+    int32 p19 = 65;
+    int32 p20 = 66;
+    int32 p21 = 67;
+    int32 p22 = 68;
+    int32 p23 = 69;
+    int32 p24 = 70;
+    int32 p25 = 71;
+    int32 p26 = 72;
+    int32 p27 = 73;
+    int32 p28 = 74;
+    int32 p29 = 75;
+    int32 p30 = 76;
+    int32 p31 = 77;
+    int32 p32 = 78;
+    int32 p33 = 79;
+    int32 p34 = 80;
+    int32 p35 = 81;
+    int32 p36 = 82;
+    int32 p37 = 83;
+    int32 p38 = 84;
+    int32 p39 = 85;
+    int32 p40 = 86;
+    int32 p41 = 87;
+    int32 p42 = 88;
+    int32 p43 = 89;
+    int32 p44 = 90;
+    int32 p45 = 91;
+    int32 p46 = 92;
+    int32 p47 = 93;
+    int32 p48 = 94;
+    int32 p49 = 95;
+    int32 p50 = 96;
+    int32 p51 = 97;
+    int32 p52 = 98;
+    int32 p53 = 99;
+    int32 p54 = 100;
+    int32 p55 = 101;
+    int32 p56 = 102;
+    int32 p57 = 103;
+    int32 p58 = 104;
+    int32 p59 = 105;
+    int32 p60 = 106;
+    int32 p61 = 107;
+    int32 p62 = 108;
+    int32 p63 = 109;
+    int32 p64 = 110;
+    int32 p65 = 111;
+    int32 p66 = 112;
+    int32 p67 = 113;
+    // компрессор
+    bool compressor = 114;
+    // выход воздуха
+    bool blowoff_compressor = 115;
+    bool blowoff_kp1 = 116;
+    bool blowoff_kp2 = 117;
+    bool blowoff_kr11 = 118;
+    bool blowoff_kr12 = 119;
+    bool blowoff_kr15 = 120;
+    bool blowoff_kr16 = 121;
+    bool blowoff_kr17 = 122;
+    bool blowoff_kr18 = 123;
+    bool blowoff_kr19 = 124;
+    bool blowoff_kr20 = 125;
+    bool blowoff_kr27 = 126;
+    bool blowoff_kr28 = 127;
+    bool blowoff_kr29 = 128;
+    bool blowoff_kr39 = 129;
+    bool blowoff_p1 = 131;
+    bool blowoff_p2 = 132;
+    bool blowoff_vr = 133;
+    bool blowoff_pc1 = 134;
+    bool blowoff_pc2 = 135;
+    bool blowoff_pc3 = 136;
+    bool blowoff_pc4 = 137;
+    bool blowoff_km1 = 138;
+    bool blowoff_km2 = 139;
+    bool blowoff_kv = 140;
+    // ключ эпк
+    bool epc_key = 141;
+}
+
+/**
+ * This message is a container. Transmitted from Fault Station to TrainSim train controller.
+ * Now here is the answer only from the Fault Station electrical circuit.
+ *
+ * Это сообщение-контейнер. Передается из Fault Station в контроллер поезда TrainSim.
+ * Сейчас здесь ответ только от электрической схемы Fault Station.
+ */
+message FromFaultStation
+{
+    oneof fault
+    {
+        ElectricFaultAnswer electric_fault = 1;
+    }
+}
+
+/**
+ * In this message, the selected action of the driver in response to the included fault.
+ * electric_fault - enabled fault
+ * answer - the number of the selected answer
+ *
+ * В это сообщении выбранное действие машиниста в ответ на включенную неисправность.
+ * electric_fault - включенная неисправность
+ * answer - номер выбранного ответа
+ */
+message ElectricFaultAnswer
+{
+    ElectricFaults electric_fault = 1;
+    int32 answer = 2;
+}
+
+enum ElectricFaults {
+    AB1Fault = 0;
+    AB2Fault = 1;
+    AB3Fault = 2;
+    ZeroThrottleFault = 3;
+    B27Fault = 4;
+    KTNFault = 5;
+    RV3OffFaultRV3OnFault = 6;
+    RU5Fault = 7;
+    RDMFault = 8;
+    D2Fault = 9;
+    KU17Fault = 10;
+    VVFault = 11;
+    P1Fault = 12;
+    P2Fault = 13;
+    KU10Fault = 14;
+    ReversorFault = 15;
+    KVFault = 16;
+    FirstThrottleFault = 17;
+    FirstThrottleFault_Copy = 18;
+    KVFault_Copy = 19;
+}
+

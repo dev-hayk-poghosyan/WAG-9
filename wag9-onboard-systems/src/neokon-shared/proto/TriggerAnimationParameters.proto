@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Stores parameters of animation for animation trigger.
+ */
+message TriggerAnimationParameters
+{
+    string animation_guid = 1;
+    int32 anim_mesh_node_id = 2;
+    int32 fps = 3;
+    bool loop = 4;
+}

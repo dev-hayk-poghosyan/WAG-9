@@ -1,0 +1,51 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the valve254 pneumatic element.
+ * @see Valve394Component.h
+ */
+message Valve394Def
+{
+    string name = 1;
+    string connected_tm_reservoir_name = 2;
+    string connected_gr_reservoir_name = 3;
+
+    /**
+     * Indicates whether the value of the pneumatic element should be passed to the plugin DLL.
+     */
+    bool serializable = 4;
+}
+
+/**
+ * Definition of the value to be passed to the plugin DLL.
+ */
+message Valve394Value
+{
+    string name = 1;
+    float ur_pressure_kgfcm2 = 2;
+    float ur_gas_quantity = 3;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL.
+ */
+message Valve394Set
+{
+    bool tm_cock = 1;
+    bool gr_cock = 2;
+    float lever_position = 3;
+    int32 fault_number = 4;
+    float charge_pressure = 5;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message Valve394State
+{
+    string name = 1;
+    int32 state = 2;
+    bool cock_tm = 3;
+    bool cock_gr = 4;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+message PayloadWeight
+{
+    /**
+     * Weight in tonnes.
+     */
+    float payload_weight_t = 1;
+
+    /**
+     * Maximum load capacity in tonnes.
+     */
+     float max_load_weight_t = 2;
+}

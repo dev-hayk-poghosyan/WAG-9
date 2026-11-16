@@ -1,0 +1,107 @@
+syntax = "proto3";
+package proto;
+
+import "CameraMakeCurrent.proto";
+import "GeometricObstacleLayerState.proto";
+import "GeometricObstacleNodeState.proto";
+import "LoadWorld.proto";
+import "PauseState.proto";
+import "RemoveLensEffectsSynchronization.proto";
+import "RemoveTrains.proto";
+import "SeedRNG.proto";
+import "SetSeason.proto";
+import "SetupCCTV.proto";
+import "SetupFrostPlane.proto";
+import "SetupMirror.proto";
+import "SetupTrain.proto";
+import "SetupWeatherFX.proto";
+import "SlaveStatus.proto";
+import "SlaveAnimationCommand.proto";
+import "SlaveBrokenRailCommand.proto";
+import "StationCollapseState.proto";
+import "SunPositionParams.proto";
+import "SwitchStateUpdateList.proto";
+import "SyncCameras.proto";
+import "SyncLightning.proto";
+import "SyncNodeStates.proto";
+import "UpdateLensEffect.proto";
+import "WeatherTransition.proto";
+
+message SynckerMessage
+{
+    oneof msg // Think a union.
+    {
+        // reserved 1;
+        // reserved 2;
+        SlaveStatus slave_status = 3;
+        LoadWorld load_world = 4;
+        PauseState pause_state = 5;
+        // reserved 6;
+        SetupCCTV setup_cctv = 7;
+        SetupMirror setup_mirror = 8;
+        // reserved 9;
+        // reserved 10;
+        // reserved 11;
+        SwitchStateUpdateList switch_state_updates = 12;
+        // reserved 13;
+        // reserved 14;
+        SetupTrain setup_train = 15;
+        // reserved 16;
+        // reserved 17;
+        // reserved 18;
+        // reserved 19;
+        // reserved 20;
+        // reserved 21;
+        // reserved 22;
+        // reserved 23;
+        // reserved 24;
+        SetupWeatherFX setup_weather_fx = 25;
+        CameraMakeCurrent camera_make_current = 26;
+        // reserved 27;
+        // reserved 28;
+        SeedRNG seed_rng = 29;
+        // reserved 30;
+        // reserved 31;
+        SetSeason set_season = 32;
+        // reserved 33;
+        SlaveAnimationCommand slave_animation_command = 34;
+        SlaveBrokenRailCommand slave_broken_rail_command = 35;
+        StationCollapseState station_collapse_state = 36;
+        RemoveTrains remove_trains = 37;
+        int32 flood_water_hazard_type = 38;
+
+        GeometricObstacleLayerState geometric_obstacle_layer_state = 39;
+        GeometricObstacleNodeState geometric_obstacle_node_state = 40;
+
+        UpdateLensEffect update_lens_effect = 41;
+        RemoveLensEffectsSynchronization remove_lens_effects_synchronization = 42;
+        SetupFrostPlane setup_frost_plane = 43;
+
+        SunPositionParams sun_position_params = 44;
+
+        /**
+         * Starts the transition to the specified weather.
+         * If weather transitions were blocked, unblocks them.
+         */
+        WeatherTransition start_weather_transition = 45;
+
+        /**
+         * Blocks or unblocks weather transitions.
+         */
+        bool weather_transitions_blocked = 46;
+
+        float demist_rate = 47;
+
+        /**
+         * It was cold_train_flag before, now we use rime ice state enabled on the instructor
+         * instead.
+         */
+        bool rime_ice_enabled = 48;
+
+        SyncCameras sync_cameras = 49;
+
+        SyncLightning sync_lightning = 50;
+
+        SyncNodeStates sync_node_states = 51;
+    }
+}

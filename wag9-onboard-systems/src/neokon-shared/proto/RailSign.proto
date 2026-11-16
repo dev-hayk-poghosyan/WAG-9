@@ -1,0 +1,79 @@
+syntax = "proto3";
+package proto;
+
+import "EtcsRailSignSignal.proto";
+import "RailPathEndpoint.proto";
+import "RailPathSide.proto";
+import "RailSignAddition.proto";
+import "RailSignType.proto";
+import "RoadSegment.proto";
+import "RouteLabel.proto";
+import "RoutePosition.proto";
+import "WorldPosition.proto";
+
+message RailSign
+{
+    reserved 1 to 6;
+
+    bytes placement_uuid_bytes = 7; // 16 bytes, no hex encoding.
+
+    RailSignType type = 8;
+
+    RoadSegment road_segment = 9;
+    float segment_length_fraction = 10;
+    RailPathEndpoint.Endpoint facing_path_endpoint = 11;
+    RailPathSide rail_path_side = 12;
+
+    reserved 13;
+
+    /**
+     * Only meaningful if type is RailSignType::BeginDangerousStretch.
+     */
+    int32 speed_limit_kmh = 14;
+
+    RoutePosition route_position = 15;
+
+    oneof addition_msg
+    {
+        /**
+         * Clarification for this sign of which cases it applies for.
+         * i.e. this sign is only for the left divergence so it has
+         * left arrow sign above.
+         */
+        RailSignAddition.Type addition = 16;
+    }
+
+    WorldPosition position = 17;
+
+    /**
+     * This parameters modifies sign model. For example, it can be used to change numbers
+     * on speed limit signs.
+     */
+    repeated int32 extra_int_numbers = 18;
+
+    oneof addition_int_msg
+    {
+        /**
+         * Addition information for this rail sign. Interpretation depends on concrete type.
+         * For example RAIL_SIGN_BLOCK_MARKER: linked signal light id.
+         * For speed limit signs the limit value.
+         */
+        int32 additional_int_param = 19;
+    }
+
+    /**
+     * List of points on the rails attached to this sign.
+     * These points maybe used by the sim, for example, for adapting its logic if there is a route
+     * to some label or not.
+     */
+    repeated RouteLabel labels = 20;
+
+    /**
+     * Signal light placed at position of this sign.
+     * Related only with RAIL_SIGN_BLOCK_MARKER.
+     */
+    oneof uk_etcs_signal_light_msg
+    {
+        EtcsRailSignSignal etcs_signal_light = 21;
+    }
+}

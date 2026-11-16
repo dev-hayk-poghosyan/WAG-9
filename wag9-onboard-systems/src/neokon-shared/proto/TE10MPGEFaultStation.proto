@@ -1,0 +1,390 @@
+syntax = "proto3";
+package proto.te10mpge.faultstation;
+option csharp_namespace = "SchemeFaultStations.TE10MPGE";
+
+message ToFaultStation
+{
+    Section section = 1;
+    oneof message
+    {
+        ElectricValues electric_values = 2;
+        PneumaticValues pneumatic_values = 3;
+        ToPanelValues panel_values = 4;
+        SectionValues section_values = 5;
+        bool reset_fault_station_values = 6;
+    }
+}
+
+/**
+ * Это сообщение-контейнер. Передается из Fault Station в контроллер поезда TrainSim.
+ */
+message FromFaultStation
+{
+    Section section = 1;
+    FromPanelValues panel_values = 2;
+}
+
+enum Section
+{
+    A = 0;
+    B = 1;
+}
+
+/**
+ * Это сообщение - набор параметров для электрических схем в Fault Station.
+ * Переключатели, реле, состояния проводов, ламп и т.д.
+ */
+message ElectricValues
+{
+    bool ga1 = 1;
+    bool ga2 = 2;
+    bool ga3 = 3;
+    bool p1 = 4;
+    bool p2 = 5;
+    bool p3 = 6;
+    bool tm1 = 7;
+    bool tm2 = 8;
+    bool tm3 = 9;
+    bool gnn1 = 10;
+    bool gnn2 = 11;
+    bool gnn3 = 12;
+    bool g624 = 13;
+    bool g576 = 14;
+    bool g6370 = 15;
+    bool q1w13 = 16;
+    bool q1w15 = 17;
+    bool q1w17 = 18;
+    bool q1w14 = 19;
+    bool q1w16 = 20;
+    bool q1w18 = 21;
+    bool bus = 22;
+    bool ga4 = 23;
+    bool ga5 = 24;
+    bool ga6 = 25;
+    bool p4 = 26;
+    bool p5 = 27;
+    bool p6 = 28;
+    bool tm4 = 29;
+    bool tm5 = 30;
+    bool tm6 = 31;
+    bool gnn4 = 32;
+    bool gnn5 = 33;
+    bool gnn6 = 34;
+    bool g638 = 35;
+    bool g591 = 36;
+    bool g6371 = 37;
+    bool q1w19 = 38;
+    bool q1w21 = 39;
+    bool q1w23 = 40;
+    bool q1w20 = 41;
+    bool q1w22 = 42;
+    bool q1w24 = 43;
+    bool bus2 = 44;
+}
+
+/**
+ * Это сообщение - набор параметров для пневматической схемы в Fault Station.
+ * краны, трубы, манометры, и т.д.
+ */
+message PneumaticValues
+{
+    bool kh1 = 1;
+    bool kh2 = 2;
+    bool kh11 = 3;
+    bool kh4 = 4;
+    bool kh7 = 5;
+    bool kh3 = 6;
+    bool kh5 = 7;
+    bool kc1 = 8;
+    bool kb1 = 9;
+    bool kb2 = 10;
+    bool kb3 = 11;
+    bool kb4 = 12;
+    bool kh12 = 13;
+    bool kh13 = 14;
+    bool kh14 = 15;
+    bool kh15 = 16;
+    bool kh16 = 17;
+    bool kh17 = 18;
+    bool kh8 = 19;
+    bool kh6 = 20;
+    bool kh9 = 21;
+    bool kh10 = 22;
+    bool kb5 = 23;
+    bool skr1 = 24;
+    bool tc1 = 25;
+    bool tc2 = 26;
+    float mh1 = 27;
+    float mh2 = 28;
+    float mh1r = 29;
+    float mh2r = 30;
+    float mh3 = 31;
+    int32 km = 32;
+    int32 km215 = 33;
+    int32 p1 = 34;
+    int32 p2 = 35;
+    int32 p3 = 36;
+    int32 p4 = 37;
+    int32 p5 = 38;
+    int32 p6 = 39;
+    int32 p7 = 40;
+    int32 p8 = 41;
+    int32 p9 = 42;
+    int32 p10 = 43;
+    int32 p11 = 44;
+    int32 p12 = 45;
+    int32 p13 = 46;
+    int32 p14 = 47;
+    int32 p15 = 48;
+    int32 p16 = 49;
+    int32 p17 = 50;
+    int32 p18 = 51;
+    int32 p19 = 52;
+    int32 p20 = 53;
+    int32 p21 = 54;
+    int32 p22 = 55;
+    int32 p23 = 56;
+    int32 p24 = 57;
+    int32 p25 = 58;
+    int32 p26 = 59;
+    int32 p27 = 60;
+    int32 p28 = 61;
+    int32 p29 = 62;
+    int32 p30 = 63;
+    int32 p31 = 64;
+    int32 p32 = 65;
+    int32 p33 = 66;
+    int32 p34 = 67;
+    int32 p35 = 68;
+    int32 p36 = 69;
+    int32 p37 = 70;
+    int32 p38 = 71;
+    int32 p39 = 72;
+    int32 p40 = 73;
+    int32 p41 = 74;
+    int32 p42 = 75;
+    int32 p43 = 76;
+    int32 p44 = 77;
+    int32 p45 = 78;
+    int32 p46 = 79;
+    int32 p47 = 80;
+    int32 p48 = 81;
+    int32 p49 = 82;
+    int32 p50 = 83;
+    int32 p51 = 84;
+    int32 p52 = 85;
+    int32 p53 = 86;
+    int32 p54 = 87;
+    int32 p55 = 88;
+    int32 p56 = 89;
+    int32 p57 = 90;
+    int32 p58 = 91;
+    int32 p59 = 92;
+    int32 p60 = 93;
+    int32 p61 = 94;
+    int32 p62 = 95;
+    int32 p63 = 96;
+    int32 p64 = 97;
+    int32 p65 = 98;
+    int32 p66 = 99;
+    int32 p67 = 100;
+    int32 p68 = 101;
+    int32 p69 = 102;
+    int32 p70 = 103;
+    int32 p71 = 104;
+    int32 p72 = 105;
+    int32 p73 = 106;
+    int32 p74 = 107;
+    int32 p75 = 108;
+    int32 p76 = 109;
+    int32 p77 = 110;
+    int32 p78 = 111;
+    int32 p79 = 112;
+    int32 p80 = 113;
+    int32 p81 = 114;
+    int32 p82 = 115;
+    int32 p83 = 116;
+    int32 p84 = 117;
+    int32 p85 = 118;
+    int32 p86 = 119;
+    int32 p87 = 120;
+    int32 p88 = 121;
+    int32 p89 = 122;
+    int32 p90 = 123;
+    int32 p91 = 124;
+    int32 p92 = 125;
+    int32 p93 = 126;
+    int32 p94 = 127;
+    int32 p95 = 128;
+    int32 p96 = 129;
+    int32 p97 = 130;
+    int32 p98 = 131;
+    int32 p99 = 132;
+    int32 p100 = 133;
+    int32 p101 = 134;
+    int32 p102 = 135;
+    int32 p103 = 136;
+    int32 p104 = 137;
+    int32 p105 = 138;
+    int32 p106 = 139;
+    int32 p107 = 140;
+    int32 p108 = 141;
+    int32 p109 = 142;
+    int32 p110 = 143;
+    bool compressor = 144;
+    bool blowoff_ru1 = 145;
+    bool blowoff_ru2 = 146;
+    bool blowoff_ru3 = 147;
+    bool blowoff_ru4 = 148;
+    bool blowoff_ru5 = 149;
+    bool blowoff_ru6 = 150;
+    bool blowoff_krm1 = 151;
+    bool blowoff_kp1 = 152;
+    bool epc_key = 153;
+    bool ubt1 = 154;
+}
+
+message ToPanelValues
+{
+    oneof value
+    {
+        bool generator_Excitation = 1;  //возбуждение генератора
+        bool engine_Operation = 2;  //работа двигателя
+        bool main_Control = 3;  //главное управление
+        bool fire_Alarm = 4;  //пожарная сигнализация
+        bool buffer_Lights = 5;  //буферные огни
+        bool box_Heater_Ab = 6;  //обогрев яшиков аб
+        bool radioS_tation = 7;  //радиостанция
+        bool locomotive_Signaling = 8;  //локомотивная сигнализация
+        bool window_Heating = 9;  //обогрев стекол
+        bool condensate_Discharge = 10;  //сброс конденсата
+        bool front_Searchlight = 11;  //передний прожектор
+        bool rear_Projector = 12;  //задний прожектор
+        bool diesel_Stop = 13;  //оснановка двигателя
+        bool control_Cabinet_Heating = 14;  //обогрев шкафа управления
+        bool electromagnetic_Clutch = 15;  //электромагнитная муфта
+        bool air_Filter_Fan = 16;  //вентилятор воздушного фильтра
+        bool exciter_Field = 17;  //возбуждение возбудителя
+        bool auxiliary_Generator = 18;  //вспомогательный генератор
+        bool water_Drain = 19;  //слив воды
+        bool running_Lights = 20;  //ходовые огни
+        bool fuel_Pump = 21;  //топливный насос
+        bool local_Control = 22;  //местное управление
+        bool battery_And_Computer_Charging = 23;  //зарядка акб и компьютера
+        bool control_Switch = 24; //выключатель управления
+        bool cabin_Heater = 25; //обогреватель кабины
+        bool operator_Side_Heating = 26; //обогрев сторона машиниста
+        bool heating_Assistant_Side = 27; //обогрев сторона помогника
+    }
+}
+
+message FromPanelValues
+{
+    oneof value
+    {
+        //возбуждение генератора
+        bool generator_excitation = 1;
+        //работа двигателя
+        bool engine_operation = 2;
+        //главное управление
+        bool main_control = 3;
+        //пожарная сигнализация
+        bool fire_alarm = 4;
+        //буферные огни
+        bool buffer_lights = 5;
+        //обогрев яшиков аб
+        bool box_heater_ab = 6;
+        //радиостанция
+        bool radio_station = 7;
+        //локомотивная сигнализация
+        bool locomotive_signaling = 8;
+        //обогрев стекол
+        bool window_heating = 9;
+        //сброс конденсата
+        bool condensate_discharge = 10;
+        //передний прожектор
+        bool front_searchlight = 11;
+        //задний прожектор
+        bool rear_projector = 12;
+        //оснановка двигателя
+        bool diesel_stop = 13;
+        //обогрев шкафа управления
+        bool control_cabinet_heating = 14;
+        //электромагнитная муфта
+        bool electromagnetic_clutch = 15;
+        //вентилятор воздушного фильтра
+        bool air_filter_fan = 16;
+        //возбуждение возбудителя
+        bool exciter_field = 17;
+        //вспомогательный генератор
+        bool auxiliary_generator = 18;
+        //слив воды
+        bool water_drain = 19;
+        //ходовые огни
+        bool running_lights = 20;
+        //топливный насос
+        bool fuel_pump = 21;
+        //местное управление
+        bool local_control = 22;
+        //зарядка акб и компьютера
+        bool battery_and_computer_charging = 23;
+        //управление двигателем
+        int32 engine_control = 24;
+        //выбор режима
+        int32 mode_selection = 25;
+        //дизельный отсек
+        bool diesel_compartment = 26;
+        //проходы
+        bool aisles = 27;
+        //аппаратная камера
+        bool equipment_chamber = 28;
+        //подсветка номера
+        bool license_plate_light = 29;
+        //алсн
+        bool alsn = 30;
+        //подкузовное освещение
+        bool underbody_lighting = 31;
+        //выкл тэд 1
+        bool off_ted1 = 32;
+        //выкл тэд 2
+        bool off_ted2 = 33;
+        //выкл тэд 3
+        bool off_ted3 = 34;
+        //выкл тэд 4
+        bool off_ted4 = 35;
+        //выкл тэд 5
+        bool off_ted5 = 36;
+        //выкл тэд 6
+        bool off_ted6 = 37;
+        //выключатель управления
+        bool control_switch = 38;
+        //обогреватель кабины
+        bool cabin_heater = 39;
+        //обогрев сторона машиниста
+        bool operator_side_heating = 40;
+        //обогрев сторона помогника
+        bool heating_assistant_side = 41;
+        //резервный тумблер
+        bool reserve_switch = 42;
+        //запуск топливного насоса
+        bool fuel_pump_switch = 43;
+        //запуск двигателя
+        bool engine_run = 44;
+        //резервный кнопка
+        bool reserve_button = 45;
+    }
+}
+
+message SectionValues
+{
+    bool spotlight_lit = 1;
+    bool buffer_left_white_lit = 2;
+    bool buffer_right_white_lit = 3;
+    bool buffer_left_red_lit = 4;
+    bool buffer_right_red_lit = 5;
+    bool spotlight_lit_back = 6;
+    bool buffer_left_white_lit_back = 7;
+    bool buffer_right_white_lit_back = 8;
+    bool buffer_left_red_lit_back = 9;
+    bool buffer_right_red_lit_back = 10;
+}

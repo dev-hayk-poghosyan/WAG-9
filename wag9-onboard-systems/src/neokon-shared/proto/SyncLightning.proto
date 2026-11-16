@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+
+message SyncLightning
+{
+    Vec3d lightning_position = 1;
+
+    bool lightning_enabled = 2;
+}

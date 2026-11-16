@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Defines the animation playback sequence for animation triggers.
+ */
+message AnimationTriggerPlaybackType
+{
+    enum Type
+    {
+        /**
+         * Plays the animation from first to last frame.
+         */
+        FORWARD = 0;
+
+        /**
+         * Plays the animation from last to first frame.
+         */
+        BACKWARD = 1;
+    }
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+
+// This message is periodically sent from slaves to the master.
+// The reason it has to be sent periodically is to handle the
+// situation below:
+//
+// All nodes are about to get killed and restarted. One of the
+// slaves restarts before the master is killed, and manages to
+// send it a SlaveStatus message. The master then gets killed
+// then restarted. The only way the new incarnation of the master
+// can receive the SlaveStatus message from that slave is if it's
+// sent periodically.
+
+message SlaveStatus
+{
+    /**
+     * Formerly, string display_name = 1;
+     */
+    reserved 1;
+
+    string session_uuid = 2;
+    repeated string display_names = 3;
+}

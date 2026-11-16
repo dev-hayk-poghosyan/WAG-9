@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A record in the "inventories.json" file. 
+ */
+message CrossingInventory
+{
+    string uuid  = 1;
+    string group = 2;
+    string title = 3;
+}

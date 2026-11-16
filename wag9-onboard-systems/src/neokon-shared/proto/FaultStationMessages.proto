@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto;
+
+message FaultStationInitMessage
+{
+    /**
+     * List vehicles which will operate with Fault Station.
+     */
+    repeated string vehicle_numbers = 1;
+}
+
+message TrainSimToFaultStationMessage
+{
+    /**
+     * Unique vehicle number in the scenario.
+     */
+    string vehicle_number = 1;
+
+    /**
+     * The serialized message to the Fault Station.
+     * Format depends on the vehicle type.
+     */
+    bytes to_fault_station_bytes = 2;
+}
+
+message TrainSimFromFaultStationMessage
+{
+    /**
+     * Unique vehicle number in the scenario.
+     */
+    string vehicle_number = 1;
+
+    /**
+     * The serialized message received from the Fault Station.
+     * Format depends on the vehicle type.
+     */
+    bytes from_fault_station_bytes = 2;
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+message BrakeAutoMode
+{
+    /**
+     * In automatic mode, the maximum pressure in brake cylinders is limited automatically,
+     * taking the vehicle weight into account. 
+     */
+    bool brake_auto_mode = 1;
+}

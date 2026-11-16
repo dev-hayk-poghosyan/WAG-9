@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+import "LoadUnloadMarkType.proto";
+
+message LoadUnloadMark
+{
+    string name = 1;
+    Vec3d location = 2;
+    LoadUnloadMarkType.Type type = 3;
+}

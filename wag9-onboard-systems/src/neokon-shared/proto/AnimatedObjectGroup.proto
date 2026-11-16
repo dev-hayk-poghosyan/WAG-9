@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+import "AnimatedObjectGroupItem.proto";
+
+/**
+ * Describes an animated object group in the AnimatedObjectsEnvironmentConfig file
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/-/wikis/Animated-objects-environment-conditions-config
+ * for more info.
+ */
+message AnimatedObjectGroup
+{
+    string name = 1;
+    repeated AnimatedObjectGroupItem items = 2;
+}

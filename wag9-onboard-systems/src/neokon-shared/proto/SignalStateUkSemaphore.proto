@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Corresponds to class SemaphoreStateUk::PartialState.
+ *
+ * See its serialization / deserialization code for details on how individual fields are encoded.
+ */
+message SemaphoreStateUk
+{
+    int32 main_aspect_state = 1;
+    int32 manually_requested_main_aspect_state = 2;
+    string arm = 3;
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+package proto;
+
+message SafetySystemObjectTassSpeedLimit
+{
+    int32 speed_limit_mph = 1;
+    bool real_balise = 2;
+
+    /**
+     * Speed limit for tilting trains (like class 390).
+     */
+    int32 tilting_speed_limit_mph = 3;
+
+    /**
+     * Applies only for fake balises.
+     * Indicates that this fake balise shutdowns the previous real one.
+     */
+    bool shutdown_previous_real_balise = 4;
+}

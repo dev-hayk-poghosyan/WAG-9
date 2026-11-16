@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Used to save the passenger type when saving the game.
+ */
+message PassengerType
+{
+    enum Type
+    {
+        REGULAR = 0;
+        DISABLED = 1;
+        STUCK = 2;
+        RAMP = 3;
+        LEANS = 4;
+    }
+}

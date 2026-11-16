@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "WorldPosition.proto";
+
+message PointOnRoad
+{
+    RoadSegment road_segment = 1;
+    float segment_length_fraction = 2;
+
+    WorldPosition position = 3;
+}

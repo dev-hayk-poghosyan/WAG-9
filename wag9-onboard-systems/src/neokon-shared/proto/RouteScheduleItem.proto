@@ -1,0 +1,48 @@
+syntax = "proto3";
+package proto;
+
+import "PointOnRoad.proto";
+import "RouteScheduleStationTracksItem.proto";
+
+message RouteScheduleItem
+{
+    /**
+      * 16 bytes, no hex encoding.
+      */
+    bytes uuid_bytes = 1;
+
+    /**
+      * Arrival time counted from midnight of first day.
+      */
+    int32 arrival_seconds_since_midnight = 2;
+
+    /**
+      * Stop time after arrival. Not changed if the train was late.
+      */
+    int32 stop_time_seconds = 3;
+
+
+    oneof stop_type
+    {
+        /**
+         * Train stops at specified track of station.
+         */
+        RouteScheduleStationTracksItem stop_station_track = 4;
+
+        /**
+         * Train stops at specified manually added point.
+         */
+        PointOnRoad stop_manually_point = 5;
+    }
+
+    /**
+     * Should the train reverse at this stop.
+     */
+    bool reverse_train = 6;
+
+    /**
+     * Ordered intermediate points added by the user.
+     * i.e. train goes through these points(front to back) to the next route item.
+     */
+    repeated PointOnRoad intermediate_points = 7;
+}

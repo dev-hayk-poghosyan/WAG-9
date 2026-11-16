@@ -1,0 +1,55 @@
+syntax = "proto3";
+package proto.meshgen;
+
+/**
+ * Adjunct part config entry.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-adjuncts
+ * wiki page for details, Item 1. 
+ * All the int32 parameters are in millimeter units.
+ */
+message AdjunctPart
+{
+    string name = 1;
+
+    repeated string surface_names = 2;
+
+    optional int32 front_distance_offset = 3;
+
+    optional int32 back_distance_offset = 4;
+
+    optional int32 baseline_offset_height = 5;
+
+    optional int32 baseline_offset_side = 6;
+
+    optional bool enable_braces = 7;
+
+    optional string brace_node_path = 8;
+
+    optional int32 brace_interval = 9;
+
+    optional int32 brace_gap = 10;
+
+    optional int32 first_brace_distance_offset = 11;
+
+    optional int32 last_brace_distance_offset = 12;
+
+    optional bool rotate_braces = 13;
+
+    optional bool enable_front_cap = 14;
+
+    optional string front_cap_node_path = 15;
+    
+    optional bool enable_back_cap = 16;
+
+    optional string back_cap_node_path = 17;
+
+    optional bool enabled = 18;
+
+    optional bool fit_braces_to_sleepers = 19;
+
+    optional int32 second_brace_distance_offset = 20;
+
+    optional int32 penult_brace_distance_offset = 21;
+
+    optional int32 brace_sleeper_offset = 22;
+}

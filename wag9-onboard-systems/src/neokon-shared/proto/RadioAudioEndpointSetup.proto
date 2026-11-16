@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto.radio;
+
+import "RadioAudioEndpoint.proto";
+import "RadioAudioLine.proto";
+
+/**
+ * Request to remotely set an audio device on a specific endpoint of a comm line.
+ */
+message AudioEndpointSetup
+{
+    AudioLine.Line line = 1;
+
+    AudioEndpoint.Endpoint endpoint = 2;
+
+    string device_name = 3;
+}

@@ -1,0 +1,76 @@
+syntax = "proto3";
+package proto;
+
+message WeatherDefinition
+{
+    /**
+      * Direction in degrees of azimuth [0..359].
+      * 0 means North.
+      */
+    float wind_direction = 1;
+
+    /**
+      * Value in [0..30] meter per seconds.
+      */
+    float wind_speed_ms = 2;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float rain_level = 3;
+
+    /**
+      * Value in (1, 2, 3, 4).
+      */
+    int32 lightning_level = 4;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float snow_level = 5;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float cloud_top_level = 6;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float cloud_bottom_level = 7;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float fog_height = 8;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float fog_altitude_visibility = 9;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float fog_land_visibility = 10;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float haze_distance = 11;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float haze_transparency = 12;
+
+    /**
+      * Value in [0.0..1.0].
+      */
+    float adhesion = 13;
+
+    /**
+      * Value in degree celsius [-50.0..50.0]
+      */
+    float temperature_c = 14;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingInventory.proto";
+
+message CrossingInventories
+{
+    repeated CrossingInventory inventories = 1;
+
+    /**
+     * All equipment items have the same state types, define the states and their messages in this
+     * map.
+     */
+    string present_text = 2;
+    string missing_text = 3;
+}

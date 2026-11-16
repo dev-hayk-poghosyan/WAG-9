@@ -1,0 +1,64 @@
+syntax = "proto3";
+package proto;
+
+import "RailPathEndpoint.proto";
+import "RoadSegment.proto";
+import "TrainStateVL10.proto";
+import "TrainVehicle.proto";
+import "Subfault.proto";
+
+message TrainState
+{
+    reserved 1 to 3;
+    float speed_ms = 4;
+    reserved 5 to 7;
+    bool in_motion = 8; // Only relevant for instructor-controlled trains.
+
+    // Even when this train is of a particular type, it's possible that none
+    // of the fields in this union are set. This merely means a type-specific
+    // update is not available at this time.
+    oneof TypeSpecificState
+    {
+        TrainStateVL10 vl10_state = 9;
+    }
+
+    repeated string faults_uuid = 10; // Only relevant for student-controlled trains.
+
+    repeated TrainVehicle vehicles = 11;
+
+    oneof DrivingVehicle
+    {
+        uint32 driving_vehicle_idx = 12;
+    }
+    reserved 13;
+
+    uint64 train_incarnation = 14;
+
+    /**
+     * There are must be vehicles.size() - 1 hose states.
+     */
+    repeated bool shunting_hose_states = 15;
+    
+    bytes train_uuid_bytes = 16; // 16 bytes, no hex encoding
+
+    /**
+     * The road segment where the train is located.
+     */
+    RoadSegment road_segment = 17;
+
+    /**
+     * The position of the train's front connection point.
+     */
+    float head_segment_length_fraction = 18;
+
+    /**
+     * The road segment's endpoint the train is facing.
+     */
+    RailPathEndpoint.Endpoint facing_path_endpoint = 19;
+
+    /**
+     * Current train subfaults. Subfaults are arranged in an arbitrary order and are not generally
+     * grouped next to parent faults.
+     */
+    repeated Subfault subfaults = 20;
+}

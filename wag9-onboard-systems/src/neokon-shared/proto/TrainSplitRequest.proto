@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+message TrainSplitRequest
+{
+    uint64 train_incarnation = 1;
+
+    /**
+     * Index from the front of train.
+     * Split the train starting from @p vehicles_gap_index
+     * Hence after this request train supposed to have vehicles_gap_index + 1 vehicles.
+     */
+    int32 vehicles_gap_index  = 2;
+}

@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+import "ElectrificationPresetInsulator.proto";
+
+/**
+ * Блок данных для анкеровки (компенсирующего устройства на опоре).
+ */
+message Anchor
+{
+    /**
+     * Изолятор для анкерного блока.
+     * Поскольку изолятор является частью модели блока,
+     * параметры изолятора используются для подбора модели блока,
+     * а не самого изолятора.
+     */
+    Insulator tension_insulator = 1;
+
+    /**
+     * Имя ноды для анкерной оттяжки.
+     */
+    string back_tie_node = 2;
+
+    /**
+     * Имя ноды для анкерного блока для жесткой анкеровки.
+     */
+    string fixed_anchor_block_node_name = 3;
+
+    /**
+     * Имя ноды для анкерного блока для компенсированной анкеровки.
+     */
+    string compensated_anchor_block_node_name = 4;
+
+    /**
+     * Имя ноды для анкерного блока для полу-компенсированной анкеровки.
+     */
+    string semi_compensated_anchor_block_node_name = 5;
+}

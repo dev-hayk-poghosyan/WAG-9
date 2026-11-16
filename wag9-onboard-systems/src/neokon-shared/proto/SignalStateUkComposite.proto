@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Corresponds to class SignalStateUkComposite::PartialState.
+ *
+ * See its serialization / deserialization code for details on how individual fields are encoded.
+ */
+message SignalStateUkComposite
+{
+    reserved 1 to 5;
+
+    int32 main_aspect_state = 6;
+
+    int32 manual_main_aspect_state = 7;
+
+    int32 manual_apls_state = 8;
+
+    int32 manual_right_away_state = 9;
+
+    int32 lit_junction_indicator_arm = 10;
+
+    int32 symbolic_indicator = 11;
+
+    int32 manual_symbolic_indicator = 12;
+}

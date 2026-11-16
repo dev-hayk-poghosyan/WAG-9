@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto.meshgen;
+
+/**
+ * Material texture entry.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Items 14.2-14.4
+ */
+message MaterialParam
+{
+    string name = 1;
+
+    string value = 2;
+}

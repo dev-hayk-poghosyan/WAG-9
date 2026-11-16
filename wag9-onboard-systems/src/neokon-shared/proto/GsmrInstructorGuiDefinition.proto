@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "GsmrButtonDefinition.proto";
+
+/**
+ * This type is deserialized from JSON, so field names are important.
+ */
+message GsmrInstructorGuiDefinition
+{
+    repeated GsmrButtonDefinition main_buttons = 1;
+    repeated GsmrButtonDefinition recorded_message_buttons = 2;
+}

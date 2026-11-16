@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectsCategoryIncorrectState.proto";
+import "CrossingDressedClothesCondition.proto";
+import "CrossingItemPresentInInventoryCondition.proto";
+import "CrossingExerciseTestErrorState.proto";
+import "CrossingExerciseTestRequiredState.proto";
+
+/**
+ * When exercise is finished, we may test common items which must be done for each exercise,
+ * also exercise-specific conditions.
+ */
+message CrossingExerciseTestPassingConditions
+{
+    repeated CrossingDressedClothesCondition dressed_clothes = 1;
+    repeated CrossingItemPresentInInventoryCondition items_in_inventory = 2;
+    repeated CrossingExerciseTestRequiredState state_machine_required_active_states = 3;
+    repeated CrossingExerciseTestErrorState state_machine_incorrectly_active_states = 4;
+    repeated CrossingDefectsCategoryIncorrectState crossing_defect_categories_incorrect_states = 5;
+}

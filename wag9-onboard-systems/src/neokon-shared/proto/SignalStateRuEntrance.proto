@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Corresponds to class SignalStateRuEntrance::PartialState.
+ *
+ * See its serialization / deserialization code for details on how individual fields are encoded.
+ */
+message SignalStateRuEntrance
+{
+    int32 main_aspect_state = 1;
+    int32 manually_requested_main_aspect_state = 2;
+    int32 invitational_white_requested = 3;
+    int32 shunting_white_requested = 4;
+    int32 symbol_display_1 = 5;
+    int32 symbol_display_2 = 6;
+}

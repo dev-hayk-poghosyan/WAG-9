@@ -1,0 +1,53 @@
+syntax = "proto3";
+package proto.class390.faultstation;
+
+message CircuitBreakers {
+    // (false - OFF/ true - ON)
+    oneof circuit_breaker {
+        bool train_control_system_1 = 1;
+        bool train_control_system_2 = 2;
+        bool train_control_system_3 = 3;
+        bool train_control_system_4 = 4;
+        bool train_control_system_5 = 5;
+        bool train_control_system_6 = 6;
+        bool traction_brake_encoder = 7;
+        bool traction_brake_control_a = 8;
+        bool traction_brake_control_d = 9;
+        bool brake_continuity = 10;
+        bool emergency_brake = 11;
+        bool train_management_drivers_display = 12;
+        bool train_management_digital_unit = 13;
+        bool train_management_remote_terminal = 14;
+        bool train_door_interlock = 15;
+        bool door_control = 16;
+        bool automatic_warning_system = 17;
+        bool driver_safety_system = 18;
+        bool driver_reminder_appliance = 19;
+        bool dc_earth_leakage = 20;
+        bool auxiliary_supply = 21;
+        bool auxiliary_set_trip = 22;
+        bool remote_supply = 23;
+        bool passenger_alarm = 24;
+        bool nrn = 25;
+        bool head_lights_day = 26;
+        bool head_lights_night = 27;
+        bool windscreen_wash_wipe = 28;
+        bool catering_auxiliary_supply = 29;
+        bool cab_lights = 30;
+        bool cab_corridor_lights = 31;
+
+        bool traction_control_1 = 32;
+        bool traction_cooling_fan = 33;
+        bool transfo_oil_pump = 34;
+        bool transfo_fan_1 = 35;
+        bool vacuum_1_circuit_breaker = 36;
+        bool local_break_supply = 37;
+        bool tilt_control_processor = 38;
+        bool battery_charger = 39;
+        bool brake_control_computer = 40;
+        bool compressor_control = 41;
+        bool door_interlock = 42;
+        bool incident_recorder = 43;
+        bool auxiliary_converter = 44;
+    }
+}

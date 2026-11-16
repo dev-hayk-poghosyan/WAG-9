@@ -1,0 +1,48 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Generation parameters for junction sleepers.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 2
+ */
+message JunctionSleepers
+{
+    optional string directory = 1;
+
+    optional string mount_node_path = 2;
+
+    optional string node_name_pattern = 3;
+
+    optional int32 min_length = 4;
+
+    optional int32 inc_step = 5;
+
+    optional MaterialInfo default_material_info = 6;
+
+    optional int32 start_offset = 7;
+
+    optional int32 interval = 8;
+
+    optional float visible_distance = 9;
+
+    optional int32 point_rails_first_interval = 10;
+
+    optional int32 sleeper_width = 11;
+
+    optional string single_sided_mount_node_path = 12;
+
+    optional int32 max_length = 13;
+
+    optional int32 switch_box_interval = 14;
+
+    optional double random_angle = 15;
+
+    optional bool add_random_angle = 16;
+
+    optional string first_junction_sleeper = 17;
+
+    optional string second_junction_sleeper = 18;
+}

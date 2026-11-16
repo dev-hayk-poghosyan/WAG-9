@@ -1,0 +1,35 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Graphical utility for displaying pressures in vehicles. The utility is used for testing.
+ * For each vehicle, we can display 4 parameters (pressures).
+ * To get started, you need to send a Start message and specify vehicles count.
+ */
+message PressureChartsTcpMessage {
+
+    /**
+     * If this message is received, the number of vehicles changes.
+     */
+    message Start {
+        int32 data_count = 1;
+    }
+
+    /**
+     * The Data message contains 4 parameters (pressures). The pressure is indicated in MPa.
+     * The index is index of vehicle.
+     * The parameters have no names. You can output any desired value.
+     */
+    message Data {
+        float v1 = 1;
+        float v2 = 2;
+        float v3 = 3;
+        float v4 = 4;
+        int32 index = 5;
+    }
+
+    oneof value {
+        Start start = 1;
+        Data data = 2;
+    }
+}

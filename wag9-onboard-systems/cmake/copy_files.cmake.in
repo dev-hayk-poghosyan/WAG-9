@@ -1,0 +1,29 @@
+# Runtime parameters: ${CFG}, ${DEST_DIR}
+
+# Variables defined at configure time.
+set(CONFIGURATIONS_SPEC "@CONFIGURATIONS_SPEC@")
+
+# The CONFIGURATIONS_SPEC is a list following this pattern:
+# CONFIGURATIONS <names|ALL> FILES <files> [CONFIGURATIONS ...]
+
+set(num_configurations 0)
+
+foreach(item ${CONFIGURATIONS_SPEC})
+    if(item STREQUAL "CONFIGURATIONS")
+        math(EXPR num_configurations "${num_configurations} + 1")
+        set(configuration_${num_configurations} "")
+    else()
+        list(APPEND configuration_${num_configurations} ${item})
+    endif()
+endforeach(item)
+
+foreach(cfg_idx RANGE 1 ${num_configurations})
+
+    cmake_parse_arguments(CONF "" "" "FILES" ${configuration_${cfg_idx}})
+    foreach(cfg ${CONF_UNPARSED_ARGUMENTS})
+        list(APPEND "FILES_${cfg}" ${CONF_FILES})
+    endforeach(cfg)
+
+endforeach(cfg_idx)
+
+file(COPY ${FILES_ALL} ${FILES_${CFG}} DESTINATION ${DEST_DIR} NO_SOURCE_PERMISSIONS)

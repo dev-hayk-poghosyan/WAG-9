@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+message AirDistributorProps
+{
+    enum LandscapeAltitude
+    {
+        LOW_ALTITUDE = 0;
+        HIGH_ALTITUDE = 1;
+    }
+
+    enum Level
+    {
+        LOW = 0;
+        MEDIUM = 1;
+        HIGH = 2;
+    }
+
+    LandscapeAltitude landscape_altitude = 1;
+    Level load_level = 2;
+}

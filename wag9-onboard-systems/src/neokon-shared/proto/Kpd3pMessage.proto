@@ -1,0 +1,50 @@
+syntax = "proto3";
+package proto.kpd3p;
+option csharp_namespace = "KPD_3P";
+
+enum ButtonNames
+{
+    EJECT = 0;
+    ATTENTION = 1;
+    BACKLIGHT = 2;
+    BRIGHTNESS = 3;
+    DATE_P = 4;
+    TIME_T = 5;
+    WAY_CONTROL = 6;
+    TAPE_HOUR = 7;
+    ARROW_MIN = 8;
+}
+
+/**
+ * Это сообщение-контейнер. Передается в бортовой компьютер из контроллера поезда TrainSim.
+ */
+message TcpToKpdMessage
+{
+    bool pss_lit = 1;
+    bool attention_lit = 2;
+    bool power_lit = 3;
+    bool control_lit = 4;
+    float speed_kmph = 5;
+    string indicator1 = 6;
+    bool indicator_dot1 = 7;
+    string indicator2 = 8;
+    bool indicator_dot2 = 9;
+    string indicator3 = 10;
+    bool indicator_dot3 = 11;
+    string additional_indicator1 = 12;
+    bool additional_indicator_dot1 = 13;
+    string additional_indicator2 = 14;
+    bool additional_indicator_dot2 = 15;
+    string additional_indicator3 = 16;
+    bool additional_indicator_dot3 = 17;
+    string additional_indicator4 = 18;
+    bool additional_indicator_dot4 = 19;
+}
+
+/**
+ * Это сообщение-контейнер. Передается в контроллер поезда TrainSim из бортового компьютера.
+ */
+message TcpFromKpdMessage
+{
+    ButtonNames button_click = 1;
+}

@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto;
+
+import "RailPathEndpoint.proto";
+import "RoadSegment.proto";
+import "Vec2i.proto";
+import "WorldPosition.proto";
+
+message RouteLabel
+{
+    RoadSegment road_segment = 1;
+    float segment_length_fraction = 2;
+
+    string label = 3;
+
+    WorldPosition position = 4;
+
+    int32 node_id = 5;
+
+    oneof optional_etcs_level
+    {
+        /**
+         * This route label indicates zone endpoint of ETCS.
+         */
+        int32 etcs_level = 6;
+    }
+
+    oneof optional_multitable_symbolic_position
+    {
+        /**
+         * In case of this label indicates a symbolic route in multi-frame,
+         * this holds a position int the frame. Vec2.x - column, Vec2.y - row.
+         */
+        Vec2i multitable_symbol_position = 7;
+    }
+
+    RailPathEndpoint.Endpoint facing_path_endpoint = 8;
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+message CrossingDefectsCategoryIncorrectState
+{
+    string category_uuid = 1;
+    string description_if_ignored = 2;
+    string description_if_wrong_action_taken = 3;
+    string description_if_wrong_object_chosen = 4;
+}

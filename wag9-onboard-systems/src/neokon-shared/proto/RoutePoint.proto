@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+import "RoadSegment.proto";
+
+message RoutePoint
+{
+    Vec3d       world_position = 1;
+    RoadSegment road_segment   = 2;
+    float       segment_length_fraction = 3;
+    string      comment = 4;
+    bytes       instance_uuid_bytes = 5;
+}

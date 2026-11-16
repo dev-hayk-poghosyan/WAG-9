@@ -1,0 +1,62 @@
+syntax = "proto3";
+package proto.electrification.alternative_preset;
+
+/**
+ * Блоки данных из пакета alternative_preset, описывают
+ * обновленный (альтернативный) формат пресета, введенный по просьбе
+ * пользователей редактора. Он позволяет указывать напрямую модели многих
+ * компонентов электрической сети. Старый формат - proto.electrification.preset,
+ * предполагал подбор по формальным признакам, таким как тип консоли или материал
+ * опор и полагался на систему конвенций именования модели, которая далеко не всегда срабатывала.
+ */
+
+import "ElectrificationAltPresetAnchor.proto";
+import "ElectrificationAltPresetCatenary.proto";
+import "ElectrificationAltPresetCommonParams.proto";
+import "ElectrificationAltPresetCustomNodes.proto";
+import "ElectrificationAltPresetPole.proto";
+import "ElectrificationAltPresetPortalSuspension.proto";
+import "ElectrificationAltPresetPortal.proto";
+
+/**
+ * Корневой блок данных для пресетов -
+ * конфигурационных файлов для генерации отдельных
+ * элементов контактной сети.
+ */
+message ElectrificationAlternativePreset
+{
+    /**
+     * Общие параметры, затрагивающие все объекты КС.
+     */
+    CommonParams common_params = 1;
+
+    /**
+     * Блок данных для проводных подвесок.
+     */
+    Catenary catenary = 2;
+
+    /**
+     * Опоры для перегонов.
+     */
+    Pole pole = 3;
+
+    /**
+     * Анкеровка.
+     */
+    Anchor anchor = 4;
+
+    /**
+     * Подвесы под жесткими поперечиными.
+     */
+    PortalSuspension portal_suspension = 5;
+
+    /**
+     * Блок данных поперечины
+     */
+    Portal portal = 12;
+
+    /**
+     * Дополнительные ноды пользовательских опор.
+     */
+    repeated CustomNode custom_pole_nodes = 11;
+}

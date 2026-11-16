@@ -1,0 +1,28 @@
+syntax = "proto3";
+package proto;
+
+import "TrainPlatformSituationType.proto";
+
+/**
+ * Message to inform TrainSim about train platform situation set.
+ */
+message PlatformSituation
+{
+    reserved 1;
+    reserved 2;
+
+    /**
+     * The name of the NodeReference from the Layer_Perrons.
+     */
+    string perron_name = 3;
+
+    /**
+     * Situation type.
+     */
+    TrainPlatformSituationType.Type situation_type = 4;
+
+    /**
+     * The name of the WorlsSplineGraph from the Layer_Perron_Outlines.
+     */
+    string platform_name = 5;
+}

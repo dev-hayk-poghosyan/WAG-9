@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+message FileTransferType
+{
+    enum Type
+    {
+        /**
+         * GSM-R recorded message for broadcasting.
+         */
+        RECORDED_BROADCAST = 0;
+    }
+}

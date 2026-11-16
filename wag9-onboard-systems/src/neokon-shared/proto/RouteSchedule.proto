@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+import "RouteScheduleItem.proto";
+
+message RouteSchedule
+{
+    repeated RouteScheduleItem items = 1;
+}

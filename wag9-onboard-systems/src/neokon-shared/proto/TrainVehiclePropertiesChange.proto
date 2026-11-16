@@ -1,0 +1,19 @@
+syntax = "proto3";
+package proto;
+
+import "VehicleProperties.proto";
+
+message TrainVehiclePropertiesChange
+{
+    /**
+      * 16 bytes, no hex encoding.
+      */
+    bytes train_uuid_bytes = 1;
+
+    /**
+      * 16 bytes, no hex encoding.
+      */
+    bytes vehicle_uuid_bytes = 2;
+    
+    VehicleProperties properties = 3;
+}

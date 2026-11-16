@@ -1,0 +1,27 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+import "RailwayCrossingGate.proto";
+import "CrossingSoundFile.proto";
+
+/**
+ * Structure for transferring information about crossings from RailroadControl to TrainSim.
+ * @p node_name - name of the crossing node in the World.
+ * @p location - world location of the crossing node.
+ * @p node_id - id of the crossing node in the World.
+ * @p broken - if true the crossing is considered faulty.
+ * @p gates - vector of crossing gates, @see RailwayCrossingGate.
+ * @p sound_files - vector of sound file names for sound messages on the crossing,
+ * @see CrossingSoundFile.
+ */
+message RailwayCrossing
+{
+    string node_name = 1;
+    Vec3d location = 2;
+    int32 node_id = 3;
+    bool broken = 4;
+    repeated RailwayCrossingGate gates = 5;
+    repeated CrossingSoundFile sound_files = 6;
+    bool barriers_opened = 7;
+}

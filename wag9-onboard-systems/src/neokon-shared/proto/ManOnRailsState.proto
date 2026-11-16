@@ -1,0 +1,7 @@
+syntax = "proto3";
+package proto;
+
+message ManOnRailsState
+{
+    bool enable_man_on_rails = 1;
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "ExerciseStateMachineCrossingDetector.proto";
+import "ExerciseStateMachineDutyJournal.proto";
+import "ExerciseStateMachineSignalStates.proto";
+import "ExerciseStateMachineTrainApproaching.proto";
+
+message ExerciseStateMachineEvents
+{
+     repeated ExerciseStateMachineTrainApproaching train_approaching_detectors = 1;
+     repeated ExerciseStateMachineCrossingDetector crossing_detectors = 2;
+     repeated string common_initial_states = 3;
+     repeated ExerciseStateMachineSignalStates signal_states = 4;
+     repeated string camera_attached_nodes = 5;
+     ExerciseStateMachineDutyJournal duty_journal = 6;
+}

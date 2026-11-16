@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+message CrossingDressedClothesCondition
+{
+    string item_uuid = 1;
+    bool required_only_for_winter = 2;
+    bool required_only_for_summer = 3;
+}

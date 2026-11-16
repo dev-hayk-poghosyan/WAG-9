@@ -1,0 +1,61 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * This message is loaded from railway-lines.json.
+ */
+message RailwayLines
+{
+    message Line
+    {
+        message HeightMapFile
+        {
+            /**
+             * The file path relative to the world directory that contains the
+             * height map in CSV format.
+             */
+            string world_relative_file_path = 1;
+
+            /**
+             * The units of the first column in the CSV file.
+             * Allowed values: "km", "mi"
+             */
+            string position_unit = 2;
+
+            /**
+             * The units of the second column in the CSV file.
+             * Allowed values: "m", "ft"
+             */
+            string height_unit = 3;
+        }
+
+        string name = 1;
+
+        /**
+         * Allowed values: "km", "mi"
+         */
+        string distance_unit = 2;
+
+        /**
+         * Allowed values: "KmPk", "MilePoint"
+         */
+        string route_position_format = 3;
+
+        HeightMapFile height_map_file = 4;
+
+        /**
+         * The identification of line, e.g. LEC1, LND1. A human readable short id for convenience.
+         * This id used only for user. Actual identification is index value in `lines = 1` field;
+         * Also this id used as line identification parameter in GTE/data/properties/Poles.prop.
+         * MUST not be a number.
+         */
+        string id = 5;
+
+        /**
+         * Line color in hex format starting with #.e.g. #FF0000, #c1c1c1.
+         */
+        string color = 6;
+    }
+
+    repeated Line lines = 1;
+}

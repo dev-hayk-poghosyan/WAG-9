@@ -1,0 +1,27 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Corresponds to class SignalStateRuMetro::PartialState.
+ *
+ * See its serialization / deserialization code for details on how individual fields are encoded.
+ */
+message SignalStateRuMetro
+{
+    int32 main_aspect_state = 1;
+    int32 manually_requested_main_aspect_state = 2;
+    int32 auto_blocking = 3;
+    int32 symbol_display_1 = 4;
+    int32 symbol_display_2 = 5;
+    int32 absolute_stop = 6;
+    /**
+     * ALS frequency code in ARS mode correnponds to enum RuMetroAlsCode values.
+     * Used with aspect state Off in Auto Signals or Blue in Semiauto ones.
+     */
+    int32 als_frequency = 7;
+    /**
+     * KGU Display state:
+     * 0 - undefined, 1 - off, 2 - on.
+     */    
+    int32 symbol_display_kgu = 8;
+}

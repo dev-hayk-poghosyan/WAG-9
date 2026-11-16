@@ -1,0 +1,57 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the airDistributor483 pneumatic element.
+ * @see AirDistributor483Component.h
+ */
+message AirDistributor483Def
+{
+    string name = 1;
+    string connected_tm_reservoir_name = 2;
+    string connected_gr_reservoir_name = 3;
+
+    /**
+     * Indicates whether the value of the pneumatic element should be passed to the plugin DLL.
+     */
+    bool serializable = 4;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL.
+ */
+message AirDistributor483Set
+{
+    enum Mode
+    {
+        Empty = 0;
+        Middle = 1;
+        Load = 2;
+    }
+
+    bool force_release = 1;
+    bool mountain_mode = 2;
+    Mode mode = 3;
+    float charge_pressure_kgfcm2 = 4;
+}
+
+/**
+ * Definition of the value to be passed to the plugin DLL.
+ */
+message AirDistributor483Value
+{
+    string name = 1;
+    float outcome_pressure_kgfcm2 = 2;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message AirDistributor483State
+{
+    string name = 1;
+    float brake_cylinder_charge_speed = 2;
+    float outcome_pressure_kgfcm2 = 3;
+    float work_camera_quantity = 4;
+    float charge_speed = 5;
+}

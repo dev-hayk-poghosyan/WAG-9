@@ -1,0 +1,7 @@
+syntax = "proto3";
+package proto;
+
+message StationCollapseState
+{
+    bool enable_station_collapse = 1;
+}

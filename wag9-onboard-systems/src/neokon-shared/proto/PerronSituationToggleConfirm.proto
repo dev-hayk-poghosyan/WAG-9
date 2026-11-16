@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+import "TrainPlatformSituationType.proto";
+
+/**
+ * TrainSim sends this message to confirm perronSituation change.
+ * @p platform_name is a name of WorldSplineGraph in the Layer_Perron_Outlines.
+ * @p situation is a set situation type, @see TrainPlatformSituationType.proto.
+ */
+message PerronSituationToggleConfirm
+{
+    string platform_name = 1;
+    TrainPlatformSituationType.Type situation = 2;
+}

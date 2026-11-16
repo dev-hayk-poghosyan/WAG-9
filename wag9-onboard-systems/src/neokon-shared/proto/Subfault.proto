@@ -1,0 +1,25 @@
+syntax = "proto3";
+package proto;
+
+import "VehicleEndpoint.proto";
+
+/**
+ * Store additional information about fault.
+ */
+message Subfault
+{
+    /**
+     * Unique subfault ID.
+     */
+    bytes uuid_bytes = 1;
+
+    /**
+     * Parent fault ID.
+     */
+    bytes parent_uuid_bytes = 2;
+    optional bytes train_uuid_bytes = 3;
+    optional bytes vehicle_uuid_bytes = 4;
+    optional VehicleEndpoint.Endpoint bogie_endpoint = 5;
+    reserved 6;
+    optional bool bool_value = 7;
+}

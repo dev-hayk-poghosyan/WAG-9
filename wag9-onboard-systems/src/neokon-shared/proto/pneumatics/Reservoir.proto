@@ -1,0 +1,58 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the reservoir pneumatic element.
+ * @see ReservoirComponent.h
+ */
+message ReservoirDef
+{
+    string name = 1;
+    float volume_l = 2;
+
+    /**
+     * Indicates whether the value of the pneumatic element should be passed to the plugin DLL.
+     */
+    bool serializable = 3;
+
+    bool connection_front = 4;
+    bool connection_back = 5;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL.
+ */
+message ReservoirSet
+{
+    float add_gas_quantity = 1;
+    float subtract_gas_quantity = 2;
+}
+
+/**
+ * Definition of the value to be passed to the plugin DLL.
+ */
+message ReservoirValue
+{
+    string name = 1;
+    float pressure_kgfcm2 = 2;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message ReservoirState
+{
+    string name = 1;
+    float gas_quantity = 2;
+}
+
+/**
+ * Defenition for the vehicle connected reservoir pneumatic element.
+ * @see VehicleConnectedReservoirComponent.h
+ */
+message VehicleConnectedReservoirDef
+{
+    ReservoirDef reservoir_def = 1;
+    repeated int32 front_connection_values_indices = 2;
+    repeated int32 back_connection_values_indices = 3;
+}

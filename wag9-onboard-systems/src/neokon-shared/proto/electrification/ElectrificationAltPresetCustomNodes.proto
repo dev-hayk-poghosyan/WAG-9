@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto.electrification.alternative_preset;
+
+/**
+ * Ноды для использования в пользовательских объектах, например, опорах
+ */
+message CustomNode
+{
+    /**
+     *  Отображаемое имя
+     */
+    string node_name = 1;
+
+    /**
+     * Путь к файлу ноды относительно папки data
+     */
+    string node_path = 2;
+}

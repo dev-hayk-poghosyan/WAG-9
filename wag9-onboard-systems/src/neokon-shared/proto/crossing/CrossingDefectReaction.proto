@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * An option that can be selected to deal with a crossing defect.
+ * Includes actions to fix the defect and to limit trains movement.
+ * Used to parse crossingDefectReactions.json.
+ */
+message CrossingDefectReaction
+{
+    string text       = 1;
+    bool correct      = 2;
+}

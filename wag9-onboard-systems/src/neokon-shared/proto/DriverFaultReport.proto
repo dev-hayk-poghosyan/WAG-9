@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "RoutePosition.proto";
+
+message DriverFaultReport
+{
+    string driver_fault_id = 1;
+    int32 penalty_points = 2;
+    RoutePosition route_position = 3;
+
+    // Error templates may reference those parameters by name.
+    map<string, string> extra_strings = 4;
+    map<string, RoutePosition> extra_route_positions = 5;
+    map<string, float> extra_speeds_ms = 6;
+}

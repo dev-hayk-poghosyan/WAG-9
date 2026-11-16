@@ -1,0 +1,36 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+
+/**
+ * The OpaqueRailPath was named like that because the RoadSet doesn't specify its full geometry.
+ * We do however know its endpoints and tangent vectors at endpoints.
+ */
+message OpaqueRailPath
+{
+    /**
+     * A string representation of UUID, without the curly brackets.
+     */
+    string uuid = 1;
+
+    /**
+     * The point at the front end of the path.
+     */
+    Vec3d front_point = 2;
+
+    /**
+     * The point at the back end of the path.
+     */
+    Vec3d back_point = 3;
+
+    /**
+     * A unit-length vector pointing along the path (that is into the path) at the front end of it.
+     */
+    Vec3d front_unit_tangent = 4;
+
+    /**
+     * A unit-length vector pointing along the path (that is out of the path) at the back end of it.
+     */
+    Vec3d back_unit_tangent = 5;
+}

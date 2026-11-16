@@ -1,0 +1,49 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the airDistributor337 pneumatic element.
+ * @see AirDistributor337Component.h
+ */
+message AirDistributor337Def
+{
+    string name = 1;
+    string connected_tm_reservoir_name = 2;
+    string connected_gr_reservoir_name = 3;
+
+    /**
+     * Indicates whether the value of the pneumatic element should be passed to the plugin DLL.
+     */
+    bool serializable = 4;
+}
+
+/**
+ * Definition of the value to be passed to the plugin DLL.
+ */
+message AirDistributor337Value
+{
+    string name = 1;
+    float outcome_pressure_kgfcm2 = 2;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message AirDistributor337State
+{
+    string name = 1;
+    float brake_cylinder_charge_speed = 2;
+    float outcome_pressure_kgfcm2 = 3;
+    float work_camera_quantity = 4;
+    float charge_speed = 5;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL. There are plenty posssible values can be shown here,
+ * but at the moment we are interested in only valve number 2 only.
+ */
+message AirDistributor337Set
+{
+    bool valve2 = 1;
+    bool connected_to_the_pipe = 2;
+}

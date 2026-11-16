@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "RailPathEndpoint.proto";
+import "SeasonType.proto";
+import "WorldPosition.proto";
+
+message Teleport
+{
+    bytes                     uuid = 1;
+    int32                     index = 2;
+    RoadSegment               road_segment = 3;
+    float                     segment_fraction = 4;
+    SeasonType.Season         season = 5;
+    RailPathEndpoint.Endpoint facing_path_endpoint = 6;
+    WorldPosition             position = 7;
+}

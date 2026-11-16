@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "SingleLineHeightMap.proto";
+
+message MultiLineHeightMap
+{
+    /**
+     * Height maps for individual lines, with line id indexing this array.
+     */
+    repeated SingleLineHeightMap per_line_height_maps = 1;
+}

@@ -1,0 +1,88 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenAdjunct.proto";
+import "MeshGenAllowedOptions.proto";
+import "MeshGenBranchGuardRail.proto";
+import "MeshGenBranchCommon.proto";
+import "MeshGenBranchSleepers.proto";
+import "MeshGenCommon.proto";
+import "MeshGenGuardRails.proto";
+import "MeshGenHeelBlock.proto";
+import "MeshGenJunctionSleepers.proto";
+import "MeshGenPointProfile.proto";
+import "MeshGenPointRail.proto";
+import "MeshGenRailFrog.proto";
+import "MeshGenSwitchRods.proto";
+import "MeshGenSurface.proto";
+
+/**
+ * Config for railways generation.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ */
+message Config
+{
+    Common common_params = 1;
+
+    BranchCommon branch_common = 2;
+
+    BranchSleepers branch_sleepers = 3;
+
+    JunctionSleepers junction_sleepers = 4;
+
+    PointRail point_rails = 5;
+
+    SwitchRods switch_rods = 6;
+
+    GuardRails guard_rails = 7;
+
+    RailFrog rail_frog = 8;
+
+    HeelBlock heel_block = 9;
+
+    Surface embankment_profile = 10;
+
+    Surface rail_profile_lod0 = 11;
+
+    Surface rail_profile_lod1 = 12;
+
+    repeated Surface additional_surfaces = 13;
+
+    repeated string includes = 14;
+
+    Surface embankment_profile_junctions = 15;
+
+    SwitchRods switch_rods_x_front = 16;
+
+    SwitchRods switch_rods_x_back = 17;
+
+    SwitchRods switch_rods_x_front_left = 18;
+
+    SwitchRods switch_rods_x_front_right = 19;
+
+    SwitchRods switch_rods_x_back_left = 20;
+
+    SwitchRods switch_rods_x_back_right = 21;
+
+    SwitchRods switch_rods_three_way_first = 22;
+
+    SwitchRods switch_rods_three_way_second = 23;
+
+    Adjunct adjunct = 24;
+
+    Surface contact_rail_profile_lod0 = 25;
+
+    Surface contact_rail_profile_lod1 = 26;
+
+    BranchGuardRail branch_guard_rail = 27;
+
+    Surface guard_rail_profile_lod0 = 28;
+
+    Surface guard_rail_profile_lod1 = 29;
+
+    repeated PointProfile point_profiles = 30;
+
+    repeated Surface named_surfaces = 31;
+
+    repeated MeshGenAllowedOptions allowed_options = 32;
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingConversation.proto";
+
+/**
+ * Keeps all conversations loaded from the conversations.json file.
+ */
+message CrossingConversations
+{
+    /**
+     * The conversations array - one for each communication device.
+     */
+    repeated CrossingConversation conversations = 1;
+
+    /**
+     * Unigine virtual sound root path. The message sounds should be appended to it to form the
+     * actual path.
+     */
+    string sounds_root = 2;
+}

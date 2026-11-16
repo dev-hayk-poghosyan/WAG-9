@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+message LookaheadHeightPoint
+{
+    /**
+     * Position in meters relative to the train head's position.
+     * Negative positions are valid and indicate the object is behind the train's head.
+     */
+    float train_relative_position_m = 1;
+
+    float height_above_sea_level_m = 2;
+}

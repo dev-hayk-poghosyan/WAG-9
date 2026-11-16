@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+message FileTransferResult
+{
+    enum Result
+    {
+        SUCCESS = 0;
+        UNSUPPORTED = 1;
+        INTERNAL_ERROR = 2;
+    }
+
+    /**
+     * Transfer session uuid.
+     * 16 bytes, without hex encoding.
+     */
+    bytes transfer_uuid_bytes = 1;
+
+    Result result = 2;
+}

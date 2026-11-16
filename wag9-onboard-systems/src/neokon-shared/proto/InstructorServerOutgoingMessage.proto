@@ -1,0 +1,257 @@
+syntax = "proto3";
+package proto;
+
+import "AngleCockStateRequest.proto";
+import "Animal.proto";
+import "AnimalGroup.proto";
+import "BrakeSystemRequest.proto";
+import "Buzzer.proto";
+import "BuzzerOnRoad.proto";
+import "CargoVehicleLoadUnload.proto";
+import "ConditionSettings.proto";
+import "CrossingBarriersState.proto";
+import "CustomAdhesionZoneEndpoint.proto";
+import "DateSettings.proto";
+import "DeleteRoadObject.proto";
+import "EnvironmentHazardOnMap.proto";
+import "EtcsModeCommand.proto";
+import "FaultOnMap.proto";
+import "GeometricObstacleLayerState.proto";
+import "GsmrButton.proto";
+import "LandscapeSettings.proto";
+import "LoadReplay.proto";
+import "LoadScenario.proto";
+import "MainTrainDoorsCommand.proto";
+import "MainTrainSwitchCabin.proto";
+import "ManOnRailsState.proto";
+import "NeutralSectionToggleRequest.proto";
+import "Obstacle.proto";
+import "PauseState.proto";
+import "PlatformPayload.proto";
+import "PlatformSituation.proto";
+import "RailSign.proto";
+import "RailwayCrossingGate.proto";
+import "RailwayCrossingSituation.proto";
+import "SafetySystemObject.proto";
+import "SetCrackedWindshield.proto";
+import "SetFaults.proto";
+import "SetTrainInMotion.proto";
+import "ShuntingConnectAllRequest.proto";
+import "ShuntingHoseStateRequest.proto";
+import "SignalLightStateTrigger.proto";
+import "SignalStateUpdate.proto";
+import "Signaller.proto";
+import "SignallerSecondSignalRequest.proto";
+import "SignallerSpeedLimit.proto";
+import "SignallerTypeChange.proto";
+import "SpawnPassengers.proto";
+import "StationCollapseState.proto";
+import "SwitchStateUpdateList.proto";
+import "Teleport.proto";
+import "TiltingAllowedState.proto";
+import "TrainControlRequest.proto";
+import "TrainPowerSupplySwitchToggleRequest.proto";
+import "TrainSplitRequest.proto";
+import "TrainVehiclePropertiesChange.proto";
+import "TrainVehiclesPayloadWeightChange.proto";
+import "TriggerBarrierStateToggle.proto";
+import "VehicleFlatSpotInfo.proto";
+import "WagonSmokeState.proto";
+import "WeatherScheduleCommand.proto";
+import "WeatherTransition.proto";
+import "WeatherTriggerSet.proto";
+import "WheelStuckState.proto";
+
+// Note that this message is not used for realtime replay events.
+// A compressed blob of replay events is packed into the LoadReplay message.
+message InstructorServerOutgoingMessage
+{
+    oneof msg // Think a union.
+    {
+        LoadScenario load_scenario = 1;
+        // reserved 2;
+        LoadReplay load_replay = 3;
+        SignalStateUpdate signal_state_update = 4;
+        // reserved 5
+        // reserved 6
+        // reserved 7
+        SetFaults set_faults = 8; // For student-controlled trains.
+        SetTrainInMotion set_train_in_motion = 9; // For instructor-controlled trains.
+        PauseState pause_state = 10;
+        // reserved 11;
+        SpawnPassengers spawn_passengers = 12;
+        Signaller new_signaller = 13;
+        // reserved 14;
+        // reserved 15;
+        // reserved 16;
+        RailwayCrossingGate crossing_state_change = 17;
+        EnvironmentHazardOnMap new_environment_hazard_on_map = 18;
+        ManOnRailsState man_on_rails_state = 19;
+        StationCollapseState station_collapse_state = 20;
+        WagonSmokeState wagon_smoke_state = 21;
+        WheelStuckState wheel_stuck_state = 22;
+        TiltingAllowedState tilting_allowed_state = 23;
+        // reserved SetSeason set_season = 24;
+        ConditionSettings condition_settings = 25;
+        // reserved 26;
+        Buzzer buzzer = 27;
+        MainTrainSwitchCabin main_train_switch_cabin = 28;
+        CustomAdhesionZoneEndpoint custom_adhesion_zone_endpoint = 29;
+        MainTrainDoorsCommand main_train_doors_command = 30;
+        // reserved 31;
+        // reserved 32;
+        DeleteRoadObject delete_road_object = 33;
+        FaultOnMap new_fault_on_map = 34;
+        RailSign new_dynamic_rail_sign = 35;
+        GsmrButton gsmr_button_clicked = 36;
+        SafetySystemObject new_safety_object = 37;
+        Teleport new_teleport = 38;
+        Teleport teleport_request = 39;
+        Animal new_animal = 40;
+        Obstacle new_obstacle = 41;
+        SwitchStateUpdateList rail_switch_toggle_requests = 42;
+        // reserved 43;
+
+        TrainSplitRequest         train_split_request         = 44;
+        ShuntingHoseStateRequest  shunting_hose_state_request = 45;
+        AngleCockStateRequest     angle_cock_state_request    = 46;
+        ShuntingConnectAllRequest shunting_connect_all        = 47;
+
+        GeometricObstacleLayerState geometric_obstacle_layer_state = 48;
+
+        TrainVehiclesPayloadWeightChange train_vehicles_payload_weight_change = 49;
+
+        LandscapeSettings landscape_settings = 50;
+
+        BrakeSystemRequest brake_system_request = 51;
+
+        DateSettings date_settings = 52;
+
+        /**
+         * When a weather trigger is added, removed or modified during the simulation,
+         * we send the full set of weather triggers to TrainSim. 
+         */
+        WeatherTriggerSet weather_trigger_set = 53;
+
+        /**
+         * When this message is received by TrainSim, the transition to the requested weather
+         * will start immediately. The weather scheduler will be paused, as if weather_schedule_command
+         * with the value of WEATHER_SCHEDULE_PAUSE was received, except that WEATHER_SCHEDULE_PAUSE
+         * would freeze any ongoing weather transition, while we do want this manually requested
+         * transition to proceed.
+         */
+        WeatherTransition manual_weather_transition_request = 54;
+
+        WeatherScheduleCommand weather_schedule_command = 55;
+
+        AnimalGroup new_animal_group = 56;
+
+        RailwayCrossingSituation new_crossing_situation = 57;
+
+        /**
+         * Id of railway crossing a situation on which to be cleared.
+         */
+        int32 clear_situation_crossing_id = 58;
+
+        /**
+         * If instructor sets/unsets some station as "Accepting by registered order of the duty"
+         * station's id is stored in this field.
+         * In train simulator all id's of stations that accepts train by registered order of
+         * the duty stores in MasterTrainsLogicComponentImpl::m_acceptingByOrderStations.
+         * When new instructor's message with changed_accepting_by_order_station_id comes
+         * MasterTrainsLogicComponentImpl::m_acceptingByOrderStations will be checked.
+         * If station id presents in MasterTrainsLogicComponentImpl::m_acceptingByOrderStations
+         * it will be removed, otherwise it will be added to
+         * MasterTrainsLogicComponentImpl::m_acceptingByOrderStations.
+         */
+        int32 changed_accepting_by_order_station_id = 59;
+
+        /**
+         * Transfers information about changed crossing barrier state.
+         * @see CrossingBarrierState.proto.
+         */
+        CrossingBarriersState changed_crossing_barrier_state = 60;
+
+        /**
+         * Request of animation trigger barrier state change.
+         */
+        TriggerBarrierStateToggle trigger_barrier_toggle_request = 61;
+
+        /**
+         * Immediately set the windshield to cracked or not.
+         */
+        SetCrackedWindshield set_cracked_windshield = 62;
+
+        TrainVehiclePropertiesChange train_vehicle_properties_change = 63;
+       
+        TrainControlRequest train_control_request = 64;
+
+        /**
+         * Transfers information about changed train platform situation.
+         * @see PlatformSituation.proto.
+         */
+        PlatformSituation platform_situation = 65;
+        
+        /**
+         * Transfers information about changed train platform payload.
+         * @see PlatformPayload.proto.
+         */
+
+        PlatformPayload platform_payload = 66;
+
+        /**
+         * Transfers information about second signal for signaller.
+         * @see SignallerSecondSignalRequest.proto.
+         */
+        SignallerSecondSignalRequest signaller_second_signal_request = 67;
+
+        SignallerTypeChange signaller_type_change = 68;
+
+        /**
+         * New signal state trigger created by the instructor.
+         */
+        SignalLightStateTrigger new_signal_state_trigger = 69;
+        
+        /**
+         * Transfers information about the speed limit set by the signaller.
+         */
+        SignallerSpeedLimit signaller_speed_limit = 70;
+
+        CargoVehicleLoadUnload cargo_vehicle_load_unload = 71;
+
+        /**
+         * Used to activate/deactivate neutral section marks.
+         */
+        NeutralSectionToggleRequest neutral_section_toggle_request = 72;
+
+        /**
+         * Used to transfer information about switching on/off vehicle flat spot fault.
+         */
+        VehicleFlatSpotInfo vehicle_flat_spot_state_change_request = 73;
+
+        /**
+         * Used to activate/deactivate non-electrified zone.
+         */
+        TrainPowerSupplySwitchToggleRequest train_power_supply_switch_toggle_request = 74;
+
+        /**
+         * Set ETCS mode request for main train.
+         */
+        EtcsModeCommand main_train_etcs_mode_command = 75;
+
+        /**
+         * Informs that new buzzer placed on the road.
+         */
+        BuzzerOnRoad new_buzzer_placed_on_road = 76;
+
+        /**
+         * Informs that the buzzer on the road updated.
+         */
+        BuzzerOnRoad buzzer_on_road_updated = 77;
+
+        /**
+         * Informs that the buzzer with uuid removed.
+         */
+        bytes buzzer_with_uuid_removed = 78;
+    };
+}

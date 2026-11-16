@@ -1,0 +1,43 @@
+syntax = "proto3";
+package proto.electrification;
+
+import "Mat4d.proto";
+import "ElectrificationPortalCantilever.proto";
+
+/**
+ * Блок данных для жесткой поперечины.
+ */
+message Portal
+{
+    /**
+     * ИД жесткой поперечины.
+     */
+    int32 portal_id = 1;
+
+    /**
+     * Индекс пресета для генерации и/или подбора модели фермы.
+     */
+    int32 default_rigel_preset_idx = 2;
+
+    /**
+     * Индекс пресета для генерации и/или подбора модели подвесов.
+     */
+    int32 default_cantilever_preset_idx = 3;
+
+    /**
+     * Ширина жесткой поперечины в метрах.
+     */
+    double width_m = 4;
+
+    /**
+     * Мировая трансформация поперечины.
+     */
+    Mat4d world_transform = 5;
+
+    /**
+     * Неупорядоченный массив блоков данных подвесов.
+     * ВАЖНО: данное поле устарело и оставлено для обратной совместимости.
+     * Теперь подвесы хранятся в поле ElectrificationSet.portal_suspensions.
+     */
+    repeated PortalCantilever cantilevers = 6;
+}

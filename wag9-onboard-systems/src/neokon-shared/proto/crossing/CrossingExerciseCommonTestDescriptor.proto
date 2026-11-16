@@ -1,0 +1,29 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingExerciseTest.proto";
+import "CrossingExerciseTestPassingConditions.proto";
+import "CrossingExerciseTestResultDescriptor.proto";
+
+/**
+ * Test common for all exercises. Each item must have the different type.
+ */
+message CrossingExerciseCommonTestDescriptor
+{
+    CrossingExerciseTest type = 1;
+
+    /**
+     * Text displayed for the given test.
+     */
+    string title = 2;
+
+    /**
+     * Data for tesing the result.
+     */
+    CrossingExerciseTestPassingConditions passing_conditions = 3;
+
+    /**
+     * Texts to be displayed in the report.
+     */
+    repeated CrossingExerciseTestResultDescriptor result_descriptors = 4;
+}

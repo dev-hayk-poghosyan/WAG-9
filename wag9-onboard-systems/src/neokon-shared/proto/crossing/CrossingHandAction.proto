@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+message CrossingHandAction
+{
+    string menu_text = 1;
+    string set_hand_icon_image = 2;
+    repeated string activate_states = 3;
+    repeated string deactivate_states = 4;
+
+    /**
+     * When non-empty, if satisfied, the action is visible.
+     */
+    string enabled_expression = 5;
+}

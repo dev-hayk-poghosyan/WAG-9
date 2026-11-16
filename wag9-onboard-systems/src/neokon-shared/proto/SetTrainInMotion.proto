@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+// This message is sent when the instructor wants to stop a train or set it back in motion.
+// This applies only to instructor-controlled trains.
+message SetTrainInMotion
+{
+    reserved 1;
+    bool in_motion = 2;
+    bytes train_uuid_bytes = 3; // 16 bytes, no hex encoding
+
+}

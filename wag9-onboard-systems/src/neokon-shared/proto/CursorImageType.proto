@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+message CursorImageType
+{
+    enum Type
+    {
+        DEFAULT = 0;
+        TAKE = 1;
+        OPEN = 2;
+        PRESS = 3;
+        SPEAK = 4;
+        FIX = 5;
+        LOOK = 6;
+    }
+}

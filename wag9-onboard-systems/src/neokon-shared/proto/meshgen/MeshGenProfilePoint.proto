@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "Vec3d.proto";
+import "Vec3f.proto";
+import "Vec2f.proto";
+
+/**
+ * Profile point entry.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 9.9.1
+ */
+message ProfilePoint
+{
+    Vec3d coord = 1;
+
+    Vec3f normal = 2;
+
+    Vec2f uv = 3;
+}

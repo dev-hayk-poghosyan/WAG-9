@@ -1,0 +1,228 @@
+syntax = "proto3";
+package proto.tem18dm.boardcomputer;
+option csharp_namespace = "board_computer_tem18dm";
+
+/**
+ * Это сообщение-контейнер. Передается в Msud из контроллера поезда TrainSim.
+ */
+message TcpToBoardComputerMessage
+{
+    oneof value
+    {
+        // выводимое время и дата unix-time
+        int64 current_time = 1;
+
+        // включение питания программы
+        bool msud_power = 2;
+
+        // нажатие на кнопку пленочной клавиатуры
+        KeyboardButton keyboard_button = 3;
+
+        //реверс
+        Reverse reverse = 4;
+
+        //позиция контроллера
+        int32 controller_position = 5;
+
+        //метка контроллера
+        ControllerLabel controller_label = 6;
+
+        //Значение прибора амперметра, А 0-3000
+        float amperage = 7;
+
+        //Значение прибора вольтметра, В 0-900
+        float voltage = 8;
+
+        //Значение прибора температуры воды, С 0-130
+        float water_temperature = 9;
+
+        //Значение прибора температуры масла, С 0-130
+        float oil_temperature = 10;
+
+        //Значение прибора температуры масла до дизеля, С 0-135
+        float oil_temperature_to_diesel = 11;
+
+        //Значение прибора температуры масла после дизеля, С 0-135
+        float oil_temperature_after_diesel = 12;
+
+        //Значение прибора давление масла до дизеля, 0-1.5
+        float oil_pressure_to_diesel = 13;
+
+        //Значение прибора давление масла после дизеля, 0-1.5
+        float oil_pressure_after_diesel = 14;
+
+        //Значение прибора температура топлива, С 0-135
+        float fuel_temperature = 15;
+
+        //Значение прибора давление топлива до ФТО 0-1.5
+        float fuel_pressure_up_to_fto = 16;
+
+        //Значение прибора давление топлива после ФТО 0-1.5
+        float fuel_pressure_after_fto = 17;
+
+        //температура воды из ВМТ 0-135
+        float water_temperature_from_vmt = 18;
+
+        //Значение прибора температура воды после дизеля 0-135
+        float water_temperature_after_diesel = 19;
+
+        //Значение прибора температура воды на вых.ВН 0-135
+        float water_temperature_at_outlet_vn = 20;
+
+        //напряжение заряда акб В 0-900
+        float battery_charge_voltage = 21;
+
+        //ток заряда акб, А 0-3000
+        float battery_charge_amperage = 22;
+
+        //угол открытия МУВ, град 0-18
+        float muv_opening_angle = 23;
+
+        //тока ВСТ, А 0-100
+        float vst_amperage = 24;
+
+        //напряжение РСИ, В 0-100
+        float rsi_voltage = 25;
+
+        //Значение прибора сопротивление + 0-100 FIXME зафиксировать на отображении
+        float resistance_plus = 26;
+
+        //Значение прибора сопротивление - 0-100 FIXME зафиксировать на отображении
+        float resistance_minus = 27;
+
+        //Контактор РСИ 1
+        bool contactor_rsi_1 = 28;
+
+        //Контактор РСИ 2
+        bool contactor_rsi_2 = 29;
+
+        //Значение прибора угол управления МУВ, град 0-360
+        float control_angle_muv = 30;
+
+        //Значение возбуждения ВСТ, А 0-3000
+        float excitation_vst = 31;
+
+        //Контактор КВ
+        bool contactor_kv = 32;
+
+        //Контактор П1
+        bool contactor_p_1 = 33;
+
+        //Контактор КТ1
+        bool contactor_kt_1 = 34;
+
+        //Контактор КВТ1
+        bool contactor_kvt_1 = 35;
+
+        //Контактор П2
+        bool contactor_p_2 = 36;
+
+        //Контактор КТ2
+        bool contactor_kt_2 = 37;
+
+        //Контактор КВТ2
+        bool contactor_kvt_2 = 38;
+
+        //Значение первой группы ТЭД, А 0-3000
+        float first_group_of_ted_amperage = 39;
+
+        //Значение второй группы ТЭД, А 0-3000
+        float second_group_of_ted_amperage = 40;
+
+        //Значение суммарного тока групп 1 и 2 ТЭД, А 0-6000
+        float total_amperage_of_groups_ted = 41;
+
+        //Значение мощности, кВт 0-1000
+        float power = 42;
+
+        //Значение частоты вращения дизеля, об/мин 0-3857
+        float diesel_engine_speed = 43;
+
+        //Значение интергральной мощности, МВт*ч 0-180
+        float intergral_power_value = 44;
+
+        //включение ошибки на определенном экране
+        ErrorState error_state = 45;
+
+        //сообщение TODO
+        Messages message = 46;
+
+        //температура выпускных газов 1
+        float exhaust_gas_temperature1_dc_c = 47;
+
+        //температура выпускных газов 2
+        float exhaust_gas_temperature2_dc_c = 48;
+    }
+}
+
+/**
+ * Это сообщение - набор параметров для включения или выключения показа ошибки на определенном
+ * экране.
+ */
+message ErrorState
+{
+    Screens screen = 1;
+    bool state = 2;
+}
+
+enum KeyboardButton
+{
+    BTN_NONE = 0;
+    BTN_1 = 1;
+    BTN_2 = 2;
+    BTN_3 = 3;
+    BTN_4 = 4;
+    BTN_5 = 5;
+    BTN_6 = 6;
+    BTN_7 = 7;
+    BTN_8 = 8;
+    BTN_9 = 9;
+    BTN_0 = 10;
+    BTN_E = 11;
+    BTN_DOWN = 12;
+    BTN_UP = 13;
+    BTN_RIGHT = 14;
+    BTN_LEFT = 15;
+    BTN_C = 16;
+    BTN_UD = 17;
+    BTN_BRIGHTNESS = 18;
+    BTN_LIGHT = 19;
+    BTN_V0 = 20;
+    BTN_V = 21;
+    BTN_ST = 22;
+    BTN_I = 23;
+    BTN_S = 24;
+    BTN_ASUS = 25;
+}
+
+enum Reverse
+{
+    Neutral = 0;
+    Forward = 1;
+    Back = 2;
+}
+
+enum ControllerLabel
+{
+    None = 0;
+    Idle = 1;
+    Traction = 2;
+    Braking = 3;
+}
+
+enum Messages
+{
+    Test = 0;
+}
+
+enum Screens
+{
+    DIESEL_GP = 0;
+    OIL_SYSTEM = 1;
+    FUEL_SYSTEM = 2;
+    COOLING_SYSTEM = 3;
+    ONBOARD_NETWORK = 4;
+    EXCITATION_SYSTEM = 5;
+    TRACTION_MOTORS = 6;
+    POWER_REGULATOR = 7;
+}

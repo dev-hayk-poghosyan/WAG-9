@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+import "ObjectsOfInterest.proto";
+import "MultiLineHeightMap.proto";
+import "Scenario.proto";
+import "SignalStateUpdateList.proto";
+import "SwitchStateUpdateList.proto";
+
+message LoadScenario
+{
+    Scenario scenario = 1;
+    SwitchStateUpdateList initial_switch_states = 2;
+    SignalStateUpdateList initial_signal_states = 3;
+    ObjectsOfInterest objects_of_interest = 4;
+    bytes vehicles_xml_text = 6;
+    reserved 7;
+    string signalling_variant_name = 8;
+    MultiLineHeightMap height_map = 9;
+    string scenario_language = 10;
+}

@@ -1,0 +1,64 @@
+syntax = "proto3";
+package proto;
+
+import "Junction.proto";
+import "RailBranch.proto";
+import "RailGroup.proto";
+import "RailPathConnection.proto";
+import "BranchSegmentOptions.proto";
+
+message RoadSet
+{
+    /**
+     * A list of relative paths to *.node files, each representing a short segment of rail tracks
+     * on an embankment.
+     *
+     * Each rail segment may specify the particular track model to use, by providing an index
+     * into this list.
+     */
+    repeated string all_track_models = 1;
+
+    /**
+     * A list of relative paths to *.node files, each representing a single rail tie.
+     *
+     * Each rail segment may specify the particular tie model to use, by providing an index
+     * into this list.
+     */
+    repeated string all_tie_models = 2;
+
+    /**
+     * A branch is a static rail segment without behavior.
+     */
+    repeated RailBranch branches = 3;
+
+    /**
+     * A junction is either a switch (with behaviour) or a cross (without behavior).
+     */
+    repeated Junction junctions = 4;
+
+    /**
+     * A list of connections between path endpoints.
+     *
+     * Duplicate entries are not allowed here. A pair of entries that only differ by the
+     * order of connection points (point1 is swapped with point2) are also considered duplicates.
+     */
+    repeated RailPathConnection path_connections = 5;
+
+    /**
+     * set of groups, for now used by editor only to generate legacy electrification in the worlds
+     */
+    repeated RailGroup groups = 6;
+    
+     /**
+      * Set of optional fields of branch segments.
+     */
+    repeated BranchSegmentOptions segment_ext_fields = 7;
+
+    /**
+     * A list of relative paths to *.meshgen files with generator settings
+     *
+     * Each rail segment may specify the particular preset to use, by providing an index
+     * into this list.
+     */
+    repeated string all_gen_presets = 8;
+}

@@ -1,0 +1,7 @@
+syntax = "proto3";
+package proto;
+
+message CameraMakeCurrent
+{
+    int32 player_master_node_id = 1;
+}

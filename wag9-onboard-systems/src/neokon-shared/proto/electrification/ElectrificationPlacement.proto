@@ -1,0 +1,56 @@
+syntax = "proto3";
+package proto;
+
+import "Vec4f.proto";
+
+/**
+ * represents all parameters for the electrification generation and baking
+ */
+message ElectrificationPlacement
+{
+    /**
+     * "opora" (post) node name
+     */
+    string node_name = 1;
+    
+    /**
+     * wire node name
+     */
+    string connection_node_name = 2;
+    
+    /**
+     * Z-coordinate offset for all posts
+     */
+    float placement_height = 3;
+
+    /**
+     * X-translation for posts
+     */
+    float placement_normal_length = 4;
+    
+    /**
+     * Quaternion for an additional nodes rotation
+     */
+    Vec4f placement_rotation = 5;
+    
+    /**
+     * offset from the branch start to start generation
+     */
+    float placement_shift = 6;
+
+    /**
+     * step between posts
+     */
+    float placement_step = 7;
+    
+    /**
+     * override nodes visible distance
+     */
+    float placement_visible_distance = 8;
+    
+    /**
+     * if true, align Z-coordinate of posts over the terrain, otherwise - over the railways
+     */
+    bool placement_align_terrain = 9;
+
+}

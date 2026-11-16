@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+message GsmrInstructorGuiState
+{
+    // The uuid's are encoded as 16 raw bytes, without hex encoding.
+    repeated bytes pressed_button_uuids = 1;
+    repeated bytes disabled_button_uuids = 2;  
+}

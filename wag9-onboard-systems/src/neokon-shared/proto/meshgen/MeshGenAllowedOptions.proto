@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto.meshgen;
+
+/**
+ * Config for railways generation.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ */
+message MeshGenAllowedOptions
+{
+    string name = 1;
+
+    repeated string options = 2;
+}

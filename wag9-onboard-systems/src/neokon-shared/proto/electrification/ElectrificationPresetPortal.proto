@@ -1,0 +1,78 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+import "ElectrificationPresetSpanwire.proto";
+import "ElectrificationPresetPillar.proto";
+
+/**
+ * Блок данных для жесткой поперечины.
+ */
+message Portal
+{
+    /**
+     * Тип блока фермы.
+     */
+    message BlockType
+    {
+        enum Type
+        {
+            RA = 0;    //малый
+            RB = 1;    //крупный
+            WA = 2;    //малый с перилами для жесткой поперечины и фонарями.
+            WB = 3;    //крупный с перилами для жесткой поперечины и фонарями.
+        }
+    }
+
+    /**
+     * Материал блока фермы.
+     */
+    message BlockMaterial
+    {
+        enum Type
+        {
+            NEW = 0;          //новый
+            OLD = 1;          //старый (ржавый)
+            GALVANIZED= 2;    //оцинкованный
+        }
+    }
+
+    /**
+     * Тип блока фермы.
+     */
+    BlockType.Type block_type = 1;
+
+    /**
+     * Материал блока фермы. 
+     */
+    BlockMaterial.Type block_material = 2;
+
+    /**
+     * Конструкция боковых стоек фермы.
+     */
+    Pillar.Material.Type pillar_material = 3;
+
+    /**
+     * Высота и количество опор левой стойки.
+     */
+    Pillar.Type left_pillar_type = 4;
+
+    /**
+     * Высота и количество опор правой стойки.
+     */
+    Pillar.Type right_pillar_type = 5;
+
+    /**
+     * Фиксаторный трос (может отсутствовать).
+     */
+    optional Spanwire spanwire = 6;
+
+    /**
+     * Строковый префикс высоты (для подбора названия ноды).
+     */
+    string node_prefix_height = 7;
+
+    /**
+     * Строковый префикс покраски основания (для подбора названия ноды).
+     */
+    string node_prefix_foundation_color = 8;
+}

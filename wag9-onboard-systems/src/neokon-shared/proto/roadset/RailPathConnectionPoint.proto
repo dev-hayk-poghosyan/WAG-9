@@ -1,0 +1,23 @@
+syntax = "proto3";
+package proto;
+
+import "RailPathEndpoint.proto";
+
+/**
+ * Represents an endpoint of a rail path.
+ *
+ * There are two types of rail paths:
+ * 1. SplineBasedRailPath stored inside RailBranch.
+ * 2. OpaqueRailPath stored inside JunctionConnection.
+ *
+ * This connection point may refer to either type.
+ */
+message RailPathConnectionPoint
+{
+    /**
+     * References the uuid field of SplineBasedRailPath or OpaqueRailPath.
+     */
+    string path_uuid = 1;
+
+    RailPathEndpoint.Endpoint path_endpoint = 2;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+message DeleteRoadObject
+{
+    /**
+     * Holds values of type RoadObjectType in neokon-shared.
+     */
+    int32 road_object_type = 1;
+
+    /**
+     * 16 bytes of raw (non-hex-encoded) UUID.
+     */
+    bytes uuid_bytes = 2;
+}

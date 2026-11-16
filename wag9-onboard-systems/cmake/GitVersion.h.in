@@ -1,0 +1,11 @@
+#pragma once
+
+namespace Git
+{
+
+/**
+ * This build is on this git commit hash.
+ */
+inline const char* const buildHash = "@GIT_HASH@";
+
+}

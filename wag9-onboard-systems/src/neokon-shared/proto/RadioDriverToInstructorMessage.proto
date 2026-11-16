@@ -1,0 +1,47 @@
+syntax = "proto3";
+package proto.radio;
+
+import "RadioAudioDeviceList.proto";
+import "RadioButtonState.proto";
+import "FileTransferResult.proto";
+import "BroadcastMessageList.proto";
+import "RadioAudioStreaming.proto";
+
+/**
+ * Client's endpoint of SMC's radio server is the driver_radio_communication.
+ * This is used for command transfer from the client to SMC's server.
+ */
+message DriverToInstructorMessage
+{
+    oneof msg
+    {
+        ButtonState button_state_changed = 1;
+
+        /**
+         * The package formed by the driver radio station for the TrainSim.
+         * For instance, contains 80bytes of the GSM-R display data.
+         */
+        string state_package = 2;
+
+        /**
+         * Driver asks to shutdown specified line.
+         */
+        int32 force_disconnect_line = 3;
+        
+        /**
+         * Driver reports the result of finished session of file transfer.
+         */
+        FileTransferResult file_transfer_result = 4;
+
+        /**
+         * Driver's side reports a list of available broadcast messages.
+         */
+        BroadcastMessageList broadcast_messages = 5;
+
+        AudioStreaming audio_streaming = 6;
+
+        AudioDeviceList audio_device_list = 7;
+
+        bool egress_call_requested = 8;
+    };
+}

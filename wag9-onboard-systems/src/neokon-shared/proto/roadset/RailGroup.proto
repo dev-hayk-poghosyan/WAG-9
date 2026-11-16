@@ -1,0 +1,58 @@
+syntax = "proto3";
+package proto;
+
+import "ElectrificationPlacement.proto";
+
+/**
+ * A RailGroup represents railways::SplineGroup object and allows to set properties, 
+ * such as electrification, to the set of branches and junctions.
+ * If we'll have wider use of groups, we'll use uuids instead or in addition to ids
+ */
+message RailGroup
+{
+    /**
+     * same as SplineGroup id
+     */
+    int32 id = 2;
+
+    /**
+     * same as SplinePart name
+     */
+    string name = 3;
+
+    /**
+     * All branches included in the group, using integer id for now
+     */
+    repeated int32 branches = 4;
+
+    /**
+     * All junctions included in the group, using integer id for now
+     */
+    repeated int32 junctions = 5;
+
+    /**
+     * Does this group has electrification data
+     */
+    bool has_electrification = 6;
+
+    /**
+     * Inverts side on which electrification objects are built (left from railways or right)
+     */
+    bool electrification_invert_side = 7;
+
+    /**
+     * nonzero if we have baked our electrification into the world nodes
+     */
+    int32 electrification_placement_baked_node_id = 8;
+
+    /**
+     * Outdated option flags, left for compatibility
+     */
+    int32 option_flags = 9;
+
+    /**
+     * electrification placement parameters, used when has_electrification is true or 
+     * electrification_placement_baked_node_id is >= 0
+     */
+    ElectrificationPlacement electrification_placement = 10;
+}

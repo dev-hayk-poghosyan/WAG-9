@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message SafetySystemObjectSdo
+{
+    uint32 num_locked_vehicles = 1;
+    bool real_balise = 2;
+}

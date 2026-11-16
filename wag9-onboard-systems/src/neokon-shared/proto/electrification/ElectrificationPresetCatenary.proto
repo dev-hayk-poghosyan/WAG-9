@@ -1,0 +1,45 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+import "ElectrificationPresetInsulator.proto";
+
+/**
+ * Блок данных для подвесок проводов.
+ * При генерации подвески её тип (рессорный/безрессорный)
+ * берется из файла ElectrificationSet.json, а количество проводов
+ * - из блока данных CommonParams.
+ */
+message Catenary
+{
+    /**
+     * Натяжной изолятор, врезаемый в провод. 
+     */
+    optional Insulator tension_insulator = 1;
+
+    /**
+     * Секционный изолятор для беспрепятсвенного прохода токоприемника.
+     */
+    optional Insulator section_insulator = 2;
+
+    /**
+     * Диаметр сечения провода
+     */
+    double wire_diameter = 3;
+
+    /**
+     * Диаметр сечения троса
+     */
+     double cable_diameter = 4;
+
+     /**
+      * Диаметр сечения струн
+      */
+     double dropper_diameter = 5;
+
+     /**
+      * Коэффициент провисания
+      */
+     double sagging_coefficient = 6;
+
+
+}

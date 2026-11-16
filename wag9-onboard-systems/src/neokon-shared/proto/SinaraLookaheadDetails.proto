@@ -1,0 +1,19 @@
+syntax = "proto3";
+package proto;
+
+import "LookaheadHeightPoint.proto";
+import "LookaheadCommonCabinSignalLight.proto";
+import "LookaheadRailSign.proto";
+import "LookaheadTrainStation.proto";
+
+/**
+ * @note All repeated fields are ordered by their position relative to train's head.
+ *       Negative positions are valid.
+ */
+message SinaraLookaheadDetails
+{
+    repeated LookaheadHeightPoint height_points = 1;
+    repeated LookaheadCommonCabinSignalLight signal_lights = 2;
+    repeated LookaheadRailSign rail_signs = 3;
+    repeated LookaheadTrainStation train_stations = 4;
+}

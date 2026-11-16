@@ -1,0 +1,69 @@
+syntax = "proto3";
+package proto.electrification;
+
+import "ElectrificationEnumTypes.proto";
+import "ElectrificationCoveredPath.proto";
+import "ElectrificationCatenaryLengthConfig.proto";
+import "ElectrificationCachedPolePositions.proto";
+
+/**
+ * Блок данных для описания участка КС.
+ */
+message TensionLength
+{
+    /**
+     * ИД участка КС.
+     */
+    int32 id = 1;
+
+    /**
+     * Пролет в метрах между опорами на прямых участках.
+     */
+    double pole_interval_straight_m = 2;
+
+    /**
+     * Пролет в метрах между опорами на закругленных участках.
+     */
+    double pole_interval_curved_m = 3;
+
+    /**
+     * Максимально допустимая величина корректировки длины пролета,
+     * при расчете длин относительно протяженности участка КС.
+     */
+    double allowed_pole_interval_correction_m = 4;
+
+    /**
+     * Тип анкеровки в начале участка.
+     */
+    Tensioning.Type start_tensioning_type = 5;
+
+    /**
+     * Тип анкеровки в конце участка.
+     */
+    Tensioning.Type end_tensioning_type = 6;
+
+    /**
+     * Тип средней анкеровки.
+     */
+    Tensioning.Type middle_tensioning_type = 7;
+
+    /**
+     * Путь, охваченный участком КС.
+     */
+    CoveredPath covered_path = 8;
+
+    /**
+     * Параметры для генерации участка КС.
+     */
+    CatenaryLengthConfig config = 9;
+
+    /**
+     * Положение участка относительно сопряжений.
+     */
+    PathPlacement.Type path_placement = 10;
+
+    /**
+     * Рассчитанные позиции опор
+     */
+    CachedPolePositions cached_pole_positions = 11;
+}

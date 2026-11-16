@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message GeometricObstacleLayerState
+{
+    string layer_name = 1;
+    bool layer_enabled = 2;
+}

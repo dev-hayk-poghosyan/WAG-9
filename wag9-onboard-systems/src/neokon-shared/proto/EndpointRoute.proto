@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+import "AlignedBox2D.proto";
+import "RoadSetRoute.proto";
+
+/**
+ * Represents endpoint set presence route.
+ */
+message EndpointRoute
+{
+    RoadSetRoute road_graph_route = 1;
+    AlignedBox2D route_box = 2;
+    uint64 route_id = 3;
+    bool invert_direction = 4;
+}

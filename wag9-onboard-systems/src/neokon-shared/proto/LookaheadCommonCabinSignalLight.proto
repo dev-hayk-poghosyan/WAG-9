@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+import "CommonCabinSignalColor.proto";
+
+message LookaheadCommonCabinSignalLight
+{
+    /**
+     * Position in meters relative to the train head's position.
+     * Negative positions are valid and indicate the object is behind the train's head.
+     */
+    float train_relative_position_m = 1;
+
+    CommonCabinSignalColor color = 2;
+
+    /**
+     * The signal light's name. In C++ it's UTF-8 encoded.
+     */
+    string name = 3;
+}

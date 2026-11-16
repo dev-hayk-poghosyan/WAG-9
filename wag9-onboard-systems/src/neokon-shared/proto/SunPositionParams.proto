@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "DateSettings.proto";
+
+message SunPositionParams
+{
+    enum ForcedTimeOfDay
+    {
+        FORCED_TIME_OF_DAY_NONE  = 0;
+        FORCED_TIME_OF_DAY_DAY   = 1;
+        FORCED_TIME_OF_DAY_NIGHT = 2;
+    }
+
+    DateSettings date_settings = 1;
+    ForcedTimeOfDay forced_time_of_day = 2;
+}

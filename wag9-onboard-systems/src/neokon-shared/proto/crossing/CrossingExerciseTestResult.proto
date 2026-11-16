@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Different results for each part of the exercise. CORRECT = 0 is common for all tests.
+ */
+enum CrossingExerciseTestResult
+{
+    TEST_RESULT_CORRECT = 0;
+    TEST_RESULT_MISSING_ITEMS = 1;
+    TEST_RESULT_INCORRECT_ITEMS = 2;
+    TEST_RESULT_ALL_CHECKS_FAILED = 3;
+    TEST_RESULT_INCOMPLETE = 4;
+}

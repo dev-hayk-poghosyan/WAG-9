@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "RailPathEndpoint.proto";
+import "WorldPosition.proto";
+
+message ZoneEndpoint
+{
+    RoadSegment road_segment = 1;
+
+    float segment_length_fraction = 2;
+
+    RailPathEndpoint.Endpoint zone_extends_towards_path_endpoint = 3;
+
+    WorldPosition position = 4;
+}

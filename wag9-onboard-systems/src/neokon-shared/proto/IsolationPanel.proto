@@ -1,0 +1,54 @@
+syntax = "proto3";
+package proto.class390.faultstation;
+
+message IsolationPanel {
+    oneof switcher {
+        bool vigilance_isolation = 1; // (false - NORMAL/ true - ISOLATE)
+        bool regen_brake = 2; // (false - ON/ true - OFF)
+        bool service_brake_fault_override = 3; // (false - NORMAL/ true - OPERATED)
+        bool passenger_emergency_isolation = 4; // (false - NORMAL/ true - ISOLATE)
+        bool drivers_safety_device_isolation = 5; // (false - NORMAL/ true - ISOLATE)
+        bool train_control_system_isolation = 6; // (false - NORMAL/ true - ISOLATE)
+        bool tilt_test_enable = 7; // (false - NORMAL/ true - TEST)
+        bool permanent_tilt_isolation = 8; // (false - NORMAL/ true - ISOLATE)
+        bool train_door_interlock_cutout = 9; // (false - NORMAL/ true - CUT-OUT)
+        bool dra_isolation = 10; // (false - NORMAL/ true - ISOLATE)
+        bool aws_isolation = 11; // (false - NORMAL/ true - ISOLATE)
+        bool brake_continuity_isolation = 12; // (false - NORMAL/ true - ISOLATE)
+        bool btn_gsmr_ups_enable = 13; // (false - pull/ true - push)
+        /** (0 - brake pipe - this cab charged / 1 - NORMAL EP BRAKE / 2 - Brake pipe - loco ets high
+        * / 3 - brake pipe - loco ets low / 4 - brake pipe - loco no ets)
+        */
+        int32 brake_control = 14;
+
+        bool earth_switch_isolation_cock = 15; // (false - NORMAL/ true - ISOLATE)
+        bool pantograph_isolating_locking = 16; // (false - NORMAL/ true - ISOLATE)
+        bool dynamic_brake_isolation_switch = 17; // (false - NORMAL/ true - ISOLATE)
+        bool axles14_friction_brake_cut_off_sw1 = 18; // (false - OFF/ true - ON)
+        bool axles23_friction_brake_cut_off_sw2 = 19; // (false - OFF/ true - ON)
+
+        bool btn_coupler_extend = 20; // (false - pull/ true - push)
+        bool btn_coupler_retract = 21; // (false - pull/ true - push)
+        bool btn_havac_saloon = 22; // (false - pull/ true - push)
+        bool btn_train_auxiliaries_set = 23; // (false - pull/ true - push)
+        bool btn_train_auxiliaries_trip = 24; // (false - pull/ true - push)
+        bool btn_brake_test_continuity = 25; // (false - pull/ true - push)
+        bool sander = 26; // (false - NORMAL/ true - ISOLATE)
+        bool smoke_detection = 27; // (false - ON/ true - OFF)
+        bool sw_cab_lights = 28; // (false - |/ true - =)
+        bool guards_keyswitch = 29; // (false - ON/ true - OFF)
+        int32 electrical_train_supply = 30; // (0 - low pwr / 1 - Normal / 2 - high pwr)
+
+        // Переключатель возвратный в среднее 0-NONE положение 1-NORMAL 2-ISOLATE 
+        int32 tpws_temporary_isolator = 31;
+    }
+}
+
+message IsolationPanelLamps {
+    // false - не горит, true - горит
+    oneof lamp {
+        bool coupler_extend_lamp = 1;
+        bool coupler_retract_lamp = 2;
+        bool havac_saloon_lamp = 3;
+    }
+}

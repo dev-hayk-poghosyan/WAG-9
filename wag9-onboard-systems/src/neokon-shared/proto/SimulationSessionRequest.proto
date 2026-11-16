@@ -1,0 +1,23 @@
+syntax = "proto3";
+package proto;
+
+message SimulationSessionRequest
+{
+    string session_uuid = 1;
+
+    /**
+     * Several clients can work with one simulator (not at the same time, of course).
+     * So we specifiy the instructor's address to which the simulator must connect.
+     */
+    string instructor_server_address = 2;
+
+    /**
+     * Several clients can work with one simulator (not at the same time, of course).
+     * So we specifiy the instructor's radio comm server address to pass it to the radio client.
+     */
+    string instructor_radio_server_address = 3;
+
+    string initiator_instructor_name = 4;
+
+    string instructor_machine_name = 5;
+}

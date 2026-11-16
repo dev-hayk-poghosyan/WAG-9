@@ -1,0 +1,137 @@
+syntax = "proto3";
+package proto.class800.faultstation;
+option csharp_namespace = "Class800_FS";
+
+message ToFaultStation
+{
+    oneof message
+    {
+        int64 trenager_datetime_sec = 1;
+        TrainFormation train_formation = 2;
+        WagonValues wagon_value = 3;
+    }
+    repeated bool right_doors_array = 4;
+    repeated bool left_doors_array = 5;
+    repeated bool pantograph_raised_array = 6;
+    repeated bool coupling_hatch_opened_array = 7;
+}
+
+/**
+ * Это сообщение-контейнер. Передается из Fault Station в контроллер поезда TrainSim.
+ */
+message FromFaultStation
+{
+    WagonValues wagon_value = 1;
+}
+
+enum TrainFormation
+{
+    Five = 0;
+    Seven = 1;
+    Ten = 2;
+}
+
+message WagonValues
+{
+    int32 index = 1;
+    oneof value
+    {
+        bool bsric = 2;
+        float bsric_manometer = 3;
+
+        bool ic2 = 4;
+        bool ic3 = 5;
+        bool ic4 = 6;
+
+        bool staff_aware_lit = 7;
+        bool speak_to_staff_lit = 8;
+        bool fault_lit = 9;
+        bool pau_pressed = 10;
+
+        bool eed_released1 = 11;
+        bool eed_released2 = 12;
+
+        bool door_close_interlock_pressed1 = 13;
+        bool door_close_interlock_lit1 = 14;
+        bool local_door_only_lit1 = 15;
+        bool door_release_l_pressed1 = 16;
+        bool door_release_l_lit1 = 17;
+        bool door_release_r_pressed1 = 18;
+        bool door_release_r_lit1 = 19;
+        bool signal_pressed1 = 20;
+        int32 buzzer_key1 = 21;
+        bool door_close_interlock_pressed2 = 22;
+        bool door_close_interlock_lit2 = 23;
+        bool local_door_only_lit2 = 24;
+        bool door_release_l_pressed2 = 25;
+        bool door_release_l_lit2 = 26;
+        bool door_release_r_pressed2 = 27;
+        bool door_release_r_lit2 = 28;
+        bool signal_pressed2 = 29;
+        int32 buzzer_key2 = 30;
+
+        bool electric_coupler_actuator_on = 31;
+
+        bool sanding_test_button = 32;
+
+        int32 bis = 33;
+
+        bool cic = 34;
+
+        bool aspic1 = 35;
+        bool aspic2 = 36;
+
+        bool ead_released_l1 = 37;
+        bool ead_released_l2 = 38;
+        bool ead_released_r1 = 39;
+        bool ead_released_r2 = 40;
+
+        bool not_in_use_lit_l1 = 41;
+        bool door_open_pressed_l1 = 42;
+        bool door_open_pressed_lit_l1 = 43;
+        bool door_close_pressed_l1 = 44;
+        bool door_close_pressed_lit_l1 = 45;
+        bool not_in_use_lit_l2 = 46;
+        bool door_open_pressed_l2 = 47;
+        bool door_open_pressed_lit_l2 = 48;
+        bool door_close_pressed_l2 = 49;
+        bool door_close_pressed_lit_l2 = 50;
+        bool not_in_use_lit_r1 = 51;
+        bool door_open_pressed_r1 = 52;
+        bool door_open_pressed_lit_r1 = 53;
+        bool door_close_pressed_r1 = 54;
+        bool door_close_pressed_lit_r1 = 55;
+        bool not_in_use_lit_r2 = 56;
+        bool door_open_pressed_r2 = 57;
+        bool door_open_pressed_lit_r2 = 58;
+        bool door_close_pressed_r2 = 59;
+        bool door_close_pressed_lit_r2 = 60;
+
+        bool mrpic1 = 61;
+        bool eic1 = 62;
+        bool mrpic2 = 63;
+        bool eic2 = 64;
+
+        bool emergency_stop_pressed = 65;
+        bool fire_protection_pressed = 66;
+
+        bool bcic = 67;
+        bool pbic = 68;
+
+        bool parking_brake_release_mechanisms_l1 = 69;
+        bool parking_brake_release_mechanisms_l2 = 70;
+        bool parking_brake_release_mechanisms_l3 = 71;
+        bool parking_brake_release_mechanisms_l4 = 72;
+        bool parking_brake_release_mechanisms_r1 = 73;
+        bool parking_brake_release_mechanisms_r2 = 74;
+        bool parking_brake_release_mechanisms_r3 = 75;
+        bool parking_brake_release_mechanisms_r4 = 76;
+
+        bool side_light_a = 77;
+        bool side_light_b = 78;
+
+        bool cau_pressed = 79;
+
+        bool passenger_door_isolated = 80;
+    }
+}

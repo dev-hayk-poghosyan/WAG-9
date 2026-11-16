@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Generation parameters for rail frogs.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 8
+ */
+message RailFrog
+{
+    optional string directory = 1;
+
+    optional int32 start_gap = 2;
+
+    optional int32 end_gap = 3;
+
+    optional int32 mounts_offset = 4;
+
+    optional int32 mounts_offset_obtuse = 5;
+
+    optional bool skinned = 6;
+
+    optional MaterialInfo material_info = 7;
+}

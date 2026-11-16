@@ -1,0 +1,34 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Store for the arguments for localized string.
+ * @see GameGui/Localization/LocalizableStringData.h
+ */
+message LocalizableArg
+{
+    oneof Args
+    {
+        LocalizableString lstring_arg = 1;
+        string string_arg = 2;
+        int32 int_arg = 3;
+        double double_arg = 4;
+        double speed_arg = 5; /**< Speed stored as meters per second. */
+        double distance_arg = 6; /**< Distance stored in meters. */
+        uint64 date_arg = 7; /**< Date as nanoseconds since epoch. */
+        uint64 time_arg = 8; /**< Time as nanoseconds. */
+        int32 game_control_state_arg = 9; /**< GameControlState */
+        double mass_arg = 10; /**< Mass stored in kg. */
+    }
+}
+
+/**
+ * Store for the localized string.
+ * @see GameGui/Localization/LocalizableString.h
+ */
+message LocalizableString
+{
+    string id = 1; /**< The key of the string in the localization table.*/
+    repeated LocalizableArg args = 2; /**< List of arguments for boost::locale::format. */
+}
+

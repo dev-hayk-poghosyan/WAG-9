@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message CrossingExerciseTestErrorState
+{
+    string expression = 1;
+    string description_if_satisfied = 2;
+};

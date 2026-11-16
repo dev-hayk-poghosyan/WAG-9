@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto.meshgen;
+
+/**
+ * Generation parameters for switch rods.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 6
+ */
+message SwitchRods
+{
+    optional string rod_node_path = 1;
+
+    optional string head_rod_node_path_left = 2;
+
+    optional string head_rod_node_path_right = 3;
+
+    optional string switch_box_node_path_left = 4;
+
+    optional string switch_box_node_path_right = 5;
+
+    optional bool switch_box_prefer_left = 6;
+
+    optional string border_bar_node_path = 7;
+}

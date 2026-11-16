@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+import "WeatherDefinition.proto";
+
+message CurrentWeather
+{
+    /**
+     * The weather at this point in time.
+     */
+    WeatherDefinition weather_definition = 1;
+
+    /**
+     * The remaining time of the current weather transition, if one is in progress.
+     *
+     * If this value is greater than zero, that means weather_definition will keep
+     * changing for the specified time.
+     */
+    uint32 transition_seconds_remaining = 2;
+}

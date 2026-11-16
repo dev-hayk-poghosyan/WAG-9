@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A category defining whether the item is put into the inventory or put on as clothes.
+ */
+enum CrossingCollectableItemCategory
+{
+    COLLECTABLE_ITEM_INVENTORY = 0;
+    COLLECTABLE_ITEM_CLOTHES = 1;
+}

@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "RailPathEndpoint.proto";
+import "WorldPosition.proto";
+
+/**
+ * Endpoint of a zone with custom adhesion level.
+ */
+message CustomAdhesionZoneEndpoint
+{
+    RoadSegment  road_segment = 1;
+    float segment_length_fraction = 2;
+
+    RailPathEndpoint.Endpoint zone_extends_towards_path_endpoint = 3;
+
+    /**
+     * The level of adhesion is between 0.0 and 1.0.
+     */
+    float adhesion_level = 4;
+
+    bytes placement_uuid_bytes = 5;
+
+    WorldPosition position = 6;
+}

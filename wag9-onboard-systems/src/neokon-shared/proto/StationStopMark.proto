@@ -1,0 +1,35 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "RailPathEndpoint.proto";
+import "StationStopMarkAction.proto";
+import "WorldPosition.proto";
+
+/**
+ * Represents a spot where arrival train at the station must stop.
+ */
+message StationStopMark
+{
+    string name = 1;
+    RoadSegment road_segment = 2;
+    float segment_length_fraction = 3;
+
+    /**
+     * This mark is for the train which heads
+     * towards to opposite of this endpoint.
+     */
+    RailPathEndpoint.Endpoint facing_endpoint = 4;
+
+    /**
+     * What trains supposed to do at this stop.
+     */
+    StationStopMarkAction action = 5;
+
+    /**
+     * Stop mark node id.
+     */
+    int64 node_id = 6;
+
+    WorldPosition position = 7;
+}

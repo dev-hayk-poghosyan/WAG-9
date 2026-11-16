@@ -1,0 +1,28 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingPanelButtonStates.proto";
+import "CrossingPanelLampStates.proto";
+
+/**
+ * State configuration for a single panel.
+ */
+message CrossingPanelStates
+{
+    /**
+     * Panel root node name.
+     */
+    string panel_root_object_name = 1;
+
+    /**
+     * Defines states for each lamp by its name. In the world lamp name is defined by the Name
+     * parameter of the PanelLamp property of the lamp node.
+     */
+    map<string, CrossingPanelLampStates> lamp_states = 2;
+
+    /**
+     * Defines states for each button by its name. In the world button name is defined by the Name
+     * parameter of the PanelButton property of the button node.
+     */
+    map<string, CrossingPanelButtonStates> button_states = 3;
+}

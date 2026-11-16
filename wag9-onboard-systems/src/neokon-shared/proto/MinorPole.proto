@@ -1,0 +1,36 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A railway line is basically a curve with distance marks. The major and minor
+ * poles correspond to whole and fractional distance marks. The distance units
+ * are either kilometers or miles.
+ */
+message MinorPole
+{
+    /**
+     * A major_interval_idx being set to N means this minor pole is
+     * somewhere between the major poles with route_position N and N+1.
+     * In practice, major pole 0 is normally not there at all, but still,
+     * the first major interval will be 0.
+     */
+    int32 major_interval_idx  = 1;
+
+    /**
+     * The pole number (starting from 1) within a major interval.
+     * Major intervals are kilometers or miles, that is the area
+     * between the adjacent major poles.
+     */
+    int32 minor_pole_number   = 2;
+
+    /**
+     * The number of minor intervals in this particular major interval.
+     *
+     * A minor interval in the UK is a quarter of a mile, so the number
+     * of minor intervals in a major interval is always 4.
+     * In Russia, the major interval is a kilometer and there are typically
+     * 10 minor intervals inside, but in some cases this number may be
+     * greater or less than that.
+     */
+    int32 num_minor_intervals = 3;
+}

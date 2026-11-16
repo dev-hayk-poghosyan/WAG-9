@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+message CrossingPanelLampStates
+{
+    /**
+     * If the logical expression is satisfied, the lamp is enabled and always on. If
+     * blinking_expression is satisfied at the same moment, the lamp is blinking.
+     */
+    string lit_expression = 1;
+
+    /**
+     * If the logical expression is satisfied, the lamp is enabled and blinking. If at the same
+     * moment lit_expression is satisfied, the lamp is still blinking.
+     */
+    string blinking_expression = 2;
+}

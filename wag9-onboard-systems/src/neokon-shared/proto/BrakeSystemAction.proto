@@ -1,0 +1,32 @@
+syntax = "proto3";
+package proto;
+
+import "AirDistributorMode.proto";
+
+message BrakeSystemAction
+{
+    oneof action
+    {
+        /**
+         * <true> means hand brake is engaged.
+         */
+        bool hand_brake_on = 1;
+
+        /**
+         * <true> means cock is opened.
+         */
+        bool shutoff_cock_open = 2;
+
+        /**
+         * <true> means the air distributor is for flat-like landscape.
+         */
+        bool air_distributor_flat_slope = 3;
+
+        /**
+         * <true> means the cock is opened.
+         */
+        bool air_distributor_open = 4;
+
+        AirDistributorMode.Mode air_distributor_mode = 5;
+    }
+};

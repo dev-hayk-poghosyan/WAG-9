@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+message AutoStateTransition
+{
+    /**
+     * Enable all these states on transition.
+     */
+    repeated string target_states = 1;
+
+    /**
+     * Disable all these states on transition. Must be non-empty, otherwise it will cause the
+     * transition to work infinitely.
+     */
+    repeated string states_to_disable = 2;
+
+    // The fields below can be used when we'll want to expand the animation system.
+    /*enum Condition
+    {
+        ON_ANIMATIONS_FINISHED = 1,
+        ON_TIMEOUT = 2
+    }
+
+    Condition condition = 2;
+    int32 timeout_ms = 3; // Interpeted if condition == ON_TIMEOUT*/
+}

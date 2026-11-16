@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectResolution.proto";
+
+/**
+ * Text messages used for the defect category to be displayed in the duty journal.
+ */
+message CrossingDefectResolutionText
+{
+    CrossingDefectResolution resolution = 1;
+
+    string text = 2;
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+message FileTransferChunkData
+{
+    /**
+     * Transfer session uuid.
+     * 16 bytes, without hex encoding.
+     */
+    bytes transfer_uuid_bytes = 1;
+
+    /**
+     * Ordered number of data portion.
+     */
+    int32 chunk_order_number = 2;
+
+    bytes chunk_data = 3;
+}

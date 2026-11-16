@@ -1,0 +1,518 @@
+syntax = "proto3";
+package proto.class769.faultstation;
+option csharp_namespace = "Class769_FS";
+
+message ToFaultStationMessage
+{
+    CoachOrDoor coach = 1;
+    oneof message
+    {
+        ToCabinPanels to_cabins_panels = 2;
+        EnvironmentCupboard to_environment_cupboard = 3;
+        ToTsolEnvironmentCupboard to_tsol_environment_cupboard = 4;
+        ToMsoFaultIndicationCupboard to_mso_fault_indication_cupboard = 5;
+        ToMsoDiagnosticCupboard to_mso_diagnostic_cupboard = 6;
+        bool reset = 7;
+        bool side_light_lit = 8;
+        Passcomm to_passcomm = 9;
+        bool pantograph_lifted = 10;
+        ToDoor to_door = 11;
+        ToIcadIcvcb to_icad_icvcb = 12;
+    }
+}
+
+message FromFaultStationMessage
+{
+    CoachOrDoor coach = 1;
+    oneof message
+    {
+        FromCabinPanels from_cabins_panels = 2;
+        FromInternalEmergencyDoor from_internal_emergency_door = 3;
+        Passcomm from_passcomm = 4;
+        FromIcvrBprv from_icvr_bprv = 5;
+        FromPantograph from_pantograph = 6;
+        FromDrivingCabIsolationCocks from_driving_cab_isolation_cocks = 7;
+        FromIcadIcvcb from_icad_icvcb = 8;
+        EnvironmentCupboard from_environment_cupboard = 9;
+        FromTsolEnvironmentCupboard from_tsol_environment_cupboard = 10;
+        FromMsoFaultIndicationCupboard from_mso_fault_indication_cupboard = 11;
+        FromMsoDiagnosticCupboard from_mso_diagnostic_cupboard = 12;
+        FromCallAid from_call_aid = 13;
+        FromBcuIsolationCocks from_bcu_isolation_cocks = 14;
+        FromFireHandle from_fire_handle = 15;
+        FromMricIsolationCock from_mric_isolation_cock = 16;
+        FromMrpcc from_mrpcc = 17;
+    }
+}
+
+message ToDoor
+{
+    CoachOrDoor door = 1;
+    bool door_opened = 2;
+}
+
+message ToCabinPanels
+{
+    oneof value
+    {
+        //cabin panel 6
+        bool coupling_fault_mcb_enabled = 1;
+        bool no_name1 = 2;
+        bool cab_fan_mcb_enabled = 3;
+        bool aux_lights1_mcb_enabled = 4;
+        bool aux_lights2_mcb_enabled = 5;
+        bool cab_heat_mcb_enabled = 6;
+        bool demister_mcb_enabled = 7;
+        bool tal_light_mcb_enabled = 8;
+        bool cb_sand_mcb_enabled = 9;
+        bool aws_mcb_enabled = 10;
+        bool brake_control_mcb_enabled = 11;
+        bool wsp_equip_mcb_enabled = 12;
+        bool control_positive_mcb_enabled = 13;
+        bool control_earth_mcb_enabled = 14;
+        bool gsmr_mcb_enabled = 15;
+        bool engine_mcb_enabled = 16;
+        bool fire_alarm_mcb_enabled = 18;
+        bool engine_supply_mcb_enabled = 19;
+        bool tca_mcb_enabled = 20;
+        bool gsmr_ups_lit = 21;
+        //cabin panel 4
+        bool tca_isolation_switch_isolated = 22;
+        bool engine_emergency_stop_isolation_switch_isolated = 23;
+        bool fire_system_isolation_switch_isolated = 24;
+        bool engine_control_bypass_isolation_switch_isolated = 25;
+        bool train_wire_isolation_switch_isolated = 26;
+        bool train_doors_inter_lock_assistant_lit = 27;
+        bool dbs_mode_engine_lit = 28;
+        bool dbs_mode_electric_lit = 29;
+        bool pa_emergency_supply_activation_lit = 30;
+        //cabin panel 5
+        bool ebs_isolation_card_isolated = 31;
+        bool vis_isolation_card_isolated = 32;
+        bool tis_isolation_card_isolated = 33;
+        bool tpws_isolation_card_isolated = 34;
+        bool system_healthy_lit = 35;
+        bool communications_fault_lit = 36;
+        bool fire_system_fault_lit = 37;
+        bool power_earth_fault_lit = 38;
+        bool local_engine_fault_lit = 39;
+        bool remote_engine_fault_lit = 40;
+        bool esm_charging_fault_lit = 41;
+        bool fire_alarm_test_lit = 42;
+        bool engine_emergency_stop_fault_indicator_lit = 43;
+        bool fire_system_manual_override_lit = 44;
+        bool otmr_status_lit = 45;
+        string diu_text = 46;
+        //cabin panel 8
+        bool sfr_enabled = 47;
+        bool train_doors_interlock_driver_lit = 48;
+        string train_fx_text = 49;
+        bool train_fx_speaker_lit = 50;
+        bool tca_normal_lit = 51;
+        bool tca_fault_lit = 52;
+
+        bool service_key_available = 53;
+
+        bool red_small_lit= 54;
+        bool white_lit = 55;
+        bool white_small_lit = 56;
+    }
+}
+
+message FromCabinPanels
+{
+    oneof value
+    {
+        //cabin panel 6
+        bool coupling_fault_mcb_enabled = 1;
+        bool no_name1 = 2;
+        bool cab_fan_mcb_enabled = 3;
+        bool aux_lights1_mcb_enabled = 4;
+        bool aux_lights2_mcb_enabled = 5;
+        bool cab_heat_mcb_enabled = 6;
+        bool demister_mcb_enabled = 7;
+        bool tal_light_mcb_enabled = 8;
+        bool cb_sand_mcb_enabled = 9;
+        bool aws_mcb_enabled = 10;
+        bool brake_control_mcb_enabled = 11;
+        bool wsp_equip_mcb_enabled = 12;
+        bool control_positive_mcb_enabled = 13;
+        bool control_earth_mcb_enabled = 14;
+        bool gsmr_mcb_enabled = 15;
+        bool engine_mcb_enabled = 16;
+        bool fire_alarm_mcb_enabled = 18;
+        bool engine_supply_mcb_enabled = 19;
+        bool tca_mcb_enabled = 20;
+        int32 cab_heat1 = 21;
+        int32 cab_heat2 = 22;
+        bool lighting_on_pressed = 23;
+        bool lighting_off_pressed = 24;
+        bool aux_set_pressed = 25;
+        bool aux_trip_pressed = 26;
+        bool gsmr_ups_pressed = 27;
+
+        //cabin panel 4
+        bool train_doors_test_assistant_pressed = 28;
+        bool left_train_doors_open_assistant_pressed = 29;
+        bool right_train_doors_open_assistant_pressed = 30;
+        bool train_doors_close_assistant_pressed = 31;
+        bool train_doors_signal_assistant_pressed = 32;
+        bool hold_over_pressed = 33;
+        bool tca_isolation_switch_isolated = 34;
+        bool engine_emergency_stop_isolation_switch_isolated = 35;
+        bool fire_system_isolation_switch_isolated = 36;
+        bool pa_emergency_supply_activation_pressed = 37;
+        int32 tpws = 38;
+        bool engine_control_bypass_isolation_switch_isolated = 39;
+        bool train_wire_isolation_switch_isolated = 40;
+        int32 windscreen_wiper_position = 41;
+        bool door_open_assistant_pressed = 42;
+        bool door_close_assistant_pressed = 43;
+
+        //cabin panel 5
+        bool fire_alarm_test_pressed = 44;
+        bool fire_system_manual_override_pressed = 45;
+        Diu.DiuKeyboard diu_keyboard = 46;
+        bool ebs_isolation_card_isolated = 47;
+        bool vis_isolation_card_isolated = 48;
+        bool tis_isolation_card_isolated = 49;
+        bool tpws_isolation_card_isolated = 50;
+
+        //cabin panel 8
+        bool sfr_enabled = 57;
+        bool train_doors_test_driver_pressed = 51;
+        bool left_train_doors_open_driver_pressed = 52;
+        bool right_train_doors_open_driver_pressed = 53;
+        bool train_doors_close_driver_pressed = 54;
+        bool train_doors_signal_driver_pressed = 55;
+        TrainFx.TrainFxKeyboard train_fx_keyboard = 56;
+    }
+}
+
+enum CoachOrDoor
+{
+    A = 0;
+    B = 1;
+    C = 2;
+    D = 3;
+}
+
+message Diu
+{
+    enum DiuKeyboard
+    {
+        None = 0;
+        Number_1 = 1;
+        Number_2 = 2;
+        Number_3 = 3;
+        Number_4 = 4;
+        Number_5 = 5;
+        Number_6 = 6;
+        Number_7 = 7;
+        Number_8 = 8;
+        Number_9 = 9;
+        Number_0 = 10;
+        Star = 11;
+        Grid = 12;
+    }
+}
+
+message TrainFx
+{
+    enum TrainFxKeyboard
+    {
+        None = 0;
+        Pa = 1;
+        Cc = 2;
+        Up = 3;
+        Down = 4;
+        Number_1 = 5;
+        Number_2 = 6;
+        Number_3 = 7;
+        Number_4 = 8;
+        Number_5 = 9;
+        Number_6 = 10;
+        Number_7 = 11;
+        Number_8 = 12;
+        Number_9 = 13;
+        Number_0 = 14;
+        Cancel = 15;
+        Accept = 16;
+    }
+}
+
+message FromCallAid
+{
+    bool call_aid_pressed = 1;
+}
+
+message FromInternalEmergencyDoor
+{
+    CoachOrDoor door = 1;
+    bool internal_emergency_door_released = 2;
+}
+
+message Passcomm
+{
+    CoachOrDoor door = 1;
+    bool passcomm_operated = 2;
+}
+
+message FromIcvrBprv
+{
+    oneof value
+    {
+        bool cock_brake_reservoir_isolated = 1;
+        bool brake_pressure_relief_valve_pressed = 2;
+    }
+}
+
+message FromPantograph
+{
+    oneof value
+    {
+        bool pantograph_isolation_cock_isolated = 1;
+        bool aces_enabled = 2;
+    }
+}
+
+message FromDrivingCabIsolationCocks
+{
+    oneof value
+    {
+        bool wiper_isolation_cock_isolated = 1;
+        bool horn_isolation_cock_isolated = 2;
+        bool single_door_isolation_cock_driver_isolated = 3;
+        bool single_door_isolation_cock_assistant_isolated = 4;
+        bool parking_brake_isolation_cock_isolated = 5;
+    }
+}
+
+message ToIcadIcvcb
+{
+    float brake_cylinder_bar = 1;
+}
+
+message FromIcadIcvcb
+{
+    oneof value
+    {
+        bool auto_drop_cock_isolated = 1;
+        bool vacuum_circuit_breaker_cock_isolated = 2;
+    }
+}
+
+message EnvironmentCupboard
+{
+    oneof value
+    {
+        bool door_control1_mcb_enabled = 1;
+        bool door_control2_mcb_enabled = 2;
+        bool main_light1_mcb_enabled = 3;
+        bool main_light2_mcb_enabled = 4;
+        bool emergency_lighting_mcb_enabled = 5;
+        bool heat_control_mcb_enabled = 6;
+        bool public_information_system_mcb_enabled = 7;
+        bool door_pocket_heating_mcb_enabled = 8;
+        bool eth_cb_blue_mcb_enabled = 9;
+        bool eth_cb_red_mcb_enabled = 10;
+    }
+}
+
+message ToTsolEnvironmentCupboard
+{
+    oneof value
+    {
+        bool compressor_isolating_mcb_enabled = 1;
+        bool brake_heater_mcb_enabled = 2;
+        bool tank_heater_mcb_enabled = 3;
+        bool toilet_control_mcb_enabled = 4;
+        bool control_supply1_mcb_enabled = 5;
+        bool toilet_mcb_enabled = 6;
+        bool wheel_slide_mcb_enabled = 7;
+        bool control_compressor_mcb_enabled = 8;
+        bool synchronizing_compressor_mcb_enabled = 9;
+        bool aps_control_mcb_enabled = 10;
+        bool battery_positive_mcb_enabled = 12;
+        bool auxiliary_supplies_mcb_enabled = 13;
+        bool control_supply2_mcb_enabled = 14;
+        bool public_address_mcb_enabled = 15;
+        bool auxiliary_control_mcb_enabled = 16;
+        bool heating_supply_mcb_enabled = 17;
+        bool main_light_mcb_enabled = 18;
+        bool emergency_light_mcb_enabled = 19;
+        bool ft1_lit = 24;
+        float brake_cylinder_bar = 25;
+    }
+}
+
+message FromTsolEnvironmentCupboard
+{
+    oneof value
+    {
+        bool compressor_isolating_mcb_enabled = 1;
+        bool brake_heater_mcb_enabled = 2;
+        bool tank_heater_mcb_enabled = 3;
+        bool toilet_control_mcb_enabled = 4;
+        bool control_supply1_mcb_enabled = 5;
+        bool toilet_mcb_enabled = 6;
+        bool wheel_slide_mcb_enabled = 7;
+        bool control_compressor_mcb_enabled = 8;
+        bool synchronizing_compressor_mcb_enabled = 9;
+        bool aps_control_mcb_enabled = 10;
+        bool battery_positive_mcb_enabled = 12;
+        bool auxiliary_supplies_mcb_enabled = 13;
+        bool control_supply2_mcb_enabled = 14;
+        bool public_address_mcb_enabled = 15;
+        bool auxiliary_control_mcb_enabled = 16;
+        bool heating_supply_mcb_enabled = 17;
+        bool main_light_mcb_enabled = 18;
+        bool emergency_light_mcb_enabled = 19;
+        bool auxiliaries_set_pressed = 20;
+        bool toilet_indicator_test_pressed = 21;
+        bool fuse_pressed = 22;
+        bool auxiliaries_pressed = 23;
+        bool compressor_governor_isolated = 24;
+    }
+}
+
+message ToMsoFaultIndicationCupboard
+{
+    oneof value
+    {
+        bool aux_compressor_mcb_enabled = 1;
+        bool traction_ctrl_mcb_enabled = 2;
+        bool wheel_slidel_mcb_enabled = 3;
+        bool ac_volt_relay_mcb_enabled = 4;
+        bool corridor_lights_lit = 9;
+        bool wsp_failure_lit = 10;
+        bool mcor_indicator = 11;
+        bool por_indicator = 12;
+    }
+}
+
+message FromMsoFaultIndicationCupboard
+{
+    oneof value
+    {
+        bool aux_compressor_mcb_enabled = 1;
+        bool traction_ctrl_mcb_enabled = 2;
+        bool wheel_slidel_mcb_enabled = 3;
+        bool ac_volt_relay_mcb_enabled = 4;
+        bool fault_pressed = 5;
+        bool reset_pressed = 6;
+        bool auxiliary_compressor_pressed = 7;
+        bool corridor_lights_pressed = 8;
+        int32 wsp = 11;
+        int32 traction_control = 12;
+    }
+}
+
+message ToMsoDiagnosticCupboard
+{
+    oneof value
+    {
+        bool data_logger_mcb_enabled = 1;
+        bool touch_screen_mcb_enabled = 2;
+        bool power = 3;
+        string emergency_stop_loop_a = 4;
+        bool aic_status_a = 5;
+        bool comms_faults_a = 6;
+        bool fire_system_faults_a = 7;
+        bool bt0170_a = 8;
+        bool bt0171_a = 9;
+        bool bt0296_a = 10;
+        bool bt0235_a = 11;
+        bool bt0298_a = 12;
+        bool power_system_faults_a = 13;
+        bool esm_fault_a = 14;
+        bool oil_pressure_low_a = 15;
+        bool rectifier_temperatures_a = 16;
+        bool alternator_temperatures_a = 17;
+        bool eng_isolation_switch_a = 18;
+        string n1_a = 19;
+        float engine_speed_a = 20;
+        float cac_fan_speed_a = 21;
+        float wjc_fan_speed_a = 22;
+        float vehicle_speed_a = 23;
+        string ad_blue_level_a = 24;
+        float fuel_level_a = 25;
+        float hv_bus_voltage_a = 26;
+        float coolant_level_a = 27;
+        bool connection_lost_a = 28;
+        string emergency_stop_loop_b = 29;
+        bool aic_status_b = 30;
+        bool comms_faults_b = 31;
+        bool fire_system_faults_b = 32;
+        bool bt0170_b = 33;
+        bool bt0171_b = 34;
+        bool bt0296_b = 35;
+        bool bt0235_b = 36;
+        bool bt0298_b = 37;
+        bool power_system_faults_b = 38;
+        bool esm_fault_b = 39;
+        bool oil_pressure_low_b = 40;
+        bool rectifier_temperatures_b = 41;
+        bool alternator_temperatures_b = 42;
+        bool eng_isolation_switch_b = 43;
+        string n1_b = 44;
+        float engine_speed_b = 45;
+        float cac_fan_speed_b = 46;
+        float wjc_fan_speed_b = 47;
+        float vehicle_speed_b = 48;
+        string ad_blue_level_b = 49;
+        float fuel_level_b = 50;
+        float hv_bus_voltage_b = 51;
+        float coolant_level_b = 52;
+        bool connection_lost_b = 53;
+        bool cmd_ok = 54;
+        string wheelslip = 55;
+        bool notch1 = 56;
+        bool notch2 = 57;
+        bool notch3 = 58;
+        bool notch4 = 59;
+        bool traction_reset_pan_up = 60;
+        string dbs = 61;
+        bool emergency_stop = 62;
+        bool ethernet_ok1 = 63;
+        bool ethernet_ok2 = 64;
+        bool bt0011 = 65;
+        bool bt0012 = 66;
+        bool connection_lost_mso = 67;
+        int64 trenager_datetime_sec = 68;
+    }
+}
+
+message FromMsoDiagnosticCupboard
+{
+    oneof value
+    {
+        bool data_logger_mcb_enabled = 1;
+        bool touch_screen_mcb_enabled = 2;
+    }
+}
+
+message FromBcuIsolationCocks
+{
+    oneof value
+    {
+        bool bic_isolated = 1;
+        bool asic_isolated = 2;
+    }
+}
+
+message FromFireHandle
+{
+    bool fire_handle_enabled = 1;
+}
+
+message FromMricIsolationCock
+{
+    bool mric_isolated = 1;
+}
+
+message FromMrpcc
+{
+    bool in_front = 1;
+    bool main_res_pipe_coupling_cock = 2;
+}

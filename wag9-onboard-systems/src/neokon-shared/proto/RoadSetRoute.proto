@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "RailPathEndpoint.proto";
+import "RailPathSegment.proto";
+
+/**
+ * Route is a sequence of rail path segments with facing endpoints set for start and stop points.
+ * The whole route distance is precalculated.
+ */
+message RoadSetRoute
+{
+    repeated RailPathSegment path = 1;
+    RailPathEndpoint.Endpoint pos_start_facing = 2;
+    RailPathEndpoint.Endpoint pos_stop_facing = 3;
+    double distance = 4;
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingConversationRemoteParty.proto";
+import "CrossingConversationMessage.proto";
+
+/**
+ * The conversation site defined for each communication device. Since we have only one device on
+ * each site, we keep menu structures for the specific defice on the given site.
+ */
+message CrossingConversationSite
+{
+    /**
+     * The site name. Must correspond to actual site name used in the world.
+     */
+    string name = 1;
+
+    /**
+     * Optional list of the remote parties to create two-level menu.
+     */
+    repeated CrossingConversationRemoteParty remote_parties = 2;
+
+    /**
+     * Optional list of the messages shown in a single-level menu.
+     */
+    repeated CrossingConversationMessage messages = 3;
+}

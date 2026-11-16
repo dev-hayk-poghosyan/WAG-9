@@ -1,0 +1,48 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the valve254 pneumatic element.
+ * @see Valve254Component.h
+ */
+message Valve254Def
+{
+    string name = 1;
+    string connected_tc_reservoir_name = 2;
+    string connected_gr_reservoir_name = 3;
+
+    /**
+     * Indicates whether the value of the pneumatic element should be passed to the plugin DLL.
+     */
+    bool serializable = 4;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL.
+ */
+message Valve254Set
+{
+    bool gr_cock = 1;
+    bool tc_cock = 2;
+    float lever_position = 3;
+}
+
+/**
+ * Definition of the value to be passed to the plugin DLL.
+ */
+message Valve254Value
+{
+    string name = 1;
+    float sound_volume = 2;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message Valve254State
+{
+    string name = 1;
+    int32 state = 2;
+    bool cock_tc = 3;
+    bool cock_gr = 4;
+}

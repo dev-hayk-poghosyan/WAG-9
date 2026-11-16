@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+message RailPathEndpoint
+{
+    enum Endpoint
+    {
+        FRONT = 0;
+        BACK = 1;
+    }
+}

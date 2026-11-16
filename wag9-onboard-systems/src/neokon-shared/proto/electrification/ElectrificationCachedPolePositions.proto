@@ -1,0 +1,34 @@
+syntax = "proto3";
+package proto.electrification;
+
+import "ElectrificationEnumTypes.proto";
+
+/**
+ * Позиция опоры
+ */
+message CachedPolePositionInfo
+{
+    /**
+     * Дистанция от начала участка КС.
+     */
+    float distance = 1;
+
+    /**
+     * Радиус кривизны в метрах участка между текущей и предыдущей опорой.
+     * Знак числа определяет сторону: + для правой, - для левой.
+     */
+    float curviness = 2;
+
+    /**
+     * Тип фиксатора.
+     */
+    RegistrationArm.Type registration_arm_type = 3;
+}
+
+message CachedPolePositions
+{
+    /**
+     * Рассчитанные позиции опор
+     */
+    repeated CachedPolePositionInfo cached_pole_positions = 1;
+}

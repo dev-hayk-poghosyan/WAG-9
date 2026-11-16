@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+message VehiclePayloadWeightChange
+{
+    /**
+     * 16 bytes, no hex encoding.
+     */
+    bytes vehicle_instance_uuid_bytes = 1;
+
+    /**
+     * The payload weight, in tonnes.
+     */
+    float payload_weight_t = 2;
+}

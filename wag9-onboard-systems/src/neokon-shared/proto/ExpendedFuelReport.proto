@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+message ExpendedFuelReport
+{
+    float expended_common_fuel_litre = 1;
+    float expended_fuel_on_parking_litre = 2;
+    float expended_fuel_in_driving_litre = 3;
+}

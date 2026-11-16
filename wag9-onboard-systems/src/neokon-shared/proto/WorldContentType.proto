@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Defines the type of content that can be used in the world.
+ */
+message WorldContentType
+{
+    enum Type
+    {
+        // For now we have only one type of content, but we can add more in future.
+        WORLD_OBJECTS = 0;
+    }
+}

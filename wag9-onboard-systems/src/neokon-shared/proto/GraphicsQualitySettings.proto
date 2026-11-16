@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "GraphicsQualitySetting.proto";
+
+/**
+ * Used to read file with graphics quality settings.
+ */
+message GraphicsQualitySettings
+{
+    repeated GraphicsQualitySetting quality_settings = 1;
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+// This message is sent by TrainSim master (or standalone) node once all slaves
+// have connected to it. By sending this message, TrainSim master indicates
+// it's now ready to receive LoadScenario or LoadReplay message.
+message TrainSimReady
+{
+    string session_uuid = 1;
+}

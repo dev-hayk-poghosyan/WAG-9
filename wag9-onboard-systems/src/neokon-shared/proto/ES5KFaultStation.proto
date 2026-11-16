@@ -1,0 +1,522 @@
+syntax = "proto3";
+package proto.es5k.faultstation;
+option csharp_namespace = "SchemeFaultStations.ES5K";
+
+/**
+ * Это сообщение-контейнер. Передается в Fault Station из контроллера поезда TrainSim.
+ */
+message ToFaultStation
+{
+    Section section = 1;
+    oneof message
+    {
+        ElectricValues electric_values = 2;
+        PneumaticValues pneumatic_values = 3;
+        ToPanelValues panel_values = 4;
+        SectionValues section_values = 5;
+        bool reset_fault_station_values = 6;
+    }
+}
+
+/**
+ * Это сообщение-контейнер. Передается из Fault Station в контроллер поезда TrainSim.
+ */
+message FromFaultStation
+{
+    Section section = 1;
+    FromPanelValues panel_values = 2;
+}
+
+enum Section
+{
+    A = 0;
+    B = 1;
+}
+
+/**
+ * Это сообщение - набор параметров для электрических схем в Fault Station.
+ * Переключатели, реле, состояния проводов, ламп и т.д.
+ */
+message ElectricValues
+{
+    bool h022 = 1;
+    bool h021 = 2;
+    bool e26  = 3;
+    bool e27  = 4;
+    bool kv21 = 5;
+    bool kv43 = 6;
+    bool s201 = 7;
+    bool s202 = 8;
+    bool sa5  = 9;
+    bool kv44 = 10;
+    bool kv2 = 11;
+    bool e26notsa5 = 12;
+    bool e26notsa5kv44 = 13;
+    bool h204 = 14;
+    bool kv3 = 15;
+    bool h204kv3 = 16;
+    bool h204kv3kv1 = 17;
+    bool kv1 = 18;
+    bool h208 = 19;
+    bool h210 = 20;
+    bool kv41 = 21;
+    bool h209 = 22;
+    bool s203 = 23;
+    bool s204 = 24;
+    bool e29 = 25;
+    bool sec1pneumoy10 = 26;
+    bool sec2pneumoy10 = 27;
+    bool e30 = 28;
+    bool e31 = 29;
+    bool h025 = 30;
+    bool h026 = 31;
+    bool h027 = 32;
+    bool s208 = 33;
+    bool sa3 = 34;
+    bool h027s208 = 35;
+    bool h251 = 36;
+    bool kv48 = 37;
+    bool sp6 = 38;
+    bool s9 = 39;
+    bool e46 = 40;
+    bool h253 = 41;
+    bool s14 = 42;
+    bool kv45 = 43;
+    bool km14 = 44;
+    bool s56 = 45;
+    bool s56h025 = 46;
+    bool e40 = 47;
+    bool kv19 = 48;
+    bool km2km3 = 49;
+    bool km1 = 50;
+    bool s13 = 51;
+    bool h025kv19 = 52;
+    bool s17 = 53;
+    bool km15 = 54;
+    bool kv47 = 55;
+    bool km11 = 56;
+    bool km12 = 57;
+    bool km2km3s17 = 58;
+    bool km2km3s17notkv47notkk15 = 59;
+    bool kk15 = 60;
+    bool pneumoy5 = 61;
+    bool km2km3s17notkv47 = 62;
+    bool s206 = 63;
+    bool s207 = 64;
+    bool h026s206 = 65;
+    bool h026s206s207 = 66;
+    bool s11 = 67;
+    bool s12 = 68;
+    bool e41 = 69;
+    bool e42 = 70;
+    bool h260 = 71;
+    bool h264 = 72;
+    bool h260s11 = 73;
+    bool h264s12 = 74;
+    bool h260s11kv45 = 75;
+    bool h264s12kv45 = 76;
+    bool qf1 = 77;
+    bool c3 = 78;
+    bool m10 = 85;
+    bool m11 = 86;
+    bool m12 = 87;
+    bool m13 = 88;
+    bool m14 = 89;
+    bool m15 = 90;
+    bool hvbe = 92;
+    bool ya3 = 93;
+    bool engine1 = 94;
+    bool engine2 = 95;
+    bool engine3 = 96;
+    bool engine4 = 97;
+    bool engine1rev = 98;
+    bool engine1notrev = 99;
+    bool engine2rev = 100;
+    bool engine2notrev = 101;
+    bool engine3rev = 102;
+    bool engine3notrev = 103;
+    bool engine4rev = 104;
+    bool engine4notrev = 105;
+    bool vznot1b1 = 106;
+    bool vznot2b1 = 107;
+    bool vznot3b1 = 108;
+    bool vznot4b1 = 109;
+    bool vznot1b2 = 110;
+    bool vznot2b2 = 111;
+    bool vznot3b2 = 112;
+    bool vznot4b2 = 113;
+    bool qs4 = 114;
+    bool qs3 = 115;
+    bool e2 = 116;
+    bool e3 = 117;
+    bool h20 = 118;
+    bool h19 = 119;
+    bool e20 = 121;
+    bool h023 = 122;
+    bool e19 = 123;
+    bool rev12 = 125;
+    bool rev34 = 126;
+    bool rev56 = 127;
+    bool rev78 = 128;
+    bool thr910 = 129;
+    bool thr1112 = 130;
+    bool thr1314 = 131;
+    bool thr1516 = 132;
+    bool h31 = 133;
+    bool h024 = 134;
+    bool e10 = 135;
+    bool e2notsa5 = 136;
+    bool e3notsa5 = 137;
+    bool pneumaticsp4 = 138;
+    bool y25 = 139;
+    bool kv17 = 140;
+    bool kv13 = 141;
+    bool kv12 = 142;
+    bool kv18 = 143;
+    bool kv84 = 144;
+    bool h36 = 145;
+    bool kt2 = 146;
+    bool e6 = 147;
+    bool a11a12qt1 = 148;
+    bool kt7 = 149;
+    bool kv15 = 152;
+    bool kt1 = 153;
+}
+
+/**
+ * Это сообщение - набор параметров для пневматической схемы в Fault Station.
+ * краны, трубы, манометры, и т.д.
+ */
+message PneumaticValues
+{
+    bool pantograph_lifted = 1;
+    bool kh16 = 2;
+    bool kh41 = 3;
+    bool kh44 = 4;
+    bool kh54 = 5;
+    bool kh65 = 6;
+    bool kh66 = 7;
+    bool kh67 = 8;
+    bool kh68 = 9;
+    bool kh69 = 10;
+    bool kh51 = 11;
+    bool kh25 = 12;
+    bool kh26 = 13;
+    bool kh30 = 14;
+    bool kh56 = 15;
+    bool kh15 = 16;
+    bool kh49 = 17;
+    bool kh5 = 18;
+    bool kh39 = 19;
+    bool khk1 = 20;
+    bool khk3 = 21;
+    bool khk2 = 22;
+    bool khk4 = 23;
+    bool kh40 = 24;
+    bool kh28 = 25;
+    bool kh53 = 26;
+    bool kh52 = 27;
+    bool kh23 = 28;
+    bool kh19 = 29;
+    bool kh47 = 30;
+    bool kh20 = 31;
+    bool kh17 = 32;
+    bool kh18 = 33;
+    bool kh45 = 34;
+    bool kh46 = 35;
+    bool kh60 = 36;
+    bool kh3 = 37;
+    bool kh34 = 38;
+    bool kh61 = 39;
+    bool kh31 = 40;
+    bool kh32 = 41;
+    bool kh6 = 42;
+    bool kh21 = 43;
+    bool kh22 = 44;
+    bool kh29 = 45;
+    bool bu367 = 46;
+    bool kh24 = 47;
+    bool kh48 = 48;
+    bool kh42 = 49;
+    bool kh35 = 50;
+    bool kh1 = 51;
+    bool kh50 = 52;
+    bool kh55 = 53;
+    bool kh36 = 54;
+    bool kh10 = 55;
+    bool kh11 = 56;
+    bool kh12 = 57;
+    bool kh13 = 58;
+    float mh1 = 59;
+    float mh1_r = 60;
+    float mh2 = 61;
+    float mh2_r = 62;
+    float mh3 = 63;
+    float mh4 = 64;
+    float mh5 = 65;
+    float mh6 = 66;
+    float mh7 = 67;
+    float mh8 = 68;
+    float mh9 = 69;
+    bool ct1 = 70;
+    bool ct2 = 71;
+    int32 km215 = 72;
+    int32 km = 73;
+    int32 p0 = 74;
+    int32 p1 = 75;
+    int32 p2 = 76;
+    int32 p3 = 77;
+    int32 p4 = 78;
+    int32 p5 = 79;
+    int32 p6 = 80;
+    int32 p7 = 81;
+    int32 p8 = 82;
+    int32 p9 = 83;
+    int32 p10 = 84;
+    int32 p11 = 85;
+    int32 p12 = 86;
+    int32 p13 = 87;
+    int32 p14 = 88;
+    int32 p15 = 89;
+    int32 p16 = 90;
+    int32 p17 = 91;
+    int32 p18 = 92;
+    int32 p19 = 93;
+    int32 p20 = 94;
+    int32 p21 = 95;
+    int32 p22 = 96;
+    int32 p23 = 97;
+    int32 p24 = 98;
+    int32 p25 = 99;
+    int32 p26 = 100;
+    int32 p27 = 101;
+    int32 p28 = 102;
+    int32 p29 = 103;
+    int32 p30 = 104;
+    int32 p31 = 105;
+    int32 p32 = 106;
+    int32 p33 = 107;
+    int32 p34 = 108;
+    int32 p35 = 109;
+    int32 p36 = 110;
+    int32 p37 = 111;
+    int32 p38 = 112;
+    int32 p39 = 113;
+    int32 p40 = 114;
+    int32 p41 = 115;
+    int32 p42 = 116;
+    int32 p43 = 117;
+    int32 p44 = 118;
+    int32 p45 = 119;
+    int32 p46 = 120;
+    int32 p47 = 121;
+    int32 p48 = 122;
+    int32 p49 = 123;
+    int32 p50 = 124;
+    int32 p51 = 125;
+    int32 p52 = 126;
+    int32 p53 = 127;
+    int32 p54 = 128;
+    int32 p55 = 129;
+    int32 p56 = 130;
+    int32 p57 = 131;
+    int32 p58 = 132;
+    int32 p59 = 133;
+    int32 p60 = 134;
+    int32 p61 = 135;
+    int32 p62 = 136;
+    int32 p63 = 137;
+    int32 p64 = 138;
+    int32 p65 = 139;
+    int32 p66 = 140;
+    int32 p67 = 141;
+    int32 p68 = 142;
+    int32 p69 = 143;
+    int32 p70 = 144;
+    int32 p71 = 145;
+    int32 p72 = 146;
+    int32 p73 = 147;
+    int32 p74 = 148;
+    int32 p75 = 149;
+    int32 p76 = 150;
+    int32 p77 = 151;
+    int32 p78 = 152;
+    int32 p79 = 153;
+    int32 p80 = 154;
+    int32 p81 = 155;
+    int32 p82 = 156;
+    int32 p83 = 157;
+    int32 p84 = 158;
+    int32 p85 = 159;
+    int32 p86 = 160;
+    int32 p87 = 161;
+    int32 p88 = 162;
+    int32 p89 = 163;
+    int32 p90 = 164;
+    int32 p91 = 165;
+    int32 p92 = 166;
+    int32 p93 = 167;
+    int32 p94 = 168;
+    int32 p95 = 169;
+    int32 p96 = 170;
+    int32 p97 = 171;
+    int32 p98 = 172;
+    int32 p99 = 173;
+    int32 p100 = 174;
+    int32 p101 = 175;
+    int32 p102 = 176;
+    int32 p103 = 177;
+    int32 p104 = 178;
+    int32 p105 = 179;
+    int32 p106 = 180;
+    int32 p107 = 181;
+    int32 p108 = 182;
+    int32 p109 = 183;
+    int32 p110 = 184;
+    int32 p111 = 185;
+    int32 p112 = 186;
+    int32 p113 = 187;
+    int32 p114 = 188;
+    int32 p115 = 189;
+    int32 p116 = 190;
+    int32 p117 = 191;
+    int32 p118 = 192;
+    int32 p119 = 193;
+    int32 p120 = 194;
+    int32 p121 = 195;
+    int32 p122 = 196;
+    int32 p123 = 197;
+    int32 p124 = 198;
+    int32 p125 = 199;
+    int32 p126 = 200;
+    int32 p127 = 201;
+    int32 p128 = 202;
+    int32 p129 = 203;
+    int32 p130 = 204;
+    int32 p131 = 205;
+    int32 p132 = 206;
+    int32 p133 = 207;
+    int32 p134 = 208;
+    int32 p135 = 209;
+    int32 p136 = 210;
+    int32 p137 = 211;
+    int32 p138 = 212;
+    int32 p139 = 213;
+    int32 p140 = 214;
+    int32 p141 = 215;
+    int32 p142 = 216;
+    int32 p143 = 217;
+    int32 p144 = 218;
+    int32 p145 = 219;
+    int32 p146 = 220;
+    int32 p147 = 221;
+    int32 p148 = 222;
+    int32 p149 = 223;
+    int32 p150 = 224;
+    int32 p151 = 225;
+    int32 p152 = 226;
+    int32 p153 = 227;
+    int32 p154 = 228;
+    int32 p155 = 229;
+    int32 p156 = 230;
+    int32 p157 = 231;
+    int32 p158 = 232;
+    int32 p159 = 233;
+    int32 p160 = 234;
+    int32 p161 = 235;
+    int32 p162 = 236;
+    int32 p163 = 237;
+    int32 p164 = 238;
+    int32 p165 = 239;
+    int32 p166 = 240;
+    int32 p167 = 241;
+    int32 p168 = 242;
+    int32 p169 = 243;
+    int32 p170 = 244;
+    int32 p171 = 245;
+    int32 p172 = 246;
+    int32 p173 = 247;
+    int32 p174 = 248;
+    int32 p175 = 249;
+    int32 p176 = 250;
+    int32 p177 = 251;
+    int32 p178 = 252;
+    int32 p179 = 253;
+    int32 p180 = 254;
+    int32 p181 = 255;
+    int32 p182 = 256;
+    int32 p183 = 257;
+    int32 p184 = 258;
+    int32 p185 = 259;
+    int32 p186 = 260;
+    int32 p187 = 261;
+    int32 p188 = 262;
+    int32 p189 = 263;
+    int32 p190 = 264;
+    int32 p191 = 265;
+    int32 p192 = 266;
+    int32 p193 = 267;
+    int32 p194 = 268;
+    int32 p195 = 269;
+    int32 p196 = 270;
+    int32 p197 = 271;
+    int32 p198 = 272;
+    int32 p199 = 273;
+    int32 p200 = 274;
+    int32 p201 = 275;
+    int32 p202 = 276;
+    int32 p203 = 277;
+    bool compressor = 278;
+    bool blowoff_kp1 = 279;
+    bool blowoff_kp2 = 280;
+    bool blowoff_km1 = 281;
+    bool blowoff_pc1 = 282;
+    bool blowoff_pc2 = 283;
+    bool blowoff_pc3 = 284;
+    bool blowoff_pc4 = 285;
+    bool blowoff_pc5 = 286;
+    bool blowoff_pc6 = 287;
+    bool epckey = 288;
+}
+
+/**
+ * Это сообщение - набор параметров для шкафа автоматов в Fault Station.
+ * Приборы, автоматы, лампы и т.д.
+ */
+message ToPanelValues
+{
+    float pv = 1;
+    float pa = 2;
+}
+
+/**
+ * Это сообщение-контейнер. Передается из Fault Station в контроллер поезда TrainSim.
+ */
+message FromPanelValues
+{
+    oneof value
+    {
+        int32 sa3 = 1;
+        int32 sa2 = 2;
+        int32 sa1 = 3;
+        bool s4 = 4;
+        bool s3 = 5;
+        bool s2 = 6;
+        bool s1 = 7;
+        bool saut = 8;
+    }
+}
+
+/**
+ * Это сообщение - набор параметров для модельки секции в Fault Station.
+ * Пантограф, огни.
+ */
+message SectionValues
+{
+    bool pantograph_lifted = 1;
+    bool spotlight_lit = 2;
+    bool buffer_left_white_lit = 3;
+    bool buffer_right_white_lit = 4;
+    bool buffer_left_red_lit = 5;
+    bool buffer_right_red_lit = 6;
+}

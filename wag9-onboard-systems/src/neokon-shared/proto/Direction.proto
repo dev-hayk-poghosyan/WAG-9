@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+message Direction
+{
+    enum Type
+    {
+        FORWARD = 0;
+
+        BACKWARD = 1;
+    }
+}

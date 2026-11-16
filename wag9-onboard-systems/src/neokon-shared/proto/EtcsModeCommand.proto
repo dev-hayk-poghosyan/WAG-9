@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+enum EtcsModeCommand
+{
+    OS = 0;
+    SH = 1;
+    SR = 2;
+}

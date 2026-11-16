@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+import "FileTransferHandshake.proto";
+import "FileTransferChunkData.proto";
+import "FileTransferChecksum.proto";
+
+message FileTransferMessage
+{
+    oneof stage
+    {
+        FileTransferHandshake new_transfer_handshake = 1;
+
+        FileTransferChunkData continuous_chunk_data = 2;
+
+        FileTransferChecksum checksum = 3;
+    }
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+message TimeOfDay
+{
+    enum DayTime
+    {
+        DAY     = 0;
+        NIGHT   = 1;
+    }
+}

@@ -1,0 +1,48 @@
+syntax = "proto3";
+package proto.electrification;
+
+import "ElectrificationEnumTypes.proto";
+import "ElectrificationConsole.proto";
+
+/**
+ * Общие параметры для участка КС и сопряжений.
+ */
+message CatenaryLengthConfig
+{
+    /**
+     * Индекс пресета для генерируемых опор участка. 
+     */
+    int32 pole_preset_idx = 1;
+
+    /**
+     * Индекс пресета для генерируемых подвесов участка. 
+     */
+    int32 cantilever_preset_idx = 2;
+
+    /**
+     * Максимальный радиус кривизны участка выше которого, участок считается закругленным.
+     */
+    double max_curve_radius_threshold_m = 3;
+
+    /**
+     * Сторона расположения опор (справа или слева) относительно
+     * направления построения участка от начала к концу.
+     */
+    PoleSide.Type pole_side = 4;
+
+    /**
+     * Тип консоли на расставляемых опорах.
+     */
+    Console.Type console_type = 5;
+
+    /**
+     * Тип подвески проводов на пролетах.
+     */
+    Catenary.Type catenary_type = 6;
+
+    /**
+     * Развернуть фиксаторы после их расчета. То есть прямой меняется на обратный и наоборот.
+     * Разворачиваются фиксаторы только на ПРЯМЫХ участках.
+     */
+    bool flip_registration_arms = 7;
+}

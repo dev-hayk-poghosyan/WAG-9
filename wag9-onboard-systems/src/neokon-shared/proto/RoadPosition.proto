@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+import "PointOnRoad.proto";
+
+/**
+ * RoadPosition class saved storage.
+ * @see RoadPosition.h
+ */
+message RoadPosition
+{
+    enum Endpoint
+    {
+        FRONT = 0;
+        BACK = 1;
+    }
+    PointOnRoad point_on_road = 1;
+    Endpoint facing_path_endpoint = 2;
+}

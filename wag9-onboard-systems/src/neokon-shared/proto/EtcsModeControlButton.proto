@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+message EtcsModeControlButton
+{
+    enum Button
+    {
+        OS = 0;
+        SH = 1;
+        SR = 2;
+    }
+}

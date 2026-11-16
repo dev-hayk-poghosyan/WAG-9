@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+
+import "PointOnRoad.proto";
+import "RailPathSide.proto";
+
+message RailwayCrossingSituation
+{
+    /**
+     * Crossing node id.
+     */
+    uint32 crossing_id = 1;
+
+    /**
+     * uuid of situation from the GTE/data/RailwayCrossing/situations.json
+     */
+    bytes situation_uuid = 2;
+
+    /**
+     * if true a signaller presents on this railway crossing.
+     */
+    bool signaller_present = 3;
+
+    PointOnRoad point_on_road = 4;
+    RailPathSide rail_path_side = 5;
+}

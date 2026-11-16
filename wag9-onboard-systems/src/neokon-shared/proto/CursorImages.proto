@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+import "CursorImageType.proto";
+
+message CursorImages
+{
+    message Image
+    {
+        CursorImageType.Type type = 1;
+        string path = 2;
+        /**
+         * Hotspot is the pixel of the cursor icon which aligns with the pointer position.
+         * Calculated from the top left corner.
+         * By default = 0;
+         */
+        int32 hotspot_x = 3;
+        int32 hotspot_y = 4;
+    }
+    repeated Image images = 1;
+}

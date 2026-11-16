@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+enum SwitchState
+{
+    YSW_STATE_LEFT                     = 0;
+    YSW_STATE_RIGHT                    = 1;
+
+    XSW_STATE_LEFT_INPUT_LEFT_OUTPUT   = 2;
+    XSW_STATE_LEFT_INPUT_RIGHT_OUTPUT  = 3;
+    XSW_STATE_RIGHT_INPUT_LEFT_OUTPUT  = 4;
+    XSW_STATE_RIGHT_INPUT_RIGHT_OUTPUT = 5;
+
+    TWSW_STATE_NEAR_SIDE               = 6;
+    TWSW_STATE_FAR_LEFT                = 7;
+    TWSW_STATE_FAR_RIGHT               = 8;
+
+    DSW_STATE_STRAIGHT_PASSING         = 9;
+    DSW_STATE_LEFT_INPUT_RIGHT_OUTPUT  = 10;
+    DSW_STATE_RIGHT_INPUT_LEFT_OUTPUT  = 11;
+}

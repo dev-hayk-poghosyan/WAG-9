@@ -1,0 +1,106 @@
+syntax = "proto3";
+package proto.electrification.alternative_preset;
+
+import "ElectrificationAltPresetAttachableNode.proto";
+import "ElectrificationAltPresetWireInsulators.proto";
+
+/**
+ * Блок данных для подвесок контактных проводов.
+ */
+message Catenary
+{
+    /** 
+     * Тип подвески.
+     */
+    enum Type
+    {
+        SIMPLE = 0; //безрессорная 
+        STITCHED = 1; //рессорная
+    }
+
+    /**
+     * Диаметр контактного провода, м.
+     */
+    double contact_wire_diameter = 1;
+
+    /**
+     * Диаметр несущего тросса, м.
+     */
+    double catenary_wire_diameter = 2;
+
+    /**
+     * Диаметр струны, м.
+     */
+    double dropper_diameter = 3;
+
+    /**
+     * Коэффициент провисания
+     */
+    double sagging_coefficient = 4;
+
+    /**
+     * Использовать меши из блока string_node для генерации струн.
+     */
+    bool use_mesh_dropper = 5;
+
+    /**
+     * Поперечные поддерживающие струны.
+     */
+    AttachableNode dropper_node = 6;
+
+    /**
+     * Струны, поддерживающие составные изоляторы.
+     */
+    AttachableNode insulator_dropper_node = 7;
+
+    /**
+     * Перемычка средней анкеровки - компенсированная подвеска.
+     */
+    AttachableNode compensated_mid_point_anchor_node = 8;
+
+    /**
+     * Перемычка средней анкеровки - полукомпенсированная подвеска.
+     */
+    AttachableNode semi_compensated_mid_point_anchor_node = 9;
+
+    /**
+     * Изоляторы для врезки в провода анкерной ветви.
+     */
+    WireInsulators tension_insulator = 10;
+
+    /**
+     * Секционный изолятор для врезки в рабочую подвеску.
+     */
+    WireInsulators section_insulator = 11;
+
+    /**
+     * Изоляторы для врезки в провода анкерной ветви.
+     */
+    WireInsulators overlap_insulator = 15;
+
+    /**
+     * Количество пар струн возле изолятора сопряжения.
+     * Струны считаются от точки крепления изолятора с заданным шагом.
+     */
+    int32 num_overlap_insulator_droppers = 16;
+
+    /**
+     * Шаг вставки струн возле изолятора сопряжения, в метрах.
+     */
+    double overlap_insulator_droppers_step_m = 17;
+
+    /**
+     * Путь к файлу материала меша провода относительно папки data.
+     */
+    string wire_material = 12;
+
+    /**
+     * Значение параметра Max Visibility для меша провода.
+     */
+    double max_visibility_distance = 13;
+
+    /**
+     * Значение параметра Max Fade для меша провода.
+     */
+    double max_fade_distance = 14;
+}

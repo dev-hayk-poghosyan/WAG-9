@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+enum DoorsCommand
+{
+    OPEN_LEFT_DOORS = 0;
+    OPEN_RIGHT_DOORS = 1;
+    CLOSE_ALL_DOORS = 2;
+    CONDUCTOR_LEFT = 3;
+    CONDUCTOR_RIGHT = 4;
+    INTERLOCK_CLOSE = 5;
+}

@@ -1,0 +1,217 @@
+syntax = "proto3";
+package proto.te10mk.boardcomputer;
+option csharp_namespace = "board_computer_2_3TE10MK";
+
+/**
+ * Это сообщение-контейнер. Передается в BoardComputer из контроллера поезда TrainSim.
+ */
+message TcpToBoardComputerMessage
+{
+    enum KeyboardButton
+    {
+        BTN_NONE = 0;
+        BTN_1 = 1;
+        BTN_2 = 2;
+        BTN_3 = 3;
+        BTN_4 = 4;
+        BTN_5 = 5;
+        BTN_6 = 6;
+        BTN_7 = 7;
+        BTN_8 = 8;
+        BTN_9 = 9;
+        BTN_0 = 10;
+        BTN_E = 11;
+        BTN_DOWN = 12;
+        BTN_UP = 13;
+        BTN_RIGHT = 14;
+        BTN_LEFT = 15;
+        BTN_C = 16;
+        BTN_UD = 17;
+        BTN_BRIGHTNESS = 18;
+        BTN_LIGHT = 19;
+        BTN_V0 = 20;
+        BTN_V = 21;
+        BTN_ST = 22;
+        BTN_I = 23;
+        BTN_S = 24;
+        BTN_ASUS = 25;
+    }
+
+    /**
+     * Это сообщение - набор параметров одной секции локомотива.
+     * Переключатели, реле, значения приборов и т.д.
+     */
+    message SectionParameters
+    {
+        Section section = 1;
+
+        //значение прибора температуры воды, с 0-130
+        float water_temperature_c = 2;
+
+        //значение прибора температуры масла, с 0-130
+        float oil_temperature_c = 3;
+
+        //температура выпускных газов 1
+        float exhaust_gas_temperature1_dc_c = 4;
+
+        //температура выпускных газов 2
+        float exhaust_gas_temperature2_dc_c = 5;
+
+        //значение мощности, квт
+        float _power = 6;
+
+        //кпд
+        float efficiency_factor = 7;
+
+        //значение прибора температуры масла до дизеля, с 0-135
+        float oil_temperature_to_diesel = 8;
+
+        //значение прибора температуры масла после дизеля, с 0-135
+        float oil_temperature_after_diesel = 9;
+
+        //значение прибора давление масла до фго, 0-1.5
+        float oil_pressure_to_diesel = 10;
+
+        //значение прибора давление масла после фго, 0-1.5
+        float oil_pressure_after_diesel = 11;
+
+        //значение частоты вращения дизеля, об/мин 0-3857
+        int32 diesel_engine_speed = 12;
+
+        //значение прибора температура топлива, с 0-135
+        float fuel_temperature = 13;
+
+        //значение прибора давление топлива до фто 0-1.5
+        float fuel_pressure_up_to_fto = 14;
+
+        //значение прибора давление топлива после фто 0-1.5
+        float fuel_pressure_after_fto = 15;
+
+        //давление воздуха до дизеля
+        float air_pressure_mpa = 16;
+
+        //температура воздуха 1
+        float air_temperature1_c = 17;
+
+        //температура воздуха 2
+        float air_temperature2_c = 18;
+
+        //температура охладителя
+        float coolant_temperature_c = 19;
+
+        //напряжение заряда акб в 0-900
+        float battery_charge_voltage = 20;
+
+        //ток заряда акб, а 0-3000
+        float battery_charge_amperage = 21;
+
+        //напряжение цепей управления
+        float control_voltage = 22;
+
+        //лампа заряда акб
+        bool battery_charge_lamp_lit = 23;
+
+        //значение прибора угол управления шим, град
+        float control_angle_him = 24;
+
+        //ток возбуждения
+        float excitation_amperage = 25;
+
+        //контактор кв
+        bool contactor_kv = 26;
+
+        //напряжение генератора
+        float generator_voltage = 27;
+
+        //ток генератора
+        float generator_amperage = 28;
+
+        //лампа шим1
+        bool shim1_lamp_lit = 29;
+
+        //лампа тиристора
+        bool thyristor_lamp_lit = 30;
+
+        //отключение двигателя 1
+        bool contactor_engine_shutdown1 = 31;
+
+        //отключение двигателя 2
+        bool contactor_engine_shutdown2 = 32;
+
+        //отключение двигателя 3
+        bool contactor_engine_shutdown3 = 33;
+
+        //отключение двигателя 4
+        bool contactor_engine_shutdown4 = 34;
+
+        //отключение двигателя 5
+        bool contactor_engine_shutdown5 = 35;
+
+        //отключение двигателя 6
+        bool contactor_engine_shutdown6 = 36;
+
+        //ослабление поля кш1
+        bool contactor_kh1 = 37;
+
+        //ослабление поля кш2
+        bool contactor_kh2 = 38;
+
+        // напряжение бдс
+        float bds_voltage = 39;
+
+        //моторесурс
+        float motoresource = 40;
+
+        //значение интергральной мощности, мвт*ч 0-180
+        float intergral_power_value = 41;
+
+        //_p в кг/см^2
+        float p_kg_cm2 = 42;
+
+        //уровень мощности (1-полный, 2-селективный)
+        bool power_level = 43;
+    }
+
+    enum FaultCode
+    {
+        TRACTION_MOTOR_SHUTDOWN = 0;
+        GENERAL_DIESEL_PARAMETERS = 1;
+        OIL_OVERHEATING = 2;
+        EXCEEDING_THE_PERMISSIBLE_FUEL_PRESSURE = 3;
+        OVERHEATING_OF_THE_AIR_SYSTEM = 4;
+        SHORT_CIRCUIT_IN_THE_CONTROL_CENTER = 5;
+        TRACTION_SHUTDOWN = 6;
+    }
+
+    /**
+     * Это сообщение лю ошибки - на какой секции, какой тип, включить\выключить.
+     */
+    message Fault
+    {
+        Section section = 1;
+        FaultCode fault_code = 2;
+        bool state = 3;
+    }
+
+    oneof value
+    { 
+        int32 machinist_controller = 1; //позиция контроллера машиниста
+        int32 reverse = 2; //положения реверсаrj
+        int32 engine_status = 3;
+        KeyboardButton keyboard_button = 4;
+        SectionParameters section_parameters = 5;
+        bool boar_computer_power = 6; // питание бортового компьютера
+        Fault fault = 7;
+    }
+}
+
+/**
+ * BoardComputer может использоваться как для 2ТЭ10Мк так и для 3ТЭ10Мк.
+ * Поэтому заложены сразу 3 секции.
+ */
+enum Section
+{
+    A = 0;
+    B = 1;
+    V = 2;
+}

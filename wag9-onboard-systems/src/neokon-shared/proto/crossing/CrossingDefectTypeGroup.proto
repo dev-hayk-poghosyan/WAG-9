@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectType.proto";
+
+/**
+ * A group of defects within the same category.
+ *
+ * A Defect belongs to a group if its node name contain one of the specified substrings and 
+ * a suffix from one of the defect types within this group.
+ */
+message CrossingDefectTypeGroup
+{
+    repeated string node_name_substrings = 1;
+
+    /**
+     * Specific defect types possible for this group.
+     */
+    repeated CrossingDefectType defect_types = 2;
+}

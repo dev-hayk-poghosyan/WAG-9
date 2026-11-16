@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Type of cargo train load/unload mark.
+ */
+message LoadUnloadMarkType
+{
+    enum Type
+    {
+        LOAD = 0;
+        UNLOAD = 1;
+    }
+}

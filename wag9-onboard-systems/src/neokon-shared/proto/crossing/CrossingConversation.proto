@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingRadioType.proto";
+import "CrossingConversationSite.proto";
+
+/**
+ * Specifies conversation data for the different communication device types.
+ */
+message CrossingConversation
+{
+    /**
+     * The radio type.
+     */
+    CrossingRadioType radio_type = 1;
+
+    /**
+     * The sites specified for this item.
+     */
+    repeated CrossingConversationSite sites = 2;
+}

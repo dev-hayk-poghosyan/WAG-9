@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Types of animation trigger.
+ * For now supported only two trigger types: 0 - train, 1 - camera.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/world/anim-switch-triggers
+ */
+message AnimationTriggerType
+{
+    enum Type
+    {
+        TRAIN = 0;
+        CAMERA = 1;
+    }
+}

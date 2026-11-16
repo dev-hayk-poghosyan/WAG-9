@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Normally corresponds to class SignalStateLegacy::PartialState, but may instead correspond
+ * to other single-field state classes.
+ */
+message SignalStateSimple
+{
+    int32 state = 1;
+
+    /**
+     * The actual symbolic indicator's node id that are shown in TrainSim.
+     */
+    int32 symbolic_indicator = 2;
+
+    /**
+     * Requested from the instructor symbolic indicator's node id.
+     * This request may be ignored by the Trainsim. Actual value will be in symbolic_indicator.
+     */
+    int32 manual_symbolic_indicator = 3;
+}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+/**
+ * Блок данных для подвеса под жесткую поперечину -
+ * консольные и фиксаторные стойки, а также фиксаторы на тросе. 
+ */
+message PortalSuspension
+{
+    /**
+     * Уникальное имя ноды подвеса без пути.
+     */
+    string nodeName = 1;
+}

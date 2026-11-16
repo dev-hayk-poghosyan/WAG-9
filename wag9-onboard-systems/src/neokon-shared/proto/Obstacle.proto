@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "RailPathEndpoint.proto";
+import "RailPathSide.proto";
+import "WorldPosition.proto";
+
+message Obstacle
+{
+    RoadSegment road_segment = 1;
+    float segment_length_fraction = 2;
+    RailPathSide rail_path_side = 3;
+    string type_string = 4;
+    bytes instance_uuid_bytes = 5; // 16 bytes, no hex encoding.
+    RailPathEndpoint.Endpoint train_facing = 6;
+    WorldPosition position = 7;
+}

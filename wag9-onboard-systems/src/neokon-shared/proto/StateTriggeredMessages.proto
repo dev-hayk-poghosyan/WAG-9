@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "StateTriggeredMessage.proto";
+
+/**
+ * This message is loaded from a JSON file.
+ */
+message StateTriggeredMessages
+{
+    repeated StateTriggeredMessage messages = 1;
+}

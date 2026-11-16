@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectCategory.proto";
+import "CrossingInventory.proto";
+import "WeatherConditionPreset.proto";
+
+message CrossingExercise
+{
+    string uuid        = 1;
+    string title       = 2;
+    string description = 3;
+
+    repeated CrossingDefectCategory defect_categories = 4;
+    repeated CrossingInventory      missing_inventories = 5;
+    reserved 6;
+    repeated bytes                  present_train_ids = 7; // UUIDs, 16 bytes, no hex encoding
+    WeatherConditionPreset          initial_weather_condition_preset = 8;
+    bool                            night_time = 9;
+}

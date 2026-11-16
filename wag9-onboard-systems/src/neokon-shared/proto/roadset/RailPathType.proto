@@ -1,0 +1,23 @@
+syntax = "proto3";
+package proto;
+
+enum RailPathType
+{
+    PATH_BRANCH = 0;
+
+    PATH_YSW_ROOT_TO_LEFT = 1;
+    PATH_YSW_ROOT_TO_RIGHT = 2;
+    
+    PATH_XSW_LEFT_TO_LEFT = 3;
+    PATH_XSW_LEFT_TO_RIGHT = 4;
+    PATH_XSW_RIGHT_TO_LEFT = 5;
+    PATH_XSW_RIGHT_TO_RIGHT = 6;
+
+    PATH_XCR_LEFT_TO_RIGHT = 7;
+    PATH_XCR_RIGHT_TO_LEFT = 8;
+
+    PATH_TW_ROOT_TO_SIDE    = 9;
+    PATH_TW_ROOT_TO_MIDDLE  = 10;
+    PATH_TW_MIDDLE_TO_LEFT  = 11;
+    PATH_TW_MIDDLE_TO_RIGHT = 12;
+}

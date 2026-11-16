@@ -1,0 +1,47 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * The weather scheduler has its own clock. That clock starts at zero and
+ * can be paused, resumed, and synchronized with the simulation time.
+ * The simulation time also starts at zero.
+ */
+enum WeatherScheduleCommand
+{
+    /**
+     * When the weather schedule is paused, the time-of-day clock keeps
+     * ticking, but the time-based weather triggers are disabled.
+     *
+     * If a weather transition was already in-progress when this command
+     * arrived, the ongoing weather transition gets frozen, whether that
+     * transition was time triggered, position triggered or manually requested.
+     *
+     * However, position triggers remain active, and should one get triggered
+     * while the weather schedule is paused, the weather transition will take
+     * place.
+     *
+     * The situation with manually requested weather transitions is like this:
+     * The InstructorServerOutgoingMessage.manual_weather_request message
+     * pauses the weather scheduler implicitly, without the WEATHER_SCHEDULE_PAUSE
+     * command being issued. Such an implicit pause has similar effects to the
+     * explicit one, except the implicit pause allows the manually requested
+     * weather transition to proceed.
+     */
+    WEATHER_SCHEDULE_PAUSE = 0;
+
+    /**
+     * Resuming the weather schedule (assuming it was paused) re-enables
+     * the time-based weather triggers and unfreezes the ongoing weather
+     * transition, if one was in progress. The triggers that had their
+     * activation time point pass while the weather scheduler was paused,
+     * won't get activated after a resume.
+     */
+    WEATHER_SCHEDULE_RESUME = 1;
+
+    /**
+     * Finds the weather trigger that was supposed to be active at the
+     * current time of day, and starts transitioning to that weather trigger.
+     * If the weather scheduler was paused, resumes it.
+     */
+    WEATHER_SCHEDULE_APPLY_AND_RESUME = 2;
+}

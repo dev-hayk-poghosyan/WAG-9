@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "CursorImageType.proto";
+
+message CursorType
+{
+    CursorImageType.Type image_type = 1;
+
+    string action_name = 2;
+
+    string object_name_override = 3;
+}

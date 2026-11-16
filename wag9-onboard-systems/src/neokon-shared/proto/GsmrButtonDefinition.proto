@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * This type is deserialized from JSON, so field names are important.
+ */
+message GsmrButtonDefinition
+{
+    string uuid = 1;
+    string text = 2;
+}

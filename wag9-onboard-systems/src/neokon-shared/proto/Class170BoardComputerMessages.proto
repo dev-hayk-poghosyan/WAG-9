@@ -1,0 +1,19 @@
+syntax = "proto3";
+package proto.class170.boardcomputer;
+option csharp_namespace = "Class170_BoardComputer";
+
+/**
+ * The message is sent from TrainSim to the control panel.
+ */
+message TcpToBoardComputerMessage
+{
+    int32 to_value = 1;
+}
+
+/**
+ * The message is sent from the control panel to the TrainSim.
+ */
+message TcpFromBoardComputerMessage
+{
+    int32 from_value = 1;
+}

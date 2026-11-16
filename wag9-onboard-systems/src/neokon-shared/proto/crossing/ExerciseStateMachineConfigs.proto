@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+import "ExerciseStateMachineConfig.proto";
+import "ExerciseStateMachineEvents.proto";
+
+message ExerciseStateMachineConfigs
+{
+    repeated ExerciseStateMachineConfig exercise_state_machine_configs = 1;
+    ExerciseStateMachineEvents events = 2;
+}

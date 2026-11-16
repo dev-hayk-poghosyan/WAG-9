@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Used as part of VehiclesProperties to control the etcs start mode.
+ */
+message EtcsStartMode
+{
+    enum StartMode
+    {
+        FULL_SUPERVISION  = 0;
+        ON_SIGHT          = 1;
+        STAFF_RESPONSIBLE = 2;
+    }
+
+    StartMode start_mode = 1;
+}

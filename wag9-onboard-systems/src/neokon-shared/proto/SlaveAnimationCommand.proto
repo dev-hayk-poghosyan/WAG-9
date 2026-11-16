@@ -1,0 +1,65 @@
+syntax = "proto3";
+package proto;
+
+message SlaveAnimationCommand
+{
+    message CreateStandaloneAnimatedObject
+    {
+        int32 master_root_node_id = 1;
+        string class_name = 2;
+        int32 random_seed = 3;
+    }
+
+    message AttachToParentedAnimatedObject
+    {
+        int32 master_root_node_id = 1;
+        string class_name = 2;
+        int32 random_seed = 3;
+    }
+
+    /**
+     * Destroys the AnimatedObject instance on the slave. Whether or not the actual node will
+     * be destroyed depends on whether the AnimatedObject was created as a result of
+     * CreateStandaloneAnimatedObject or AttachToParentedAnimatedObject. In the latter case,
+     * the node stays alive.
+     */
+    message DestroyAnimatedObject
+    {
+        int32 master_root_node_id = 1;
+    }
+
+    message PlayAnimation
+    {
+        int32 master_root_node_id = 1;
+        string animation_name = 2;
+    }
+
+    message ReplaceMaterial
+    {
+        int32 master_root_node_id = 1;
+        string old_material_name = 2;
+        string new_material_name = 3;
+    }
+
+    /**
+     * Action proress is the execution fraction of an action-related animation.
+     * The progress must be in the range [0, 1] where 0 corresponds to the beginning and 1 to
+     * the end of the animation.
+     */
+    message SetActionProgress
+    {
+        int32 master_root_node_id = 1;
+        string action_name = 2;
+        float progress_fraction = 3;
+    }
+
+    oneof command
+    {
+        CreateStandaloneAnimatedObject create_standalone_animated_object = 1;
+        DestroyAnimatedObject destroy_animated_object = 2;
+        PlayAnimation play_animation = 3;
+        ReplaceMaterial replace_material = 4;
+        AttachToParentedAnimatedObject attach_to_parented_animated_object = 5;
+        SetActionProgress set_action_progress = 6;
+    }
+}

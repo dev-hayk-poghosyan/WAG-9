@@ -1,0 +1,61 @@
+syntax = "proto3";
+package proto;
+
+import "Mat4d.proto";
+import "JunctionConnection.proto";
+
+/**
+ * A junction is a connection between rail segments that's implemented as a Unigine object.
+ */
+message Junction
+{
+    enum Type
+    {
+        Y_SWITCH = 0;
+        X_SWITCH = 1;
+        X_CROSS  = 2;
+        TW_SWITCH = 3; //< Three-way switch
+        D_SWITCH = 4; //< Same as wide X_SWITCH, but with more switch positions
+    }
+
+    Type type = 1;
+
+    /**
+     * For backwards compatibility reasons only. Needs to be unique not only among junctions,
+     * but also among rail branches.
+     */
+    int32 id = 2;
+
+    /**
+     * A string representation of a UUID, without the curly brackets.
+     *
+     * This uuid identifies a particular switch rather than a particular type of a switch.
+     */
+    string uuid = 3;
+
+    /**
+     * The path to the *.node file for this type of a junction, relative to the "data" dir.
+     */
+    string node_file = 4;
+
+    /**
+     * A transformation that maps node coordinates to world coordinates.
+     */
+    Mat4d world_from_node = 5;
+
+    /**
+     * All possible connections that the given junction can provide.
+     */
+    repeated JunctionConnection connections = 6;
+
+    /**
+     * (deprecated) The path to the *.meshgen file with presets for junction generation
+     */
+    optional string meshgen_preset_file = 7;
+
+    /**
+     * An index into RoadSet::all_gen_presets. If it`s absent, we take @p meshgen_preset_file
+     * parameter value, and then @p node_file.
+     */
+    optional sint32 gen_preset_idx = 8;
+}

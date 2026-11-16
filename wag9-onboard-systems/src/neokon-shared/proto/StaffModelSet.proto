@@ -1,0 +1,30 @@
+syntax = "proto3";
+package proto;
+
+message StaffModelAnimations
+{
+    repeated string animations = 1;
+}
+
+message StaffGenderModels
+{
+    map<string, StaffModelAnimations> male_model = 1; /**< map base male model to available animations */
+    map<string, StaffModelAnimations> female_model = 2; /**< map base female model to available animations */
+}
+
+message StaffModelDescriptor
+{
+    repeated string vehicle_ids = 1;
+    StaffGenderModels winter = 2;
+    StaffGenderModels spring = 3;
+    StaffGenderModels summer = 4;
+    StaffGenderModels autumn = 5;
+}
+
+/**
+ * A set of base models and animations, for certain seasons and trains.
+ */
+message StaffModelSet
+{
+    repeated StaffModelDescriptor models = 1;
+}

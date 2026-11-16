@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+import "NodeSurfaces.proto";
+
+message VehicleNodes
+{
+    string material_day_name = 1;
+    string material_night_name = 2;
+    repeated NodeSurfaces interior_nodes = 3;
+}

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+import "BuzzerData.proto";
+import "PointOnRoad.proto";
+
+/**
+ * The information about buzzer message for placing it on the road.
+ */
+message BuzzerOnRoad
+{
+    bytes uuid_bytes = 1;
+    BuzzerData data = 2;
+    PointOnRoad point_on_road = 3;
+}

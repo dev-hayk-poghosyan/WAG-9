@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+message AirDistributorMode
+{
+    enum Mode
+    {
+        EMPTY = 0;
+        MIDDLE = 1;
+        LADEN = 2;
+    }
+}

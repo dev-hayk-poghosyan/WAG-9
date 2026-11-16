@@ -1,0 +1,15 @@
+wag9-build/
+.build-dir
+.release-dir
+out/
+.vs/
+CMakeLists.txt.user*
+CMakeSettings.json
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Thumbs.db
+*.user
+*.suo
+Wag9-log.txt
+*.qm

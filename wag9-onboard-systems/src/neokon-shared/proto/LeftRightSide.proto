@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A variable of this type explains from which side in space the model of a material object
+ * is located.
+ */
+message LeftRightSide
+{
+    enum Side
+    {
+        LEFT = 0;
+        RIGHT = 1;
+    }
+}

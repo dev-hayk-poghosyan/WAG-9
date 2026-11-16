@@ -1,0 +1,27 @@
+syntax = "proto3";
+package proto.radio;
+
+/**
+ * Radio communication line's state.
+ */
+message LineState
+{
+    /**
+     * Id of the communication line.
+     * 0 - GSMR.
+     * 1 - In-train communication.
+     * 2 - Direct half-duplex instructor-driver line.
+     */
+    int32 id = 1;
+
+    /**
+     * True means the line is opened, endpoints are connected.
+     */
+    bool connected = 2;
+
+    /**
+     * True if this call on this line supports the push-to-talk mode.
+     * For example, the emergency group call in GSM-R.
+     */
+    bool  push_to_talk = 3;
+}

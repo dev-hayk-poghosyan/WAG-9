@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+import "EndpointRoute.proto";
+
+/**
+ * Used to cache electrification zones to file.
+ */
+message ElectrificationZonesCache
+{
+    /**
+     * Electrification zones.
+     */
+    repeated EndpointRoute zones = 1;
+
+    /**
+     * SHA-hash of a world node that contains electrification zones data.
+     * Used to check the validity of the cache file.
+     */
+    bytes hash = 2;
+}

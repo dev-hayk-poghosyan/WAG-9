@@ -1,0 +1,33 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+import "ElectrificationPresetInsulator.proto";
+
+/**
+ * Блок данных для фиксаторного троса.
+ */
+message Spanwire
+{
+    /**
+     * Расположение секционного изолятора на фиксаторном тросе. 
+     */
+    message InsulatorPlacement
+    {
+        enum Type
+        {
+            ABSENT = 0;//изолятор отсуствует
+            LEFT = 1;  //слева от фиксатора
+            RIGHT = 2; //справа от фиксатора
+        }
+    }
+
+    /**
+     * Расположение секионного изолятора относительно фиксатора.
+     */
+    InsulatorPlacement.Type insulator_placement = 1;
+
+    /**
+     * Свойства секционного изолятора.
+     */
+    Insulator spanwire_insulator = 2;
+}

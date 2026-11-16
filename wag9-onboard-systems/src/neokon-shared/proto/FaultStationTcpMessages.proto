@@ -1,0 +1,80 @@
+syntax = "proto3";
+package proto.class390.faultstation;
+
+import "CircuitBreakers.proto";
+import "IsolationPanel.proto";
+import "ParameterNames.proto";
+
+message TcpToFaultStationMessage {
+    repeated ToDoor doors = 1;
+    oneof message {
+        bool power = 2;
+        bool driver_key = 3;
+        CircuitBreakers circuit_breaker = 4;
+        IsolationPanelLamps lamp = 5;
+        Coach coach = 6;
+
+        //  remote tail;driver side tail;driver side marker;driver side night;marker;non-driver side day;non-driver side marker;non-driver side tail;remote tail
+        int32 lights = 7;
+        bool screen_saver = 8;
+        bool service_key = 9;
+    }
+}
+
+message TcpFromFaultStationMessage {
+    oneof message {
+        FromDoor door = 1;
+        CircuitBreakers circuit_breaker = 2;
+        IsolationPanel switcher = 3;
+        Coach coach = 4;
+    }
+}
+
+message Coach {
+    int32 coach_index = 1;
+    ParameterNames parameter = 2;
+    bool value = 3;
+}
+
+message ToDoor {
+    // индекс вагона (0-10) {K, J, H, G, U, F, E, D, C, B, A}
+    int32 coach_index = 1;
+
+    // номер двери (0-3) (передняя правая/задняя правая/передняя левая/задняя левая)
+    int32 number = 2;
+
+    oneof parameter {
+        //Состояние двери (0-5) {CLOSED, OPENED, IN_PROCESS, FAULT, OUT_OF_USE, INHIBITED}
+        int32 state = 3;
+
+        //Состояние рукояти экстренного открытия двери
+        bool emergency_door_opener = 4;
+
+        bool green_lamp = 5;
+
+        bool red_lamp = 6;
+    }
+}
+
+message FromDoor {
+    // индекс вагона (0-10) {K, J, H, G, U, F, E, D, C, B, A}
+    int32 coach_index = 1;
+
+    // номер двери (0-3) (передняя правая/задняя правая/передняя левая/задняя левая)
+    int32 number = 2;
+
+    oneof parameter {
+        //Состояние рукояти экстренного открытия двери
+        bool emergency_door_opener = 4;
+
+        //Состояние ключа экстренного открытия двери
+        bool emergency_door_opener_key = 5;
+
+        // Состояние кнопки открытия двери
+        bool open_door_button = 6;
+
+        // Состояние кнопки закрытия двери
+        bool close_door_button = 7;
+    }
+}
+

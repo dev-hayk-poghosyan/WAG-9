@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+message CrossingItemPresentInInventoryCondition
+{
+    string item_uuid = 1;
+    bool required_only_for_day = 2;
+    bool required_only_for_night_and_fog = 3;
+}

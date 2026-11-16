@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto;
+
+message SignalLightSpeedLimit
+{
+    message Limit
+    {
+        /**
+         * Partially serialized state of a signal light.
+         */
+        string partial_serialized_state = 1;
+
+        /**
+         * Speed limit at the specific state in meters per second.
+         */
+        float speed_limit_ms = 2;
+
+        /**
+         * The number of sections that this signal light processes.
+         * This will be empty for the faked section signal lights.
+         */
+        optional int32 section_count = 3;
+    }
+
+    message TypeLimits
+    {
+        /**
+         * There may be more than one speed limit for specific state of signal light.
+         * Different speed limits apply to different trains in different circumstances.
+         * Its interpretation is up to TrainSim.
+         */
+        int32 type = 1;
+
+        repeated Limit limits = 2;
+    }
+
+    repeated TypeLimits limits_by_type = 1;
+}

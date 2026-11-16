@@ -1,0 +1,43 @@
+syntax = "proto3";
+package proto;
+
+import "OpaqueRailPath.proto";
+import "SplineBasedRailPath.proto";
+
+/**
+ * A rail segment that connects two connection points of a junction.
+ */
+message JunctionConnection
+{
+    enum Type
+    {
+        YSW_ROOT_TO_LEFT   = 0;
+        YSW_ROOT_TO_RIGHT  = 1;
+
+        XSW_LEFT_TO_LEFT   = 2;
+        XSW_LEFT_TO_RIGHT  = 3;
+        XSW_RIGHT_TO_LEFT  = 4;
+        XSW_RIGHT_TO_RIGHT = 5;
+
+        XCR_LEFT_TO_RIGHT  = 6;
+        XCR_RIGHT_TO_LEFT  = 7;
+
+        TW_ROOT_TO_SIDE    = 8;
+        TW_ROOT_TO_MIDDLE  = 9;
+        TW_MIDDLE_TO_LEFT  = 10;
+        TW_MIDDLE_TO_RIGHT = 11;
+    }
+
+    Type type = 1;
+
+    /**
+     * Junction nodes hold the paths they contain as children of type WorldTransformPath.
+     *
+     * This field specifies the name of such a child node corresponding to this particular path.
+     */
+    string path_child_name = 2;
+
+    optional OpaqueRailPath path = 3;
+
+    SplineBasedRailPath spline_path = 4;
+}

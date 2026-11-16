@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto;
+
+import "RoadSegment.proto";
+import "RailPathEndpoint.proto";
+import "RailPathSide.proto";
+import "SignallerSpeedLimitEndpoint.proto";
+import "WorldPosition.proto";
+
+message Signaller
+{
+    RoadSegment road_segment = 1;
+    float segment_length_fraction = 2;
+    RailPathSide rail_path_side = 3;
+    string type_string = 4;
+    bool red_hat = 5;
+    RailPathEndpoint.Endpoint facing_path_endpoint = 6;
+    bytes instance_uuid_bytes = 7; // 16 bytes, no hex encoding.
+
+    /**
+     * Uses for signallers who may automatically change its type when train is approaching.
+     */
+    string train_pass_signaller_type_string = 8;
+
+    /**
+     * Time delay in seconds before signaller type will be changed.
+     * Uses for signallers who may automatically change its type when train is approaching.
+     */
+    int32 change_type_delay_sec = 9;
+
+    /**
+     * Speed limit end point on road and limit value.
+     * Relevant for signallers with restricted speed signal.
+     */
+    optional SignallerSpeedLimitEndpoint speed_limit_endpoint = 10;
+
+    WorldPosition position = 11;
+}

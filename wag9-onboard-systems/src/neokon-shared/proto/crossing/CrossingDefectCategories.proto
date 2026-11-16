@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectCategory.proto";
+
+message CrossingDefectCategories
+{
+    repeated CrossingDefectCategory defect_categories = 1;
+
+    /**
+     * Railways state text displayed in the duty journal. Can be used for the localization.
+     */
+    string duty_journal_railways_state_text = 2;
+}

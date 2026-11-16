@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Message to transfere crossing barriers state.
+ */
+message CrossingBarriersState
+{
+    /**
+     * An id of crossing.
+     */
+    int32 crossing_id = 1;
+
+    /**
+     * If true it means the barriers are opened, otherwise they are closed.
+     */
+    bool opened = 2;
+}

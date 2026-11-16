@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Restrictive aspect type for shunting Signals.
+ */
+message RestrictiveAspectType
+{
+    enum AspectType
+    {
+        BLUE = 0;
+        RED = 1;
+    }
+}

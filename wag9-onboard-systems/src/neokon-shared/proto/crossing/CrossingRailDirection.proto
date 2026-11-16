@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * The direction of the path in the two-path crossings.
+ */
+enum CrossingRailDirection
+{
+    UNSET = 0;
+    ODD = 1;
+    EVEN = 2;
+}

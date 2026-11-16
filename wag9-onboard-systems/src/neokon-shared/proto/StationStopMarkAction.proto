@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Represents an action that train must perform after stop at the platform.
+ */
+enum StationStopMarkAction
+{
+    STOP_ONLY = 0;
+    OPEN_DOOR_LEFT  = 1;
+    OPEN_DOOR_RIGHT = 2;
+    OPEN_DOOR_BOTH  = 3;
+}

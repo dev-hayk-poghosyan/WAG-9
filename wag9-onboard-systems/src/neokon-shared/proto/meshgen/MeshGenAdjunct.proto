@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenAdjunctPart.proto";
+
+/**
+ * Generation parameters for contact rails
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/-/wikis/Control-parameters-of-mesh-generation-for-adjuncts
+ * wiki page for details, Item 3
+ */
+message Adjunct
+{
+    repeated AdjunctPart parts = 1;
+}

@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message RemoveTrains
+{
+    reserved 1;
+    repeated bytes train_ids = 2; // UUIDs, 16 bytes, no hex encoding
+}

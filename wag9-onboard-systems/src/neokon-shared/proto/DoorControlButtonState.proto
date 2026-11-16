@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto;
+
+import "DoorControlButton.proto";
+
+/**
+ * Control buttons state from the trainsim
+ */
+message DoorControlButtonState
+{
+    DoorControlButton.Button button = 1;
+
+    /**
+     * <true> means that light is on, button has the lamp.
+     */
+    bool lamp_on = 2;
+
+    /**
+     * <true> means that button is enabled.
+     */
+    bool enabled = 3;
+}

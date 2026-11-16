@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto.radio;
+
+/**
+ * Enumeration of integrated communication lines.
+ */
+message AudioLine
+{
+    enum Line
+    {
+        /**
+         * GSM-R wireless standard communication for railway.
+         */
+        GSMR   = 0;
+
+        /**
+         * All local communications between cabs, public address etc.
+         */    
+        TRAIN  = 1;
+        
+        /**
+         * Informal communication between instructor and student.
+         */    
+        DIRECT = 2;
+    }
+}

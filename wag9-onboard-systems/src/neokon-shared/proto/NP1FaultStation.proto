@@ -1,0 +1,274 @@
+syntax = "proto3";
+package proto.np1.faultstation;
+option csharp_namespace = "SchemeFaultStations.NP1";
+
+message ToFaultStation
+{
+    oneof message
+    {
+        ElectricValues electric_values = 1;
+        ToPanelValues panel_values = 2;
+        SectionValues section_values = 3;
+        bool reset_fault_station_values = 4;
+        PneumaticValues pneumatic_values1 = 5;
+        PneumaticValues pneumatic_values2 = 6;
+    }
+}
+
+/**
+ * Это сообщение-контейнер. Передается из Fault Station в контроллер поезда TrainSim.
+ */
+message FromFaultStation
+{
+    FromPanelValues panel_values = 1;
+}
+
+/**
+ * Это сообщение - набор параметров для электрических схем в Fault Station.
+ * Переключатели, реле, состояния проводов, ламп и т.д.
+ */
+message ElectricValues
+{
+    bool wirec1 = 1;
+    bool rkm18 = 2;
+    bool rkm17 = 3;
+    bool rkm19 = 4;
+    bool rkm16 = 5;
+    bool rkm15 = 6;
+    bool enginem15 = 7;
+    bool enginem16 = 8;
+    bool enginem19 = 9;
+    bool enginem17 = 10;
+    bool enginem18 = 11;
+    bool enginem11 = 12;
+    bool rkm11 = 13;
+    bool rkm12 = 14;
+    bool enginem12 = 15;
+    bool wireb3 = 16;
+    bool rkv34 = 17;
+    bool rkv34_wireb3 = 18;
+    bool m17 = 19;
+    bool m18 = 20;
+    bool wiree23 = 21;
+    bool wiree6 = 22;
+    bool wiree61 = 23;
+    bool throttle2122 = 24;
+    bool throttle2324 = 25;
+    bool throttle2526 = 26;
+    bool throttle2728 = 27;
+    bool throttle2930 = 28;
+    bool throttle3132 = 29;
+    bool throttle3334 = 30;
+    bool throttle3536 = 31;
+    bool throttle3738 = 32;
+    bool rkv31 = 33;
+    bool rev12 = 34;
+    bool rev34 = 35;
+    bool rev56 = 36;
+    bool rev78 = 37;
+    bool rev910 = 38;
+    bool rev1516 = 39;
+    bool rev1314 = 40;
+    bool rev221 = 41;
+    bool rev243 = 42;
+    bool rev265 = 43;
+    bool throttle22423 = 44;
+    bool throttle22625 = 45;
+    bool throttle22827 = 46;
+    bool throttle23029 = 47;
+    bool throttle23231 = 48;
+    bool throttle23433 = 49;
+    bool wiree53 = 50;
+    bool pneumsp2 = 51;
+    bool wiree37 = 52;
+    bool rkv21 = 53;
+    bool rkv61 = 54;
+    bool wiree56 = 55;
+    bool wiree57 = 56;
+    bool rkv28 = 57;
+    bool wiree571 = 58;
+    bool rkv43 = 59;
+    bool rkv44 = 60;
+    bool rkv48 = 61;
+    bool controls22 = 62;
+    bool controls23 = 63;
+    bool sm21 = 64;
+    bool sm22 = 65;
+    bool wirea1 = 66;
+    bool wirea2 = 67;
+    bool wirea3 = 68;
+    bool wirem2 = 69;
+    bool wirem3 = 70;
+    bool wirem4 = 71;
+    bool wirem5 = 72;
+    bool sm11 = 73;
+    bool sm12 = 74;
+    bool sm13 = 75;
+    bool wiree51 = 76;
+    bool wiree39 = 77;
+    bool wiree40 = 78;
+    bool rkv26 = 79;
+    bool qp2 = 80;
+    bool pneumsp3 = 81;
+    bool rkv25 = 82;
+    bool qt1 = 83;
+    bool qt2 = 84;
+    bool qp1 = 85;
+    bool wiree79 = 86;
+    bool wiree86 = 87;
+    bool wiree70 = 88;
+    bool qs13 = 89;
+    bool qs15 = 90;
+    bool qs14 = 91;
+    bool qs16 = 92;
+    bool rk1 = 93;
+    bool rk3 = 94;
+    bool rk2 = 95;
+    bool rk4 = 96;
+    bool pte = 97;
+    bool rk6 = 98;
+    bool rk16 = 99;
+    bool rk5 = 100;
+    bool rk15 = 101;
+    bool wiree38 = 102;
+    bool rkv10 = 103;
+    bool rkv27 = 104;
+    bool rk9 = 105;
+    bool rk8 = 106;
+    bool rk7 = 107;
+    bool wirem22 = 108;
+    bool rkv29 = 109;
+    bool wirem21 = 110;
+    bool qt11 = 111;
+    bool qp11 = 112;
+    bool qtrele = 113;
+    bool wireb5 = 114;
+    bool enginecurrent = 115;
+    bool rev1 = 116;
+    bool revnot1 = 117;
+    bool rev1_rele = 118;
+    bool controlsf41 = 119;
+    bool wiree71 = 120;
+    bool controlfcp = 121;
+    bool controlflp = 122;
+    bool controlfrp = 123;
+    bool controlbcp = 124;
+    bool controlblp = 125;
+    bool controlbrp = 126;
+    bool controlgv = 127;
+    bool controlrestore = 128;
+    bool pneumy16 = 129;
+    bool pneumy21 = 130;
+    bool pneumy22 = 131;
+    bool pneumy19 = 132;
+    bool pneumy23 = 133;
+    bool pneumy24 = 134;
+    bool wiree80 = 135;
+    bool rkv9 = 136;
+    bool rka23 = 137;
+    bool wiree85 = 138;
+    bool ya1 = 139;
+    bool ya2 = 140;
+    bool yarele = 141;
+    bool wiree60 = 142;
+    bool controlsf55 = 143;
+    bool wiree207 = 144;
+    bool controls63 = 145;
+    bool controls64 = 146;
+    bool controlssand = 147;
+    bool controlstyphon = 148;
+    bool controlswhistle = 149;
+    bool typhon = 150;
+    bool whistle = 151;
+    bool sand = 152;
+    bool sandrev1 = 153;
+    bool sandrevnot1 = 154;
+    bool controlsf71 = 155;
+    bool wiree341 = 156;
+    bool rsk9 = 157;
+    bool rsk10 = 158;
+    bool rkv45 = 159;
+    bool rkm10 = 160;
+    bool controls51 = 161;
+    bool controls52 = 162;
+    bool controls45 = 163;
+    bool wiree343 = 164;
+    bool controls53 = 165;
+    bool controls46 = 166;
+    bool wiree362 = 167;
+    bool controls54 = 168;
+    bool controls55 = 169;
+    bool rkt11 = 170;
+    bool wiree367 = 171;
+    bool controls47 = 172;
+    bool controls48 = 173;
+    bool wirem98 = 174;
+    bool wirem99 = 175;
+    bool controls49 = 176;
+    bool rkv47 = 177;
+    bool pneumsp32 = 178;
+    bool wiree374 = 179;
+    bool controls56 = 180;
+    bool controls57 = 181;
+    bool rkv28_error = 182;
+    bool enginem11_error = 183;
+    bool wireb5_error = 184;
+    bool xa1_error = 185;
+    bool xa2_error = 186;
+    bool enginecurrent_error = 187;
+    bool rkm10_error = 188;
+}
+
+message ToPanelValues
+{
+    bool depot_entry = 1;
+    bool s28 = 2;
+    bool sf64 = 3;
+    bool sf65 = 4;
+    bool kn45 = 5;
+    bool kn46 = 6;
+}
+
+message FromPanelValues
+{
+    oneof value
+    {
+        bool depot_entry = 1;
+        bool s28 = 2;
+        bool sf64 = 3;
+        bool sf65 = 4;
+        bool kn45 = 5;
+        bool kn46 = 6;
+    }
+}
+
+message SectionValues
+{
+    bool spotlight_lit = 1;
+    bool buffer_left_yellow_lit = 2;
+    bool buffer_right_yellow_lit = 3;
+    bool buffer_left_red_lit = 4;
+    bool buffer_right_red_lit = 5;
+    bool buffer_left_yellow_lit_back = 6;
+    bool buffer_right_yellow_lit_back = 7;
+    bool buffer_left_red_lit_back = 8;
+    bool buffer_right_red_lit_back = 9;
+    bool pantograph_right_back_lifted = 10;
+    bool pantograph_right_front_lifted = 11;
+    bool pantograph_front_lifted = 12;
+    bool pantograph_back_lifted = 13;
+    bool pantograph_left_back_lifted = 14;
+    bool pantograph_left_front_lifted = 15;
+}
+
+message PneumaticValues
+{
+    float compressor1 = 1;
+    float compressor2 = 2;
+    float zr = 3;
+    float all_tc = 4;
+    float train_tc = 5;
+    float tc = 6;
+    float tm = 7;
+    float gr = 8;
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "RailSplineSegment.proto";
+
+message SplineBasedRailPath
+{
+    /**
+     * A string representation of a UUID, without the curly brackets.
+     */
+    string uuid = 1;
+
+    /**
+     * @note At least one segment is required. Zero-length segments are not allowed.
+     */
+    repeated RailSplineSegment segments = 2;
+}

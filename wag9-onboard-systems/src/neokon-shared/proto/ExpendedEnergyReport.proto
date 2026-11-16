@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+message ExpendedEnergyReport
+{
+    int32 expended_energy_kwh = 1;
+    int32 self_expended_energy_kwh = 2;
+    int32 recuperated_energy_kwh = 3;
+}

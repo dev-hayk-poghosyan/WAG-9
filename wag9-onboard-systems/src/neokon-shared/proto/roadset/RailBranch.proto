@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "SplineBasedRailPath.proto";
+
+message RailBranch
+{
+    /**
+     * For backwards compatibility reasons only. Generally, branches don't have to be
+     * identifyable, since all they do is hold a path, which is identifyable by its uuid field.
+     *
+     * This field needs to be unique not only among rail branches, but also among junctions.
+     */
+    int32 id = 1;
+
+    SplineBasedRailPath path = 2;
+}

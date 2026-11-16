@@ -1,0 +1,34 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A folder message for rail sign RAIL_SIGN_BLOCK_MARKER.
+ */
+message EtcsRailSignSignal
+{
+    /**
+     * Id of signal light placed at position of this sign.
+     */
+    int32 signal_id = 1;
+
+    /**
+     * Type of signal light placed at position of this sign.
+     */    
+    string type = 2;
+
+    /**
+     * Label of signal light.
+     */
+    string label = 3;
+
+    /**
+     * Partially serialized state of a signal light.
+     */
+    string partial_serialized_state = 4;
+
+    /**
+     * If this field is true the sign is visible, otherwise it is hidden.
+     * But the signal light object associated with this sign exists in both cases.
+     */
+    bool visible = 5;
+}

@@ -1,0 +1,93 @@
+syntax = "proto3";
+package proto.class170.panel;
+
+/**
+ * A message from Trainsim to Class 170.
+ */
+message Incoming
+{
+    /**
+    * The Logic on the Sim side decides whether these automat_ons are available.
+    * <true> means that automaton is on is forced to switch off and cannot be switch on by the driver.
+    */
+    bool automat_wiper1         = 1;
+    bool automat_wiper2         = 2;
+    bool automat_brake_control  = 3;
+    bool automat_fault_protect  = 4;
+    bool automat_radio2         = 5;
+    bool automat_public_address = 6;
+    bool automat_door_control   = 7;
+    bool automat_aws            = 8;
+    bool automat_train_control  = 9;
+    bool automat_tca            = 10;
+    bool automat_gsmr           = 11;
+    bool automat_cab_aux1       = 12;
+    bool automat_cab_aux2       = 13;
+    bool automat_earth          = 14;
+    bool automat_emerg_lights   = 15;
+    bool automat_end_lights2    = 16;
+    bool automat_end_lights1    = 17;
+    bool automat_lh_screen      = 18;
+    bool automat_rh_screen      = 19;
+    bool automat_wps            = 20;
+    bool automat_tca_isolation  = 21;
+
+    bool couple_test_lamp_state = 22;
+
+    /**
+     * Value of 0..10.0f expected.
+     */
+    float  manometer_mr         = 23;
+
+    /**
+     * Value of [0..7.0f] expected.
+     */
+    float  manometer_bc         = 24;
+
+    /**
+     * Value of [0..120] expected.
+     */
+    int32  speedmeter          = 25;
+
+    oneof startup
+    {
+        /**
+         * Simulation time in scenario. Sent at very start. Milliseconds since midnight.
+         */
+        int32 simulation_time_ts = 26;
+    }
+}
+
+/**
+ * A message from Class 170 to the Trainsim.
+ */
+message Outgoing
+{
+    /**
+     * States of automat_ons on MCB panel.
+     * <true> means that automat_on is ON.
+    */
+    bool automat_wiper1         = 1;
+    bool automat_wiper2         = 2;
+    bool automat_brake_control  = 3;
+    bool automat_fault_protect  = 4;
+    bool automat_radio2         = 5;
+    bool automat_public_address = 6;
+    bool automat_door_control   = 7;
+    bool automat_aws            = 8;
+    bool automat_train_control  = 9;
+    bool automat_tca            = 10;
+    bool automat_gsmr           = 11;
+    bool automat_cab_aux1       = 12;
+    bool automat_cab_aux2       = 13;
+    bool automat_earth          = 14;
+    bool automat_emerg_lights   = 15;
+    bool automat_end_lights2    = 16;
+    bool automat_end_lights1    = 17;
+    bool automat_lh_screen      = 18;
+    bool automat_rh_screen      = 19;
+    bool automat_wps            = 20;
+    bool automat_tca_isolation  = 21;
+
+    bool couple_test            = 22;
+}

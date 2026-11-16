@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+
+message OldStylePole
+{
+    Vec3d location = 1;
+    double position_km = 2;
+}

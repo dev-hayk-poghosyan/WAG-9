@@ -1,0 +1,15 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * State of binary toggler.
+ */
+message TogglerState
+{
+    enum State
+    {
+        OFF = 0;
+        ON = 1;
+    }
+}
+

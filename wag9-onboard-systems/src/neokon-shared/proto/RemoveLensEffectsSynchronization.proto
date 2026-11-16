@@ -1,0 +1,7 @@
+syntax = "proto3";
+package proto;
+
+message RemoveLensEffectsSynchronization
+{
+    int32 light_master_node_id = 1;
+}

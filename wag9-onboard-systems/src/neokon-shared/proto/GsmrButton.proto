@@ -1,0 +1,7 @@
+syntax = "proto3";
+package proto;
+
+message GsmrButton
+{
+    bytes uuid_bytes = 1; // 16 bytes, without hex encoding.
+}

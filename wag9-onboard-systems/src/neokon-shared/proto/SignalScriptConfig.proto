@@ -1,0 +1,30 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Config for the particular script.
+ */
+message SignalScriptConfig
+{
+    message Parameter
+    {
+        oneof value
+        {
+            double value_double = 1;
+            string value_string = 2;
+        }
+    }
+
+    string signal_name = 1;//< Name of the signal found in the world.
+    string script_cpp_class = 2;//< For now just a name of C++ class functioning as script.
+
+    map<string, Parameter> parameters = 3;//< Parameters for this script.
+}
+
+/**
+ * Config for all scripts in the world kept in file.
+ */
+message SignalScriptConfigFile
+{
+    repeated SignalScriptConfig scripts = 1;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+message FileTransferChecksum
+{
+    /**
+     * Transfer session uuid.
+     * 16 bytes, without hex encoding.
+     */
+    bytes transfer_uuid_bytes = 1;
+
+    /**
+     * CRC-16-CCITT ISO 3309
+     */
+    int32 checksum_crc16 = 3;
+}

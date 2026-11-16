@@ -1,0 +1,38 @@
+syntax = "proto3";
+package proto;
+
+import "SinaraLookaheadDetails.proto";
+
+message SinaraLookaheadInfo
+{
+    /**
+     * This distance starts at zero, increases when the train moves forward and decreases when
+     * it moves backwards. Negative values are valid.
+     */
+    double signed_distance_passed_m = 1;
+
+    /**
+     * Position on the line. The kilometers and piquets can be derived like this:
+     * @code
+     * int const m10 = (int)floor(route_position_km * 10.0);
+     * int const km = m10 / 10;
+     * int const pk = m10 % 10 + 1;
+     * @endcode
+     */
+    double route_position_km = 2;
+
+    /**
+     * True if route_position_km is increasing as the train moves forward.
+     */
+    bool route_position_km_increasing = 3;
+
+    /**
+     * This message will be present only occasionally.
+     */
+    SinaraLookaheadDetails details = 4;
+
+    /**
+     * The train length in meters.
+     */
+    float train_length_m = 5;
+}

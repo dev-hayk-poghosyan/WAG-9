@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto.radio;
+
+/**
+ * Radio communications button's state.
+ * Button's IDs are in RadioCommButton.h and shared between endpoints.
+ */
+message ButtonState
+{
+    /**
+     * Button' ID state.
+     */
+    int32 id = 1;
+    /**
+     * True if pressed.
+     */
+    bool  pressed = 2;
+}

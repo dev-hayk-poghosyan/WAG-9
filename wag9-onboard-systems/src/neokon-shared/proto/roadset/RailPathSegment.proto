@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Marks the segment on the rail path.
+ */
+message RailPathSegment
+{
+    bytes rail_path_uuid = 1;
+    double start_pos = 2;
+    double stop_pos = 3;
+}

@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message SetupWeatherFX
+{
+    int32 master_node_id = 1;
+    int32 fx_type = 2;
+}

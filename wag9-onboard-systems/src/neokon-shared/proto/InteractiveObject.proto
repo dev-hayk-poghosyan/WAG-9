@@ -1,0 +1,11 @@
+syntax = "proto3";
+package proto;
+
+import "CursorTypeByStateExpression.proto";
+import "InteractiveStateTransition.proto";
+
+message InteractiveObject
+{
+    repeated InteractiveStateTransition transitions = 1;
+    CursorTypeByStateExpression cursor_config = 2;
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "CarStateVL10.proto";
+
+message TrainStateVL10
+{
+    repeated CarStateVL10 cars = 1;
+    float cpower = 2;
+    float instpower = 3;
+    float dynamic_braking_efficiency = 4;
+}

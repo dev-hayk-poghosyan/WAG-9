@@ -1,0 +1,31 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+import "ElectrificationPresetInsulator.proto";
+import "ElectrificationPresetPillar.proto";
+
+/**
+ * Блок данных для опоры.
+ */
+message Pole
+{
+    /**
+     * Тип конструкции опоры.
+     */
+    Pillar.Material.Type material =  1;
+
+    /**
+     * Изоляторы на консолях.
+     */
+    Insulator cantilever_insulator = 2;
+
+    /**
+     * Строковый преффикс высоты (для подбора названия ноды)
+     */
+    string node_prefix_height = 3;
+
+    /**
+     * Строковый преффикс покраски основания (для подбора названия ноды).
+     */
+    string node_prefix_foundation_color = 4;
+}

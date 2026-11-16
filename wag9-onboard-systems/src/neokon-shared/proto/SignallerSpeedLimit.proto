@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+import "SignallerSpeedLimitEndpoint.proto";
+
+/**
+ * Represents information about signaller's speed limit.
+ * Stores signallers uuid, speed limit value and the speed limit end road point.
+ */
+message SignallerSpeedLimit
+{
+    bytes signaller_uuid_bytes = 1;
+    SignallerSpeedLimitEndpoint limit_endpoint = 2;
+}

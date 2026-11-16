@@ -1,0 +1,117 @@
+syntax = "proto3";
+package proto.game_mode;
+
+import "Vec3d.proto";
+
+/**
+ * Corresponds to EndConditionDef::Type in TrainSim.
+ * @see animation/definitions/EndConditionDef.h
+ */
+enum EndConditionType
+{
+    None = 0;
+    Timeout = 1;
+    PlaybackEnded = 2;
+    OthersEnded = 3;
+    TargetReached = 4;
+};
+
+/**
+ * This message is used to store the internal representation of AnimationSequenceEntry class objects.
+ * Used to implement saving in game mode.
+ * @see animation/AnimationActionSequence.h
+ */
+message AnimationSequenceEntry
+{
+    enum State
+    {
+        Waiting = 0;
+        Playing = 1;
+        Finished = 2;
+    }
+    int32 step = 1;
+    string action_name = 2;
+    EndConditionType end_condition = 3;
+    float end_condition_value = 4;
+    bool is_move_target = 5;
+    bool is_rotate_target = 6;
+    proto.Vec3d move_target = 7;
+    proto.Vec3d rotate_target = 8;
+    State current_state = 9;
+    float delay_timer = 10;
+    float timeout_timer = 11;
+    bool is_active = 12;
+}
+
+/**
+ * This message is used to store the internal representation of AnimationActionSequence class objects.
+ * Used to implement saving in game mode.
+ * @see animation/AnimationActionSequence
+ */
+message AnimationActionSequence
+{
+    bool is_playing = 1;
+    bool check_if_ended = 2;
+    int32 current_step = 3;
+    int32 last_step = 4;
+    int32 loops_count = 5;
+    repeated AnimationSequenceEntry entries = 6;
+}
+
+/**
+ * This message is used to store the internal representation of AnimationAction class objects.
+ * Used to implement saving in game mode.
+ * @see animation/AnimationAction.h
+ */
+message AnimationAction
+{
+    enum ActionState
+    {
+        Disabled = 0;
+        Starting = 1;
+        Playing = 2;
+        Ending = 3;
+    }
+    string name = 1;
+    float delay = 2;
+    EndConditionType end_condition_type = 3;
+    bool is_playing = 4;
+    float delay_timer = 5;
+    float timeout = 6;
+    int32 layers_count = 7;
+    bool is_marked_for_deletion = 8;
+    ActionState current_state = 9;
+}
+
+/**
+ * This message is used to store the internal representation of AnimatedObject class objects.
+ * Used to implement saving in game mode.
+ * @see animation/AnimatedObject.h
+ */
+message AnimatedObject
+{
+    enum OperationMode
+    {
+        CreateStandaloneObject = 0;
+        AttachToParentedObject = 1;
+    }
+
+    string class_name = 1;
+    string definition_class_name = 2;
+    string main_node_path = 3;
+    int32 main_node_id = 4;
+    oneof RootNode
+    {
+        int32 root_node_id = 5;
+    }
+    int32 rng_seed = 6;
+    OperationMode operation_mode = 7;
+    repeated AnimationAction running_actions = 8;
+    repeated AnimationAction actions_to_add = 9;
+    repeated AnimationAction actions_to_delete = 10;
+
+    oneof ActiveSequence
+    {
+        AnimationActionSequence active_sequence = 11;
+    }
+}

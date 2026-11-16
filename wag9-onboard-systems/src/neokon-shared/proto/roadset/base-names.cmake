@@ -1,0 +1,21 @@
+set(
+    proto_base_names
+
+    AdjunctSet
+    BranchSegmentOptions
+    Junction
+    JunctionConnection
+    OpaqueRailPath
+    RailBranch
+    RailGroup
+    RailPathAdjunct
+    RailPathConnection
+    RailPathConnectionPoint
+    RailPathEndpoint
+    RailPathSegment
+    RailPathSide
+    RailPathType
+    RailSplineSegment
+    RoadSet
+    SplineBasedRailPath
+)

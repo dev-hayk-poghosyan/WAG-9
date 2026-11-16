@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "BrakeSystemAction.proto";
+
+message BrakeSystemRequest
+{
+    uint64 train_incarnation = 1;
+    uint32 vehicle_idx = 2;
+
+    BrakeSystemAction action = 3;
+};

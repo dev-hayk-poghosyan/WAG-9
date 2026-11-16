@@ -1,0 +1,32 @@
+syntax = "proto3";
+package proto;
+
+import "AirDistributorMode.proto";
+
+message TrainVehicle
+{
+    /**
+      * 16 bytes, no hex encoding.
+      */
+    bytes instance_uuid_bytes = 1;
+
+    /**
+      * The front side of a non-reversed vehicle faces the train's head.
+      * The front side of a reversed vehicle faces the train's back.
+      *
+      * Here we are talking about the logical front side of a vehicle.
+      * In TrainSim's terms, it's VehicleEndpoint::Head, rather than
+      * VehicleModelEndpoint::Front.
+      */
+    bool reversed = 2;
+
+    bool head_angle_cock_open = 3;
+
+    bool tail_angle_cock_open = 4;
+
+    bool hand_brake_on = 5;
+    bool shutoff_cock_open = 6;
+    bool air_distributor_flat_slope = 7;
+    bool air_distributor_open = 8;
+    AirDistributorMode.Mode air_distribution_mode = 9;
+}

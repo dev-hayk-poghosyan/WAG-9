@@ -1,0 +1,22 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Common generation parameters.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 1
+ */
+message Common
+{
+    optional int32 railway_track_width = 1;
+
+    optional int32 max_path_straight_treshold = 2;
+
+    optional int32 min_path_similarity_percent = 3;
+
+    optional MaterialInfo sleepers_material_info = 4;
+
+    optional MaterialInfo blend_embankment_material_info = 5;
+}

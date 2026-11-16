@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+message ExerciseStateMachineCrossingDetector
+{
+    string detector_node_name_ray_start = 1;
+    string detector_node_name_ray_end = 2;
+    int32 intersection_mask = 3;
+    repeated string states_activated_on_crossing_begin = 4;
+    repeated string states_deactivated_on_crossing_begin = 5;
+    repeated string states_activated_on_crossing_end = 6;
+    repeated string states_deactivated_on_crossing_end = 7;
+}

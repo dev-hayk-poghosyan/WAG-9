@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+import "PowerControlCommand.proto";
+import "SimulationSessionRequest.proto";
+
+message LauncherIncomingMessage
+{
+    oneof msg // Think a union.
+    {
+        SimulationSessionRequest simulation_session_request = 1;
+
+        PowerControlCommand power_control_command = 2;
+
+        /**
+         * Client requests uuid of the current session.
+         */
+        bool simulation_uuid_request = 3;
+    };
+}

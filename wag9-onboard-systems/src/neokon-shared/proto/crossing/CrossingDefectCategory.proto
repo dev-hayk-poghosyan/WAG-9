@@ -1,0 +1,51 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectResolutionText.proto";
+import "CrossingDefectTypeGroup.proto";
+
+/**
+ * A record in the "defects.json" file.
+ *
+ * Examples of defect categories are "Rail defects" or "Tie defects".
+ *
+ * Each category contains one or more sets of defects. Within each set, we have one or more
+ * defects.
+ *
+ * However, this message doesn't carry the sets of defects or the individual defects in a set.
+ * Instead, it holds the rules to extract those things from the world hierarchy of nodes.
+ */
+message CrossingDefectCategory
+{
+    string uuid        = 1;
+    string title       = 2;
+
+    /**
+     * The layer that contains the intact versions of potentially defective objects.
+     *
+     * This layer may be switched on or off, but we never touch its child elements,
+     * which always remain on.
+     */
+    string intact_layer_name = 3;
+
+    /**
+     * Appending a suffix from this list to the value of @p intact_layer_name
+     * gives us the layer name that corresponds to a set of defects from this category.
+     *
+     * Only one set of defects may be active within a category.
+     * When we enable a defect category, we pick a set at random and enable that.
+     * Within a set, all defects will be enabled at once.
+     */
+    repeated string defect_set_layer_suffixes = 4;
+
+    /**
+     * Different defects might have different states to be processed by the application.
+     * The array defines available resolutions for the defect and their text messages.
+     */
+    repeated CrossingDefectResolutionText defect_resolutions = 5;
+
+    /**
+     * Defect type groups possible for this category.
+     */
+    repeated CrossingDefectTypeGroup defect_type_groups = 6;
+}

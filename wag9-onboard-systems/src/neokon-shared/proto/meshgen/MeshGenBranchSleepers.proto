@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenMaterialInfo.proto";
+
+/**
+ * Generation parameters for branch sleepers.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 4
+ */
+message BranchSleepers
+{
+    optional bool enable = 1;
+
+    optional string directory = 2;
+
+    optional string node_name_pattern = 3;
+
+    optional MaterialInfo default_material_info = 4;
+
+    optional int32 variants_count = 5;
+
+    optional double random_angle = 6;
+
+    optional bool add_random_angle = 7;
+}

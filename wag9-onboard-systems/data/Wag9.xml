@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config>
+    <FS>
+        <Geometry left="0" top="0"/>
+        <Debug>False</Debug>
+        <TopMost>False</TopMost>
+        <AudionOutput></AudionOutput>
+        <Network>
+            <BindAddr>tcp://127.0.0.1:12282</BindAddr>
+        </Network>
+    </FS>
+</Config>

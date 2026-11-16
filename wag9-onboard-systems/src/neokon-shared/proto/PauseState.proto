@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+message PauseState
+{
+    enum Indicator
+    {
+        None = 0;
+        Pause = 1;
+        Stop = 2;
+        NoMainTrain = 3;
+    }
+
+    bool paused = 1;
+    Indicator indicator = 2;
+}

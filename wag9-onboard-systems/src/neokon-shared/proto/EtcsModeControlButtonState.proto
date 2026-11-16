@@ -1,0 +1,23 @@
+syntax = "proto3";
+package proto;
+
+import "EtcsModeControlButton.proto";
+
+/**
+ * Control buttons state from the trainsim.
+ * SMC will unconditionally apply these states to the corresponding UI controls.
+ */
+message EtcsModeControlButtonState
+{
+    EtcsModeControlButton.Button button = 1;
+
+    /**
+     * <true> means that light is on, button has the lamp.
+     */
+    bool lamp_on = 2;
+
+    /**
+     * <true> means that button is enabled. User can click it.
+     */
+    bool enabled = 3;
+}

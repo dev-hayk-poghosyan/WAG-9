@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Represents a non-standard situation on railway crossing, such as a broken barrier or stalled car.  
+ * Railway crossing can have only one situation.
+ */
+message CrossingSituation
+{
+    string uuid        = 1;
+    string title       = 2;
+    string description = 3;
+    bool draggable     = 4;
+}

@@ -1,0 +1,49 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Definition for the EPK-150 pneumatic element.
+ * @see EPK150Component.h
+ */
+message EPK150Def
+{
+    string name = 1;
+    string connected_tm_reservoir_name = 2;
+    string connected_gr_reservoir_name = 3;
+
+    /**
+     * Indicates whether the value of the pneumatic element should be passed to the plugin DLL.
+     */
+    bool serializable = 4;
+}
+
+/**
+ * Definition of the value to be passed to the plugin DLL.
+ */
+message EPK150Value
+{
+    string name = 1;
+    bool whistle_sound = 2;
+}
+
+/**
+ * Definition of the value to be set from the plugin DLL.
+ */
+message EPK150Set
+{
+    bool tm_cock = 1;
+    bool gr_cock = 2;
+    bool key_position = 3;
+    bool magnet_energized = 4;
+}
+
+/**
+ * Definition of the data that should be saved and loaded.
+ */
+message EPK150State
+{
+    string name = 1;
+    int32 state = 2;
+    bool cock_tm = 3;
+    bool cock_gr = 4;
+}

@@ -1,0 +1,66 @@
+syntax = "proto3";
+package proto.electrification.preset;
+
+/**
+ * Блок данных для изоляторов всех типов и видов.
+ */
+message Insulator
+{
+    /**
+     * Тип изолятора.
+     */
+    enum Type
+    {
+        TENSION = 0;    //натяжной
+        SUSPENSION = 1;    //подвесной
+        CANTILEVER = 2;    //консольный
+        REGISTRATION_ARM = 3;    //фиксаторный
+        SECTION = 4;    //врезной (секционный)
+        SPANWIRE = 5;    //изолятор фиксирующего троса
+    }
+
+    /**
+     * Конструкция изолятора.
+     */
+    message Construct
+    {
+        enum Type
+        {
+            PLATE = 0;    //тарельчатый
+            KERNEL = 1;   //стержневой
+        }
+    }
+
+    /**
+     * Материал изолятора.
+     */
+    message Material
+    {
+        enum Type
+        {
+            PORCELAIN = 0;    //фарфоровый
+            GLASS = 1;        //стеклянный
+            POLYMER = 2;      //полимер
+        }
+    }
+
+    /**
+     * Тип изолятора.
+     */
+    Type type = 1;
+
+    /**
+     * Конструкция изолятора.
+     */
+    Construct.Type construct = 2;
+
+    /**
+     * Материал изолятора.
+     */
+    Material.Type material = 3;
+
+    /**
+     * допустимое напряжение, в киловольтах.
+     */
+    int32 allowed_voltage_kv = 4;
+}

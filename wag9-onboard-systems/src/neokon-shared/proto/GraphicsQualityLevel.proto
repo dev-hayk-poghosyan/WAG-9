@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Defines the quality of the graphics. Quality of the graphics is used to switch on and off
+ * world nodes that are not visible in the current quality level.
+ */
+message GraphicsQualityLevel
+{
+    enum Level
+    {
+        VERY_LOW = 0;
+        LOW = 1;
+        MEDIUM = 2;
+        HIGH = 3;
+        VERY_HIGH = 4;
+    }
+}

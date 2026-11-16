@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+message NodeNameMap
+{
+    // Syncker doesn't preserve node names for dynamically created nodes.
+    // However, Tracker locates the nodes it operates on by either ID or the name.
+    // We use names, as ID's will be different on master and on slave, and *.track
+    // files where they are specified are static.
+    // Therefore, the solution is to provide the mapping between master node ids
+    // and node names explicitly. As for the mapping between master and slave node ids,
+    // Syncker does provide that.
+    map<int32, string> node_names_by_master_node_id = 1;
+}

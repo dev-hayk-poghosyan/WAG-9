@@ -1,0 +1,349 @@
+syntax = "proto3";
+package proto.te10mk.faultstation;
+option csharp_namespace = "SchemeFaultStations.TE10MK";
+
+/**
+ * Это сообщение-контейнер. Передается в Fault Station из контроллера поезда TrainSim.
+ */
+ message ToFaultStation
+{
+    Section section = 1;
+    oneof message
+    {
+        ElectricValues electric_values = 2;
+        PneumaticValues pneumatic_values = 3;
+        SectionValues section_values = 5;
+        bool reset_fault_station_values = 6;
+    }
+}
+
+/**
+ * FaultStation заточен под показ только 2 секций.
+ * Если использовать текуший для 3ТЭ10Мк то пропускать буферную секцию.
+ */
+enum Section
+{
+    A = 0;
+    B = 1;
+}
+
+/**
+ * Это сообщение - набор параметров для электрических схем в Fault Station.
+ * Переключатели, реле, состояния проводов, ламп и т.д.
+ */
+message ElectricValues
+{
+    bool mp3 = 1;
+    bool mp2 = 2;
+    bool mp1 = 3;
+    bool mp4 = 4;
+    bool rp1 = 5;
+    bool rp2 = 6;
+    bool rp3 = 7;
+    bool rp4 = 8;
+    bool rp5 = 9;
+    bool rp6 = 10;
+    bool com1 = 11;
+    bool com2 = 12;
+    bool com3 = 13;
+    bool com4 = 14;
+    bool com5 = 15;
+    bool com6 = 16;
+    bool w239 = 17;
+    bool w239Rv3Cond = 18;
+    bool w393 = 19;
+    bool ca13 = 20;
+    bool cblock367 = 21;
+    bool w5842 = 22;
+    bool cdc1 = 23;
+    bool cdct9 = 24;
+    bool cdct5 = 25;
+    bool cdct6 = 26;
+    bool cdct8 = 27;
+    bool w5559 = 28;
+    bool cpd1 = 29;
+    bool cpd2 = 30;
+    bool w323 = 31;
+    bool notru9 = 32;
+    bool ru9 = 33;
+    bool ru15 = 34;
+    bool w337 = 35;
+    bool w327 = 36;
+    bool ktn = 37;
+    bool notrv2Cond = 38;
+    bool ru6 = 39;
+    bool ru4 = 40;
+    bool kmn = 41;
+    bool w325 = 42;
+    bool rd1 = 43;
+    bool ctp = 44;
+    bool rd2 = 45;
+    bool ca5 = 46;
+    bool w314 = 47;
+    bool w314Rkmn = 48;
+    bool rv6Cond = 49;
+    bool notcsd1 = 50;
+    bool ru7 = 51;
+    bool cak = 52;
+    bool notru8 = 53;
+    bool ru17 = 54;
+    bool rv2Cond = 55;
+    bool cth = 56;
+    bool w314Notcth = 57;
+    bool w314Cth = 58;
+    bool drd1 = 59;
+    bool dtr1 = 60;
+    bool ct9 = 61;
+    bool ct10 = 62;
+    bool ct8 = 63;
+    bool ct11 = 64;
+    bool dvp2 = 65;
+    bool dvp3 = 66;
+    bool dvp4 = 67;
+    bool dvp5 = 68;
+    bool w627 = 69;
+    bool w614 = 70;
+    bool w670 = 71;
+    bool w633 = 72;
+    bool w645 = 73;
+    bool w1153 = 74;
+    bool ca4 = 75;
+    bool fuelpump = 76;
+    bool ca4W393 = 77;
+    bool oilpump = 78;
+    bool auxalternator = 79;
+    bool rd1Rd2W393 = 80;
+    bool mfpmore0 = 81;
+    bool engine1More0 = 82;
+    bool engine2More0 = 83;
+    bool engine3More0 = 84;
+    bool engine4More0 = 85;
+    bool engine5More0 = 86;
+    bool engine6More0 = 87;
+    bool mfprevequaly1 = 88;
+    bool mfprevequalyminus1 = 89;
+    bool rvsh1 = 90;
+    bool rvsh2 = 91;
+    bool dc1 = 92;
+    bool dc2 = 93;
+    bool dc3 = 94;
+    bool dc7 = 95;
+    bool rv1 = 96;
+    bool ru8 = 97;
+    bool notkmn = 98;
+    bool notkmnru4 = 99;
+    bool ru10 = 100;
+    bool ut = 101;
+    bool w1235 = 102;
+    bool dc1W314 = 103;
+    bool epk = 104;
+    bool w1312 = 105;
+    bool revforward = 106;
+    bool revback = 107;
+    bool w107 = 108;
+    bool w183 = 109;
+    bool mfpr1 = 110;
+    bool mfprnot1 = 111;
+    bool w109 = 112;
+    bool notd2 = 113;
+    bool w160 = 114;
+    bool drdm2 = 115;
+    bool w109Notd2 = 116;
+    bool w123 = 117;
+    bool dtrm = 118;
+    bool dtrv = 119;
+    bool w160Dtrv = 120;
+    bool ru2 = 121;
+    bool notru19 = 122;
+    bool kv = 123;
+    bool w109Ut = 124;
+    bool w109Utru2 = 125;
+    bool p1 = 126;
+    bool p2 = 127;
+    bool p3 = 128;
+    bool p4 = 129;
+    bool p5 = 130;
+    bool p6 = 131;
+    bool rv3Cond = 132;
+    bool rv1Cond = 133;
+}
+
+/**
+ * Это сообщение - набор параметров для пневматической схемы в Fault Station.
+ * краны, трубы, манометры, и т.д.
+ */
+message PneumaticValues
+{
+    bool kh1 = 1;
+    bool kh2 = 2;
+    bool kh11 = 3;
+    bool kh4 = 4;
+    bool kh7 = 5;
+    bool kh3 = 6;
+    bool kh5 = 7;
+    bool kc1 = 8;
+    bool kb1 = 9;
+    bool kb2 = 10;
+    bool kb3 = 11;
+    bool kb4 = 12;
+    bool kh12 = 13;
+    bool kh13 = 14;
+    bool kh14 = 15;
+    bool kh15 = 16;
+    bool kh16 = 17;
+    bool kh17 = 18;
+    bool kh8 = 19;
+    bool kh6 = 20;
+    bool kh9 = 21;
+    bool kh10 = 22;
+    bool kb5 = 23;
+    bool skr1 = 24;
+    bool tc1 = 25;
+    bool tc2 = 26;
+    float mh1 = 27;
+    float mh2 = 28;
+    float mh1r = 29;
+    float mh2r = 30;
+    float mh3 = 31;
+    int32 km = 32;
+    int32 km215 = 33;
+    int32 p1 = 34;
+    int32 p2 = 35;
+    int32 p3 = 36;
+    int32 p4 = 37;
+    int32 p5 = 38;
+    int32 p6 = 39;
+    int32 p7 = 40;
+    int32 p8 = 41;
+    int32 p9 = 42;
+    int32 p10 = 43;
+    int32 p11 = 44;
+    int32 p12 = 45;
+    int32 p13 = 46;
+    int32 p14 = 47;
+    int32 p15 = 48;
+    int32 p16 = 49;
+    int32 p17 = 50;
+    int32 p18 = 51;
+    int32 p19 = 52;
+    int32 p20 = 53;
+    int32 p21 = 54;
+    int32 p22 = 55;
+    int32 p23 = 56;
+    int32 p24 = 57;
+    int32 p25 = 58;
+    int32 p26 = 59;
+    int32 p27 = 60;
+    int32 p28 = 61;
+    int32 p29 = 62;
+    int32 p30 = 63;
+    int32 p31 = 64;
+    int32 p32 = 65;
+    int32 p33 = 66;
+    int32 p34 = 67;
+    int32 p35 = 68;
+    int32 p36 = 69;
+    int32 p37 = 70;
+    int32 p38 = 71;
+    int32 p39 = 72;
+    int32 p40 = 73;
+    int32 p41 = 74;
+    int32 p42 = 75;
+    int32 p43 = 76;
+    int32 p44 = 77;
+    int32 p45 = 78;
+    int32 p46 = 79;
+    int32 p47 = 80;
+    int32 p48 = 81;
+    int32 p49 = 82;
+    int32 p50 = 83;
+    int32 p51 = 84;
+    int32 p52 = 85;
+    int32 p53 = 86;
+    int32 p54 = 87;
+    int32 p55 = 88;
+    int32 p56 = 89;
+    int32 p57 = 90;
+    int32 p58 = 91;
+    int32 p59 = 92;
+    int32 p60 = 93;
+    int32 p61 = 94;
+    int32 p62 = 95;
+    int32 p63 = 96;
+    int32 p64 = 97;
+    int32 p65 = 98;
+    int32 p66 = 99;
+    int32 p67 = 100;
+    int32 p68 = 101;
+    int32 p69 = 102;
+    int32 p70 = 103;
+    int32 p71 = 104;
+    int32 p72 = 105;
+    int32 p73 = 106;
+    int32 p74 = 107;
+    int32 p75 = 108;
+    int32 p76 = 109;
+    int32 p77 = 110;
+    int32 p78 = 111;
+    int32 p79 = 112;
+    int32 p80 = 113;
+    int32 p81 = 114;
+    int32 p82 = 115;
+    int32 p83 = 116;
+    int32 p84 = 117;
+    int32 p85 = 118;
+    int32 p86 = 119;
+    int32 p87 = 120;
+    int32 p88 = 121;
+    int32 p89 = 122;
+    int32 p90 = 123;
+    int32 p91 = 124;
+    int32 p92 = 125;
+    int32 p93 = 126;
+    int32 p94 = 127;
+    int32 p95 = 128;
+    int32 p96 = 129;
+    int32 p97 = 130;
+    int32 p98 = 131;
+    int32 p99 = 132;
+    int32 p100 = 133;
+    int32 p101 = 134;
+    int32 p102 = 135;
+    int32 p103 = 136;
+    int32 p104 = 137;
+    int32 p105 = 138;
+    int32 p106 = 139;
+    int32 p107 = 140;
+    int32 p108 = 141;
+    int32 p109 = 142;
+    int32 p110 = 143;
+    bool compressor = 144;
+    bool blowoff_ru1 = 145;
+    bool blowoff_ru2 = 146;
+    bool blowoff_ru3 = 147;
+    bool blowoff_ru4 = 148;
+    bool blowoff_ru5 = 149;
+    bool blowoff_ru6 = 150;
+    bool blowoff_krm1 = 151;
+    bool blowoff_kp1 = 152;
+    bool epc_key = 153;
+    bool ubt1 = 154;
+}
+
+/**
+ * Это сообщение - набор параметров для модельки секции в Fault Station.
+ * Огни.
+ */
+message SectionValues
+{
+    bool spotlight_lit = 1;
+    bool buffer_left_white_lit = 2;
+    bool buffer_right_white_lit = 3;
+    bool buffer_left_red_lit = 4;
+    bool buffer_right_red_lit = 5;
+    bool spotlight_lit_back = 6;
+    bool buffer_left_white_lit_back = 7;
+    bool buffer_right_white_lit_back = 8;
+    bool buffer_left_red_lit_back = 9;
+    bool buffer_right_red_lit_back = 10;
+}

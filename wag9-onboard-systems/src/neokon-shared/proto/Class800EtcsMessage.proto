@@ -1,0 +1,368 @@
+syntax = "proto3";
+package proto.class800.etcs;
+option csharp_namespace = "Class800_ETCS";
+
+enum SpeedColors
+{
+    GRAY = 0;
+    WHITE = 1;
+    YELLOW = 2;
+    ORANGE = 3;
+    RED = 4;
+}
+
+enum ModeIcons
+{
+    NATIONAL_SYSTEM = 0;
+    FULL_SUPERVISION = 1;
+    ON_SIGHT = 2;
+    TRIP = 3;
+    POST_TRIP = 4;
+    STAFF_RESPONSIBILITY = 5;
+    STAND_BY_MODE = 6;
+    SHUNTING_MODE = 7;
+    LEVEL0_MODE = 8;
+}
+
+enum TransitionIcons
+{
+    LEVEL2_TRANSITION_ANNOUNCEMENT = 0;
+    LEVEL_NTC_TRANSITION_ANNOUNCEMENT = 1;
+    LEVEL0_TRANSITION_ANNOUNCEMENT = 2;
+    LEVEL2_TRANSITION_ACKNOWLEDGEMENT = 3;
+    LEVEL_NTC_TRANSITION_ACKNOWLEDGEMENT = 4;
+    LEVEL0_TRANSITION_ACKNOWLEDGEMENT = 5;
+    NATIONAL_SYSTEM_MODE_TRANSITION_ACKNOWLEDGEMENT = 6;
+    ON_SIGHT_MODE_TRANSITION_ACKNOWLEDGEMENT = 7;
+    UNFITTED_MODE_TRANSITION_ACKNOWLEDGEMENT = 8;
+    TRIP_MODE_TRANSITION_ACKNOWLEDGEMENT = 9;
+    STAFF_RESPONSIBLE_MODE_TRANSITION_ACKNOWLEDGEMENT = 10;
+    LEVEL_NTC_TRANSITION_ANNOUNCEMENT_2 = 11;
+    LEVEL_NTC_TRANSITION_ACKNOWLEDGEMENT_2 = 12;
+    LOCOMOTIVE = 13;
+}
+
+enum TrainStopOverrideIcons
+{
+    TRAIN_STOP_OVERRIDE_INACTIVE = 0;
+    TRAIN_STOP_OVERRIDE_ACTIVE = 1;
+}
+
+enum BrakeReleaseIcons
+{
+    BRAKE_RELEASE_INACTIVE = 0;
+    BRAKE_RELEASE_ACTIVE = 1;
+}
+
+enum LevelIcons
+{
+    LEVEL0 = 0;
+    LEVEL2 = 1;
+    LEVEL_NTC = 2;
+    LEVEL_TPWSArrow = 3;
+    LEVEL_TPWSFixed = 4;
+}
+
+enum DasAndAtoIcons
+{
+    DAS_UNAVAILABLE_ICON = 0;
+    ATO_DAS_UNAVAILABLE_ICON = 1;
+    DAS_INHIBITED_ICON = 2;
+    DAS_AVAILABLE_ICON = 3;
+    ATO_ENGAGED_ICON = 4;
+}
+
+enum AtoIndicatorIcons
+{
+    MOTORING = 0;
+    COASTING = 1;
+    BRAKING = 2;
+}
+
+enum FasdoIcons
+{
+    FASDO_INSIDE = 0;
+    FASDO_OUTSIDE = 1;
+}
+
+enum DasIcons
+{
+    DAS_INHIBIT = 0;
+    DAS_ENABLE = 1;
+}
+
+enum SkipStopIcons
+{
+    SKIP_STOP_INACTIVE = 0;
+    SKIP_STOP_ACTIVE = 1;
+}
+
+enum RouteIndicationIcons
+{
+    NB = 0;
+    SB = 1;
+}
+
+enum FaultAndPositionIcons
+{
+    ETCS_ATO_FAULT = 0;
+    GEOGRAPHICAL_POSITION = 1;
+}
+
+message PlanningSpeed
+{
+    int32 coordinate_m = 1;
+    int32 speed_mph = 2;
+}
+
+message PlanningBlock
+{
+    int32 coordinate_start_m = 1;
+    int32 coordinate_end_m = 2;
+    string text = 3;
+    bool type = 4;
+}
+
+message PlanningSpeedArrow
+{
+    int32 coordinate_m = 1;
+    int32 type = 2;
+    string text = 3;
+    bool yellow = 4;
+}
+
+message PlanningSigns
+{
+    int32 coordinate_m = 1;
+    int32 type = 2;
+}
+
+message PlanningData
+{
+    repeated PlanningSpeed speed_list = 1;
+    repeated int32 yellow_lines_list = 2;
+    repeated PlanningBlock block_list = 3;
+    repeated PlanningSpeedArrow speed_arrow_list = 4;
+    repeated PlanningSigns signs_list = 5;
+}
+
+enum Screens
+{
+    Off = 0;
+    Home = 1;
+    Pws = 3;
+    DriverId = 4;
+    LevelInhibition = 5;
+    MainMenu = 6;
+    LevelMenu = 7;
+    TrainDataFirst = 8;
+    TrainData = 9;
+    TrainDataDegraded = 10;
+    TrainRunningNumber = 11;
+    RadioData = 12;
+    Override = 13;
+    SettingsMenu = 14;
+    Spec = 15;
+    DataView = 16;
+    RbcData = 17;
+    RadioNetworkId = 18;
+    OldWindow = 19;
+}
+
+message SpeedCircle
+{
+    double start_speed_mph = 1;
+    double middle_speed_mph = 2;
+    double end_speed_mph = 3;
+}
+
+enum TrainType
+{
+    None = 0;
+    Normal = 1;
+    Abnormal = 2;
+}
+
+/**
+ * To set the difference between the system with actual ETCS (@p New) and without it (@p Old).
+ */
+enum OperatingMode
+{
+    Old = 0;
+    New = 1;
+}
+
+/**
+ * Это сообщение-контейнер. Передается в бортовой компьютер из контроллера поезда TrainSim.
+ */
+message TcpToEtcsMessage
+{
+    oneof value
+    {
+        int64 trenager_datetime_sec = 1;
+        bool device_power = 2;
+
+        bool distance_to_target_bar_visibility = 3; // A2 A3
+        int32 distance_to_target_m = 4;             // TODO progressbar
+        bool reduced_adhesion_icon_visibility = 5;  // A4
+        bool speedometer_visibility = 6;            // B0 B1 B2
+        int32 speed_mph = 7;
+        SpeedColors speed_arrow_color = 8;
+
+        SpeedCircle speed_circle_gray = 9;
+        SpeedCircle speed_circle_white = 10;
+        SpeedCircle speed_circle_yellow = 11;
+        SpeedCircle speed_circle_orange = 21;
+        SpeedCircle speed_circle_red = 22;
+
+        TrainType train_type_first_text = 12;
+        string degraded_speed_text = 13;
+        string level_inhibition_text = 14;
+        string driver_id_text = 15;
+        string train_data_text = 16;
+        string level_text = 17;
+        string train_running_number_text = 18;
+
+        bool black_screen_fault = 19;
+        bool freeze_screen_fault = 20;
+
+        bool numerical_release_speed_icon_visibility = 24; // B6
+        int32 numerical_release_speed_mph = 25;
+        bool mode_icon_visibility = 26; // B7
+        ModeIcons mode_icons = 27;
+        bool transition_icon_visibility = 28; // C1
+        TransitionIcons transition_icons = 29;
+        bool tpws_spad_visibility = 30;           // C2
+        bool tpws_oss_visibility = 31;            // C3
+        bool aws_icon_visibility = 32;            // C4
+        bool train_stop_override_visibility = 33; // C5
+        TrainStopOverrideIcons train_stop_override = 34;
+        bool brake_release_visibility = 35; // C6
+        BrakeReleaseIcons brake_release = 36;
+        bool eoa_override_visibility = 37; // C7
+        bool level_icon_visibility = 38;   // C8
+        LevelIcons level_icons = 39;
+        bool brake_activation_icon_visibility = 40; // C9
+        bool aws_sunflower_visibility = 41;         // Dx
+        bool aws_sunflower_lit = 42;
+        bool rbc_connection_icon_visibility = 43; // E1
+        bool rbc_connection_fault = 44;
+        bool level2_inhibited_icon_visibility = 45;         // E2
+        bool tpws_aws_isol_fault_indicator_visibility = 46; // E3
+        bool aws_isol_fault_indicator_visibility = 47;      // E4
+        bool das_and_ato_icon_visibility = 48;              // G1
+        DasAndAtoIcons das_and_ato_icons = 49;
+        bool ato_indicator_icon_visibility = 50; // G2
+        AtoIndicatorIcons ato_indicator_icons = 51;
+        bool dwell_counter_visibility = 52;            // G3
+        bool dwell_counter = 53;                       //??
+        bool door_close_reminder_icon_visibility = 54; // G4
+        bool fasdo_icon_visibility = 55;               // G5
+        FasdoIcons fasdo_icons = 56;
+        bool das_icon_visibility = 57; // G6
+        DasIcons das_icons = 58;
+        bool skip_stop_icon_visibility = 59; // G7
+        SkipStopIcons skip_stop_icons = 60;
+        bool route_indication_icons_visibility = 61; // G8
+        RouteIndicationIcons route_indication_icons = 62;
+        bool fault_and_position_icons_visibility = 63; // G12
+        FaultAndPositionIcons fault_and_position_icons = 64;
+        bool planning_area_visibility = 65;
+        bool planning_area_self_visibility = 66;
+
+        PlanningData planning_data = 67;
+
+        EventMessage message = 68;
+
+        bool transition_icons_button_visibility = 69;
+
+        OperatingMode operating_mode = 70;
+
+        bool time_to_indication_visibility = 71; // A1
+        double time_to_indication_scale = 72;
+
+        bool reset_values = 73;
+
+        bool brake_activation_icon_button_visibility = 74; // C9
+
+        bool speedometer_circle_visibility = 75;
+        int32 speedometer_circle_speed_mph = 76;
+
+        bool disable_main_menu_buttons = 77;
+
+        bool kmph_enable = 78;
+
+        bool disable_eoa_override_button = 79;
+        bool disable_shunting_button = 80;
+        DeleteEventMessage delete_message = 81;
+        bool red_hatch_visibility = 82;
+        SpeedCircle speed_circle_release = 83;
+
+        string brakes_isol = 84;
+        string length_m = 85;
+        string brake_percentage = 86;
+        string max_speed = 87;
+        string radio_network_id = 88;
+        string rbc_id = 89;
+        string rbc_phone_number = 90;
+
+        bool sand_clock_animation = 91;
+
+        bool started = 92;
+        bool disable_radio_button = 93;
+        bool non_standard_start = 94;
+        bool to_home_screen = 95;
+
+        bool etcs_holdover_screen = 96;
+
+        bool disable_level2_button = 97;
+    }
+}
+
+message EventMessage
+{
+    int32 id = 1;
+    string message = 2;
+    string time_text = 3;
+    optional int32 lifetime_sec = 4;
+    bool acknowledge = 5;
+}
+
+message DeleteEventMessage
+{
+    int32 id = 1;
+    bool all = 2;
+}
+
+/**
+ * Это сообщение-контейнер. Передается в контроллер поезда TrainSim из бортового компьютера.
+ */
+message TcpFromEtcsMessage
+{
+    oneof value
+    {
+        string inhibition_level2 = 1;
+        string driver_id = 2;
+        string train_type = 3;
+        string level = 4;
+        string train_running_number = 5;
+        Screens current_screen = 6;
+        bool acknowledge_click = 7;
+        bool list_up_click = 8;
+        bool list_down_click = 9;
+        TrainType train_type_first = 10;
+        int32 degraded_speed = 11;
+        bool speedometer_click = 12;
+        bool shunting_click = 13;
+        bool eoa_override_button_click = 14;
+        bool start_is_activated = 15;
+        EventMessage message_box_click = 16;
+        bool etcs_holdover_click = 17;
+        bool start_click = 18;
+        bool last_rbc_click = 19;
+        string brake_isol_cars = 20;
+        string rbc_id = 21;
+        string rbc_phone_number = 22;
+        string radio_network_id = 23;
+    }
+}

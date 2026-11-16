@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message NodeSurfaces
+{
+    int32 node_id = 1;
+    repeated string surface_names = 2;
+}

@@ -1,0 +1,39 @@
+syntax = "proto3";
+package proto;
+
+message CrossingPanelButtonStates
+{
+    /**
+     * States which are activated when the button becomes pressed.
+     */
+    repeated string enable_states_when_pressed = 1;
+
+    /**
+     * States which are deactivated when the button becomes pressed.
+     */
+    repeated string disable_states_when_pressed = 2;
+
+    /**
+     * States which are activated when the button becomes released.
+     */
+    repeated string enable_states_when_released = 3;
+
+    /**
+     * States which are deactivated when the button becomes released.
+     */
+    repeated string disable_states_when_released = 4;
+
+    /**
+     * States which are activated when the button's seal is broken (if the button doesn't have a
+     * seal, does nothing).
+     */
+    repeated string enable_states_when_seal_broken = 5;
+
+    /**
+     * If any of the listed states are active, then the button is disabled, i.e. user can press it
+     * but no states changed. If the button was already in the pressed state when such "disabled"
+     * state has been activated, states are activated or deactivated as it was released first.
+     * The same is true 
+     */
+    repeated string disabled_in_states = 6;
+}

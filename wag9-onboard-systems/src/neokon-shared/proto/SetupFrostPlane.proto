@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * This message should be called when creating the train and when changing the main train driving
+ * vehicle index.
+ */
+message SetupFrostPlane
+{
+    /**
+     * The zero value means that the default frost plane scale value will be used.
+     */
+    float frost_plane_scale_override = 1;
+}

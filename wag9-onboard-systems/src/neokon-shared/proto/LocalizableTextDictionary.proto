@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * A pair mapping a unique key to a localized string.
+ */
+message LocaleText
+{
+    string key = 1;
+    string text = 2;
+}
+
+message LocalizableTextDictionary
+{
+    repeated LocaleText labels = 1;
+}

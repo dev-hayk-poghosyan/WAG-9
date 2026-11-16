@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+enum WeatherConditionPreset
+{
+    WEATHER_SUNNY                = 0;
+    WEATHER_CLOUDS               = 1;
+    WEATHER_RAIN_WITH_LIGHTNING  = 2;
+    WEATHER_RAIN                 = 3;
+    WEATHER_WINTER               = 4;
+    WEATHER_SNOW                 = 5;
+    WEATHER_SLIGHT_CLOUDS        = 6;
+    WEATHER_FOG                  = 7;
+}

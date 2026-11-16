@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+import "Vec4f.proto";
+
+message Mat4f
+{
+    Vec4f col0 = 1;
+    Vec4f col1 = 2;
+    Vec4f col2 = 3;
+    Vec4f col3 = 4;
+}

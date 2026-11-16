@@ -1,0 +1,30 @@
+syntax = "proto3";
+package proto;
+
+import "SignallerExteriorCategory.proto";
+
+/**
+ * This message is sent form TrainSim to SMC to inform that signaller with @p old_uuid_bytes id
+ * was replaced to new one with @p new_uuid_bytes id and @p new_type_string type.
+ */
+message SignallerTypeChange
+{
+    reserved 1;
+    reserved 2;
+    string new_type_string = 3;
+    bytes signaller_uuid_bytes = 4;
+
+    reserved 5;
+
+    /**
+     * Indicates whether signaller type should change immediately or after timer expire.
+     */
+    bool change_type_immediately = 6;
+
+    /**
+     * @see SignallerExteriorCategory.
+     */
+    SignallerExteriorCategory.Category exterior_category = 7;
+
+    bool is_shunting_master = 8;
+}

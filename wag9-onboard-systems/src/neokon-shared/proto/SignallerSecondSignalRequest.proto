@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * This message transferes from SMC to TrainSim to inform that for signaller with id
+ * @p instance_uuid_bytes was set second type @p type_string.
+ */
+message SignallerSecondSignalRequest
+{
+    bytes instance_uuid_bytes = 1;
+    string type_string = 2;
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+package proto;
+
+message SimulationSessionState
+{
+    /**
+     * Empty value means that the sim is not running at the moment now.
+     */
+    string session_uuid = 1;
+
+    string initiator_name = 2;
+
+    string initiator_machine_name = 3;
+
+    /**
+     * Seconds since the epoch.
+     */
+    uint64 session_start_timestamp = 4;
+}

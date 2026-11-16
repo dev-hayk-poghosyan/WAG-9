@@ -1,0 +1,35 @@
+syntax = "proto3";
+package proto;
+
+message AutoBlockingSignalPropagationMap
+{
+    enum SignalPropagation
+    {
+        SIGNAL_LOSS = 0;
+        SIGNAL_BYPASS = 1;
+        NORMAL = 2;
+    }
+
+    message Interval
+    {
+        double start_distance = 1;
+        double stop_distance = 2;
+        SignalPropagation propagation = 3;
+    }
+
+    message RailPath
+    {
+        /**
+         * The UUID of the RailPath in question.
+         */
+        string uuid_bytes = 1; // 16 bytes, no hex encoding.
+
+        /**
+         * @note Parts of RailPath not covered by any interval are assumed
+         *       to have SIGNAL_LOSS signal propagation.
+         */
+        repeated Interval intervals = 2;
+    }
+
+    repeated RailPath rail_paths = 1;
+}

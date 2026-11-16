@@ -1,0 +1,7 @@
+syntax = "proto3";
+package proto;
+
+message EnvironmentHazard
+{
+    string type_string = 1;
+}

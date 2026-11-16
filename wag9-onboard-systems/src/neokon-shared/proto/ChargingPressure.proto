@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+message ChargingPressure
+{
+    /**
+     * ChargingPressure from the vehicle's Locomotive section in Trains.xml
+     */
+    double charging_pressure = 1;
+}

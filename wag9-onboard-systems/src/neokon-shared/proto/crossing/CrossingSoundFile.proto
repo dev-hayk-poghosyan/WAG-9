@@ -1,0 +1,16 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Auxiliary structure.
+ * Used to transfer sound file names from RailroadControl to TrainSim.
+ * @p language is a string of two letters, for example "ru" - Russian. This parameter is determined
+ * by the name of the directory in which the sound files are located.
+ * The case of characters does not matter.
+ */
+message CrossingSoundFile
+{
+    string language = 1;
+    repeated string files = 2;
+    int32 sound_type = 3;
+}

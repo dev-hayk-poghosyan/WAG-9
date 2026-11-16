@@ -1,0 +1,23 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Message to inform TrainSim about train platform payload set.
+ */
+message PlatformPayload
+{
+    reserved 1;
+
+    reserved 2;
+
+    /**
+     * The name of the NodeReference from the Layer_Perrons.
+     */
+    string perron_name = 3;
+
+    /**
+     * The maximum payload, that stores in the PassengerStationPerron, is multiplied by this factor.
+     * The value should be in range [0..1].
+     */
+    float payload_factor = 4;
+}

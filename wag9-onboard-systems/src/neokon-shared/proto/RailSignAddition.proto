@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+
+message RailSignAddition
+{
+    enum Type
+    {
+        ARROW_LEFT  = 0;
+        ARROW_RIGHT = 1;
+        ARROW_LEFT_RIGHT = 2;
+    }
+}

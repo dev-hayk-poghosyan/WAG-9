@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingDefectCategory.proto";
+
+message CrossingExerciseDefectCategories
+{
+    repeated CrossingDefectCategory defects = 1;
+}

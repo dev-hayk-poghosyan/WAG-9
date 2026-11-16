@@ -1,0 +1,24 @@
+syntax = "proto3";
+package proto;
+
+import "VehicleEndpoint.proto";
+
+message AngleCockStateRequest
+{
+    uint64 train_incarnation = 1;
+
+    /**
+     * Index from the front of main train's vector.
+     */
+    int32 vehicle_idx = 2;
+
+    /**
+     * On which endpoint of vehicle the target angle cock is.
+     */
+    VehicleEndpoint.Endpoint endpoint = 3;
+
+    /**
+     * <true> stands for opened state.
+     */
+    bool open = 4;
+}

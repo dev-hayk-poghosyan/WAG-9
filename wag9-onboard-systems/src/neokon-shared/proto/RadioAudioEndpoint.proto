@@ -1,0 +1,18 @@
+syntax = "proto3";
+package proto.radio;
+
+message AudioEndpoint
+{
+    enum Endpoint
+    {
+        /**
+         * Input endpoint of communication line, i.e. microphones.
+         */
+        IN   = 0;
+
+        /**
+         * Output endpoint of communication line. i.e. speakers.
+         */        
+        OUT  = 1;
+    }
+}

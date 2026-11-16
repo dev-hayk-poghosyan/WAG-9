@@ -1,0 +1,27 @@
+syntax = "proto3";
+package proto;
+
+import "Vec3d.proto";
+import "MajorPole.proto";
+import "MinorPole.proto";
+
+message Pole
+{
+    /**
+     * Used in error messages.
+     */
+    string node_name = 1;
+
+    Vec3d location = 2;
+
+    /**
+     * The index of the railway line (starting from 0) this pole belongs to.
+     */
+    int32 line_idx = 3;
+
+    oneof type
+    {
+        MajorPole major = 4;
+        MinorPole minor = 5;
+    }
+}

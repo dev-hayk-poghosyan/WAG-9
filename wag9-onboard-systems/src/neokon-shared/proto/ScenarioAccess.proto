@@ -1,0 +1,23 @@
+syntax = "proto3";
+package proto;
+
+message ScenarioAccess
+{
+    enum Grant
+    {
+        /**
+         * Scenario is visible only for owner.
+         */
+        DEFAULT = 0;
+
+        /**
+         * Scenario is visible for everyone, yet it can be edited only by owner.
+         */
+        VISIBLE_TO_ALL = 1;
+
+        /**
+         * Scenario is visible and editable for everyone.
+         */
+        EDITABLE_BY_ALL = 2;
+    };
+};

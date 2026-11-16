@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Situation type sets via perron context menu on SMC and stores in the scenario.
+ */
+message TrainPlatformSituationType
+{
+    enum Type
+    {
+        EMPTY = 0;
+        COAT_IN_THE_DOOR = 1;
+        FALLING_HUMAN = 2;
+        FIGHT = 3;
+        PERSON_FEELS_BAD = 4;
+        DISABLED_PERSON = 5;
+        PERSON_SITTING_ON_THE_EDGE = 6;
+        LEANS = 7;
+    }
+}

@@ -1,0 +1,45 @@
+syntax = "proto3";
+package proto.meshgen;
+
+import "MeshGenProfilePoint.proto";
+import "MeshGenCustomMaterial.proto";
+import "MeshGenMaterialInfo.proto";
+import "Vec3f.proto";
+
+/**
+ * Surface config entry.
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/wikis/Control-parameters-of-mesh-generation-for-branches-and-junctions 
+ * wiki page for details, Item 9
+ */
+message Surface
+{
+    optional string name = 1;
+
+    optional bool enable = 2;
+
+    optional double num_segments_per_unit = 3;
+
+    optional double tex_coords_v_step = 4;
+
+    optional MaterialInfo default_material_info = 5;
+
+    optional float min_visible_distance = 6;
+
+    optional float max_visible_distance = 7;
+
+    optional float min_fade_distance = 8;
+
+    optional float max_fade_distance = 9;
+
+    repeated ProfilePoint points = 10;
+
+    repeated CustomMaterial custom_materials = 11;
+
+    optional string cap_node_path = 12;
+
+    optional string point_profile_name = 13;
+
+    optional Vec3f profile_offset = 14;
+
+    repeated int32 collision_masks = 15;
+}

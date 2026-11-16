@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "TogglerState.proto";
+import "VehicleEndpoint.proto";
+
+/**
+ * Contains information about vehicle flat spot fault.
+ */
+message VehicleFlatSpotInfo
+{
+    bytes train_uuid_bytes = 1;
+    bytes vehicle_uuid_bytes = 2;
+    VehicleEndpoint.Endpoint vehicle_endpoint = 3;
+    reserved 4;
+    TogglerState.State switch_command = 5;
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+package proto;
+
+import "SeasonType.proto";
+import "TimeOfDay.proto";
+
+/**
+ * Describes animated object group item in for the AnimatedObjectsEnvironmentConfig file
+ * @see http://git.neokon.local:22580/root/GlobalTerrainEditor-release/-/wikis/Animated-objects-environment-conditions-config
+ * for more info.
+ */ 
+message AnimatedObjectGroupItem
+{
+    SeasonType.Season season = 1;
+    TimeOfDay.DayTime day_time = 2;
+    string class_name = 3;
+}

@@ -1,0 +1,320 @@
+syntax = "proto3";
+package proto.es5k.boardcomputer;
+option csharp_namespace = "Msud_N_net";
+
+/**
+ * Это сообщение-контейнер. Передается в Msud из контроллера поезда TrainSim.
+ */
+message TcpToMsudNBiMessage
+{
+    oneof value
+    {
+        // включение питания программы
+        bool power = 2;
+
+        // нажатие на кнопку пленочной клавиатуры
+        KeyboardButton keyboard_button = 3;
+
+        // контроль оборудования
+        bool equipment_control_tc = 4;
+        bool equipment_control_db = 17;
+        bool equipment_control_mk = 18;
+        bool equipment_control_dm = 19;
+        bool equipment_control_dp = 20;
+        bool equipment_control_ob = 21;
+        bool equipment_control_kz = 22;
+        bool equipment_control_ov = 23;
+        bool equipment_control_cme = 24;
+        bool equipment_control_td = 25;
+        bool equipment_control_si = 26;
+        bool equipment_control_msud = 27;
+        bool equipment_control_r = 28;
+
+        //режим работы
+        OperationalMode operation_mode = 5;
+
+        //реверс
+        Reverse reverse = 6;
+
+        //тяга или торможение
+        SchemeMode scheme_mod = 7;
+
+        //схема собрана или разобрана
+        bool assembled_scheme = 8;
+
+        SectionParameters section_parameter = 9;
+
+        //зоны вип
+        float vip_areas = 10;
+
+        //сила тяги (kH)
+        int32 traction_power = 12;
+
+        //сила торможения (kH)
+        int32 braking_force = 13;
+
+        //текущее значение скорости (km/h)
+        int32 actual_speed = 36;
+
+        //заданное значение скорости (km/h)
+        int32 target_speed = 14;
+
+        //текущее значение тока (A)
+        int32 actual_anchor_amperage = 37;
+
+        //заданное значение тока (A)
+        int32 target_anchor_amperage = 15;
+
+        //текущее значение напряжения на ТД (B)
+        int32 actual_voltage = 16;
+
+        // ток возбуждения (A)
+        int32 excitation_amperage = 38;
+
+        //выводимое время и дата unixtime
+        int64 current_time_sec = 1;
+
+        //токоприемники
+        float sp27_p = 29;
+        float sp27_p_n = 30;
+        float sp27_d_p = 31;
+        float sp28_p = 32;
+        float sp28_p_n = 33;
+        float sp28_d_p = 34;
+        bool no_communication_master_section_bpy = 39;
+        bool no_communication_slave_section_bpy = 40;
+        bool no_communication_master_section_sp27 = 41;
+        bool no_communication_slave_section_sp28 = 42;
+
+        EquipmentState equipment_state = 35;
+    }
+}
+
+/**
+ * Это сообщение - набор параметров одной секции локомотива.
+ * Переключатели, реле, значения приборов и т.д.
+ */
+message SectionParameters
+{
+    int32 number_of_section = 1;
+    // фактическая скорость ТД1 (km/h)
+    int32 actual_speed_1 = 2;
+
+    // фактическая скорость ТД2 (km/h)
+    int32 actual_speed_2 = 3;
+
+    // фактическая скорость ТД3 (km/h)
+    int32 actual_speed_3 = 4;
+
+    // фактическая скорость ТД4 (km/h)
+    int32 actual_speed_4 = 5;
+
+    // фактическое значение тока якорей ТД (A)
+    int32 actual_anchor_amperage_1 = 6;
+
+    // фактическое значение тока якорей ТД (A)
+    int32 actual_anchor_amperage_2 = 7;
+
+    // фактическое значение тока якорей ТД (A)
+    int32 actual_anchor_amperage_3 = 8;
+
+    // фактическое значение тока якорей ТД (A)
+    int32 actual_anchor_amperage_4 = 9;
+
+    // ток возбуждения (A)
+    int32 excitation_amperage = 10;
+
+    //Есть ли соосное боксование
+    bool boxing = 11;
+
+    //зона ВИП1 (0-4.0)
+    float zone_vip_1 = 12;
+    //Uкс
+    int32 u_ks_vip_1 = 13;
+    //Uтд
+    int32 u_td_vip_1 = 14;
+    int32 alpha_p_vip_1 = 15;
+    int32 alpha_b_vip_1 = 16;
+    int32 gama_vip_1 = 17;
+    int32 beta_vip_1 = 18;
+    int32 alpha_h_1_vip_1 = 19;
+    int32 alpha_h_2_vip_1 = 20;
+
+    //зона ВИП2 (0-4.0)
+    float zone_vip_2 = 21;
+    //Uкс
+    int32 u_ks_vip_2 = 22;
+    //Uтд
+    int32 u_td_vip_2 = 23;
+    int32 alpha_p_vip_2 = 24;
+    int32 alpha_b_vip_2 = 25;
+    int32 gama_vip_2 = 26;
+    int32 beta_vip_2 = 27;
+    int32 alpha_h_1_vip_2 = 28;
+    int32 alpha_h_2_vip_2 = 29;
+
+    // Iя1, Iя2, Uя2 +Uпит
+    bool i1_i2_u2_plus_u = 30;
+    // Iя1, Iя2, Uя2 -Uпит
+    bool i1_i2_u2_minus_u = 31;
+    // Iя3, Iя4, Uя4 +Uпит
+    bool i3_i4_u4_plus_u = 32;
+    // Iя4, Iя4, Uя4 -Uпит
+    bool i3_i4_u4_minus_u = 33;
+}
+
+/**
+ * Это сообщение-контейнер. Передается из Msud в контроллер поезда TrainSim.
+ */
+message TcpFromMsudNBiMessage
+{
+    int32 field_weakening = 1;
+    bool automatic_op_active = 2;
+    bool security_boxing_active = 3;
+}
+
+/**
+ * Это сообщение - набор параметров для посылки состояния определенного коннектора в Fault Station.
+ */
+message EquipmentState
+{
+    int32 number_of_section = 1;
+    EquipmentConnector connector = 2;
+    bool state = 3;
+}
+
+enum KeyboardButton
+{
+    BTN_NONE = 0;
+    BTN_1 = 1;
+    BTN_2 = 2;
+    BTN_3 = 3;
+    BTN_4 = 4;
+    BTN_5 = 5;
+    BTN_6 = 6;
+    BTN_7 = 7;
+    BTN_8 = 8;
+    BTN_9 = 9;
+    BTN_0 = 10;
+    BTN_E = 11;
+    BTN_DOWN = 12;
+    BTN_UP = 13;
+    BTN_RIGHT = 14;
+    BTN_LEFT = 15;
+    BTN_C = 16;
+    BTN_F = 17;
+    BTN_BRIGHTNESS_UP = 18;
+    BTN_BRIGHTNESS_DOWN = 19;
+    BTN_TAB = 20;
+    BTN_A = 21;
+    BTN_ST = 22;
+    BTN_I = 23;
+    BTN_S = 24;
+    BTN_ESC = 25;
+}
+
+enum OperationalMode
+{
+    Manual = 0;
+    Auto = 1;
+}
+
+enum Reverse
+{
+    Neutral = 0;
+    Forward = 1;
+    Back = 2;
+}
+
+enum SchemeMode
+{
+    None = 0;
+    Traction = 1;
+    Recuperation = 2;
+}
+
+enum EquipmentConnector
+{
+    X17_1 = 0;
+    X17_2 = 1;
+    X17_3 = 2;
+    X17_4 = 3;
+    X17_5 = 4;
+    X17_6 = 5;
+    X17_7 = 6;
+    X17_8 = 7;
+    X17_9 = 8;
+    X17_10 = 9;
+    X17_12 = 11;
+    X17_13 = 12;
+    X17_14 = 13;
+    X17_15 = 14;
+    X17_16 = 15;
+    X12_1 = 16;
+    X12_4 = 17;
+    X16_1 = 18;
+    X16_2 = 19;
+    X16_3 = 20;
+    X16_4 = 21;
+    X16_5 = 22;
+    X16_6 = 23;
+    X16_7 = 24;
+    X16_8 = 25;
+    X16_9 = 26;
+    X16_10 = 27;
+    X16_11 = 28;
+    X16_12 = 29;
+    X16_13 = 30;
+    X16_14 = 31;
+    X16_15 = 32;
+    X16_16 = 33;
+    X16_17 = 34;
+    X16_18 = 35;
+    X16_19 = 36;
+    X16_20 = 37;
+    X16_21 = 38;
+    X10_1 = 39;
+    X10_2 = 40;
+    X10_3 = 41;
+    X10_4 = 42;
+    X10_5 = 43;
+    X10_6 = 44;
+    X10_7 = 45;
+    X10_8 = 46;
+    X10_9 = 47;
+    X10_10 = 48;
+    X10_11 = 49;
+    X10_12 = 50;
+    X10_13 = 51;
+    X10_14 = 52;
+    X10_15 = 53;
+    X10_16 = 54;
+    X10_17 = 55;
+    X10_18 = 56;
+    X10_19 = 57;
+    X10_20 = 58;
+    X10_21 = 59;
+    X10_22 = 60;
+    X11_1 = 61;
+    X11_2 = 62;
+    X11_3 = 63;
+    X11_4 = 64;
+    X11_5 = 65;
+    X11_7 = 66;
+    X11_8 = 67;
+    X11_9 = 68;
+    X11_10 = 69;
+    X11_11 = 70;
+    X11_12 = 71;
+    X11_13 = 72;
+    X11_14 = 73;
+    X11_15 = 74;
+    X11_16 = 75;
+    X11_17 = 76;
+    X11_18 = 77;
+    X11_19 = 78;
+    X11_20 = 79;
+    X11_21 = 80;
+    X11_22 = 81;
+    X11_24 = 82;
+}

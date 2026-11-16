@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message SpawnPassengers
+{
+    bool toggle_on = 1;
+    int32 density = 2;
+}

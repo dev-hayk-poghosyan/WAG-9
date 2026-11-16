@@ -1,0 +1,10 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * This message is loaded from the RouteSet.json file in the world directory.
+ */
+message RouteSet
+{
+    map<string, uint32> rail_path_uuid_to_line_index = 1;
+}

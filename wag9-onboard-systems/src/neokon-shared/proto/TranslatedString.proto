@@ -1,0 +1,13 @@
+syntax = "proto3";
+package proto;
+
+import "Language.proto";
+
+/**
+ * String data and string language.
+ */
+message TranslatedString
+{
+    string data = 1;
+    Language.Lang language = 2;
+}

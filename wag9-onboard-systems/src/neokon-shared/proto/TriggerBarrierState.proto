@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * States of barrier that may be associated with animation trigger.
+ */
+message TriggerBarrierState
+{
+    enum State
+    {
+        CLOSED = 0;
+        OPENED = 1;
+    }
+}

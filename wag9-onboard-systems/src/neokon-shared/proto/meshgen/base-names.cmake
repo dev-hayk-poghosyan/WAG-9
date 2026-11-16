@@ -1,0 +1,24 @@
+set(
+    proto_base_names
+
+    MeshGenConfig
+    MeshGenAdjunct
+    MeshGenAdjunctPart
+    MeshGenAllowedOptions
+    MeshGenBranchCommon
+    MeshGenBranchGuardRail
+    MeshGenBranchSleepers
+    MeshGenCommon
+    MeshGenCustomMaterial
+    MeshGenGuardRails
+    MeshGenJunctionSleepers
+    MeshGenMaterialParam
+    MeshGenMaterialInfo
+    MeshGenPointRail
+    MeshGenPointProfile
+    MeshGenProfilePoint
+    MeshGenRailFrog
+    MeshGenSurface
+    MeshGenSwitchRods
+    MeshGenHeelBlock
+)

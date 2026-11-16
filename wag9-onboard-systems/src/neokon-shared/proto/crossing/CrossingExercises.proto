@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+
+import "CrossingExercise.proto";
+
+message CrossingExercises
+{
+    repeated CrossingExercise exercises = 1;
+}

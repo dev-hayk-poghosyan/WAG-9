@@ -1,0 +1,31 @@
+syntax = "proto3";
+package proto;
+
+/**
+ * Used as part of VehiclesProperties to control the rear lights.
+ */
+message RearLights
+{
+    enum LightState
+    {
+        /**
+         * DEFAULT means that the light state is up to TrainSim, depending on current situation.
+         * According undeterminate state of UI control in SMC.
+         */
+        DEFAULT   = 0;
+
+        /**
+         * Explicitly specified state of light is OFF.
+         * According unchecked state of UI control in SMC.
+         */
+        FORCED_OFF = 1;
+
+        /**
+         * Explicitly specified state of light is ON.
+         * According checked state of UI control in SMC.
+         */
+        FORCED_ON  = 2;
+    }
+
+    LightState rear_lights = 1;
+}

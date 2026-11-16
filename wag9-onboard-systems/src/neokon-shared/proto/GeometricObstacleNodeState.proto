@@ -1,0 +1,8 @@
+syntax = "proto3";
+package proto;
+
+message GeometricObstacleNodeState
+{
+    int32 node_id = 1;
+    bool node_enabled = 2;
+}
