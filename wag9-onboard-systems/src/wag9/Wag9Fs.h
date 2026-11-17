@@ -8,11 +8,14 @@
 #include "FaultStationMessages.pb.h"
 
 #include <QFrame>
+#include <QHash>
+#include <QList>
 #include <QTimer>
+#include <QWidget>
 
 #include <memory>
 
-class Wag9PneumoPanel;
+class QPushButton;
 
 class Wag9Fs : public QFrame
 {
@@ -28,8 +31,8 @@ class Wag9Fs : public QFrame
     private:
         void prepareZones();
         void createPantographs();
-        void showFrame(const QString& resourcePath);
-        void showPneumo();
+        void showPopup(QWidget* panel);
+        void hidePopups();
         void closeFrame();
         void createServer();
         void reportStationState();
@@ -41,6 +44,7 @@ class Wag9Fs : public QFrame
         std::unique_ptr<Wag9FsServer> m_server;
         std::unique_ptr<Wag9::PanelFactory> m_panelFactory;
         QRect m_frameRect;
-        Wag9PneumoPanel* m_pneumoPanel = nullptr;
+        QList<QPushButton*> m_linkButtons;
+        QHash<QString, QWidget*> m_popups;
         QTimer m_reportTimer;
 };

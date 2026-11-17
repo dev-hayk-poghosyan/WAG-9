@@ -1,17 +1,11 @@
 <RCC>
     <qresource prefix="/Wag9">
         <file>fs/Background.png</file>
-        <file>fs/Main_with_Hints.png</file>
         <file>fs/hints/PT.png</file>
         <file>fs/hints/SB1.png</file>
         <file>fs/hints/HB1.png</file>
         <file>fs/hints/SB2.png</file>
         <file>fs/hints/HB2.png</file>
-        <file>fs/SB1.png</file>
-        <file>fs/SB2.png</file>
-        <file>fs/HB1.png</file>
-        <file>fs/HB2.png</file>
-        <file>fs/PT.png</file>
         <file>fs/pneumo/Background.png</file>
         <file>fs/pneumo/ArrowBlack1.png</file>
         <file>fs/pneumo/SwitchBlack1_01.png</file>
@@ -33,6 +27,30 @@
         <file>fs/pneumo/SwitchYellow2_02.png</file>
         <file>fs/pneumo/SwitchYellow3_01.png</file>
         <file>fs/pneumo/SwitchYellow3_02.png</file>
+        <file>fs/cubicle/SB1_Background.png</file>
+        <file>fs/cubicle/SB2_Background.png</file>
+        <file>fs/cubicle/HB1_Background.png</file>
+        <file>fs/cubicle/HB2_Background.png</file>
+        <file>fs/cubicle/SwitchBlack5_01.png</file>
+        <file>fs/cubicle/SwitchBlack5_02.png</file>
+        <file>fs/cubicle/SwitchBlack6_01.png</file>
+        <file>fs/cubicle/SwitchBlack6_02.png</file>
+        <file>fs/cubicle/SwitchBlack7_01.png</file>
+        <file>fs/cubicle/SwitchBlack7_02.png</file>
+        <file>fs/cubicle/SwitchBlack8_01.png</file>
+        <file>fs/cubicle/SwitchBlack8_02.png</file>
+        <file>fs/cubicle/SwitchBlack8_03.png</file>
+        <file>fs/cubicle/SwitchBlack8_04.png</file>
+        <file>fs/cubicle/SwitchBlack9_01.png</file>
+        <file>fs/cubicle/SwitchBlack9_02.png</file>
+        <file>fs/cubicle/SwitchWhite1_01.png</file>
+        <file>fs/cubicle/SwitchWhite1_02.png</file>
+        <file>fs/cubicle/SwitchBlue_01.png</file>
+        <file>fs/cubicle/SwitchBlue_02.png</file>
+        <file>fs/cubicle/BTN_YellowLamp1_01.png</file>
+        <file>fs/cubicle/BTN_YellowLamp1_02.png</file>
+        <file>fs/cubicle/BTN_YellowLamp1_03.png</file>
+        <file>fs/cubicle/BTN_YellowLamp1_04.png</file>
         <file>fs/panto/left/01.png</file>
         <file>fs/panto/left/02.png</file>
         <file>fs/panto/left/03.png</file>

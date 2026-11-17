@@ -6,6 +6,8 @@ add_executable(
     Wag9Configuration.cpp Wag9Configuration.h
     Wag9Fs.cpp Wag9Fs.h
     Wag9PneumoPanel.cpp Wag9PneumoPanel.h
+    Wag9CubiclePanel.cpp Wag9CubiclePanel.h
+    Wag9SpriteSwitch.cpp Wag9SpriteSwitch.h
     Wag9FsInfoPanel.cpp Wag9FsInfoPanel.h
     Wag9FsServer.cpp Wag9FsServer.h
     Wag9PanelFactory.cpp Wag9PanelFactory.h

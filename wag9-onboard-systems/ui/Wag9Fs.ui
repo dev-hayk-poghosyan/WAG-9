@@ -89,9 +89,6 @@
    <property name="side" stdset="0">
     <string>right</string>
    </property>
-   <property name="frame" stdset="0">
-    <string>:/Wag9/fs/PT.png</string>
-   </property>
   </widget>
   <widget class="QPushButton" name="link_SB1">
    <property name="geometry">
@@ -120,9 +117,6 @@
    <property name="side" stdset="0">
     <string>right</string>
    </property>
-   <property name="frame" stdset="0">
-    <string>:/Wag9/fs/SB1.png</string>
-   </property>
   </widget>
   <widget class="QPushButton" name="link_HB1">
    <property name="geometry">
@@ -150,9 +144,6 @@
    </property>
    <property name="side" stdset="0">
     <string>right</string>
-   </property>
-   <property name="frame" stdset="0">
-    <string>:/Wag9/fs/HB1.png</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pan_right_1">
@@ -282,9 +273,6 @@
    <property name="side" stdset="0">
     <string>left</string>
    </property>
-   <property name="frame" stdset="0">
-    <string>:/Wag9/fs/SB2.png</string>
-   </property>
   </widget>
   <widget class="QPushButton" name="link_HB2">
    <property name="geometry">
@@ -312,9 +300,6 @@
    </property>
    <property name="side" stdset="0">
     <string>left</string>
-   </property>
-   <property name="frame" stdset="0">
-    <string>:/Wag9/fs/HB2.png</string>
    </property>
   </widget>
   <widget class="QLabel" name="hint_PT">

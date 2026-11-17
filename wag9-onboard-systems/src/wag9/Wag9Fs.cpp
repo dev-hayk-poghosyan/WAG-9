@@ -1,4 +1,5 @@
 #include "Wag9Fs.h"
+#include "Wag9CubiclePanel.h"
 #include "Wag9PneumoPanel.h"
 
 #include <QDebug>
@@ -7,6 +8,9 @@
 #include <QPixmap>
 #include <QPushButton>
 #include <QRegularExpression>
+#include <QStringList>
+
+#include <algorithm>
 
 namespace
 {
@@ -19,11 +23,6 @@ QStringList pantographFrames(const QString& direction)
         frames << QStringLiteral(":/Wag9/fs/panto/%1/%2.png").arg(direction).arg(i, 2, 10, QLatin1Char('0'));
     }
     return frames;
-}
-
-QList<QPushButton*> linkButtons(const QWidget* root)
-{
-    return root->findChildren<QPushButton*>(QRegularExpression(QStringLiteral("^link_")));
 }
 
 }
@@ -43,8 +42,19 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
     move(m_staticConfig->fsSettings().position);
     prepareZones();
     createPantographs();
-    m_pneumoPanel = new Wag9PneumoPanel(this);
-    m_pneumoPanel->hide();
+    const QStringList zones = {
+        QStringLiteral("SB1"),
+        QStringLiteral("HB1"),
+        QStringLiteral("SB2"),
+        QStringLiteral("HB2")
+    };
+    m_popups.insert(QStringLiteral("PT"), new Wag9PneumoPanel(this));
+    m_popups["PT"]->hide();
+    for (const QString& zone : zones)
+    {
+        m_popups.insert(zone, new Wag9CubiclePanel(zone, this));
+        m_popups[zone]->hide();
+    }
     ui.background->lower();
     ui.hintsButton->raise();
 
@@ -53,7 +63,8 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
 
 void Wag9Fs::prepareZones()
 {
-    for (QPushButton* button : linkButtons(this))
+    m_linkButtons = findChildren<QPushButton*>(QRegularExpression(QStringLiteral("^link_")));
+    for (QPushButton* button : m_linkButtons)
     {
         button->setFocusPolicy(Qt::NoFocus);
         button->setCursor(Qt::PointingHandCursor);
@@ -65,20 +76,18 @@ void Wag9Fs::prepareZones()
                 return;
             }
 
-            for (QPushButton* other : linkButtons(this))
+            for (QPushButton* other : m_linkButtons)
             {
                 if (other != button)
                 {
                     other->setChecked(false);
                 }
             }
-            if (button == ui.link_PT)
+
+            QWidget* panel = m_popups.value(button->property("zone").toString());
+            if (panel)
             {
-                showPneumo();
-            }
-            else
-            {
-                showFrame(button->property("frame").toString());
+                showPopup(panel);
             }
         });
     }
@@ -106,9 +115,12 @@ void Wag9Fs::prepareZones()
         {
             ui.frameView->raise();
         }
-        if (m_pneumoPanel && m_pneumoPanel->isVisible())
+        for (QWidget* popup : m_popups)
         {
-            m_pneumoPanel->raise();
+            if (popup->isVisible())
+            {
+                popup->raise();
+            }
         }
     });
 }
@@ -155,50 +167,40 @@ void Wag9Fs::createPantographs()
     addView(pantograph2, ui.pan_left_2);
 }
 
-void Wag9Fs::showFrame(const QString& resourcePath)
+void Wag9Fs::showPopup(QWidget* panel)
 {
-    m_pneumoPanel->hide();
+    hidePopups();
 
-    QPixmap pix(resourcePath);
-    const QSize maxSize = size() * 0.9;
-    if (pix.width() > maxSize.width() || pix.height() > maxSize.height())
-    {
-        pix = pix.scaled(maxSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    }
+    m_frameRect = QRect(
+        (width() - panel->width()) / 2,
+        (height() - panel->height()) / 2,
+        panel->width(),
+        panel->height());
 
-    m_frameRect = QRect(QPoint((width() - pix.width()) / 2, (height() - pix.height()) / 2), pix.size());
-
-    ui.frameView->setPixmap(pix);
     ui.frameView->show();
     ui.frameView->raise();
+    panel->setGeometry(m_frameRect);
+    panel->show();
+    panel->raise();
 }
 
-void Wag9Fs::showPneumo()
+void Wag9Fs::hidePopups()
 {
-    m_frameRect = QRect(
-        (width() - m_pneumoPanel->width()) / 2,
-        (height() - m_pneumoPanel->height()) / 2,
-        m_pneumoPanel->width(),
-        m_pneumoPanel->height());
-
-    ui.frameView->setPixmap(QPixmap());
-    ui.frameView->show();
-    ui.frameView->raise();
-    m_pneumoPanel->setGeometry(m_frameRect);
-    m_pneumoPanel->show();
-    m_pneumoPanel->raise();
+    for (QWidget* popup : m_popups)
+    {
+        popup->hide();
+    }
 }
 
 void Wag9Fs::closeFrame()
 {
-    for (QPushButton* button : linkButtons(this))
+    for (QPushButton* button : m_linkButtons)
     {
         button->setChecked(false);
     }
 
-    m_pneumoPanel->hide();
+    hidePopups();
     ui.frameView->hide();
-    ui.frameView->setPixmap(QPixmap());
 }
 
 bool Wag9Fs::eventFilter(QObject* watched, QEvent* event)

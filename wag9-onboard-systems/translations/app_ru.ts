@@ -28,10 +28,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>:/Wag9/fs/PT.png</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>(SB-1) CUBICLE CONTROL CIRCUITS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -40,19 +36,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>:/Wag9/fs/SB1.png</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>(HB-1) CUBICLE AUXILIARY CIRCUITS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>HB1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>:/Wag9/fs/HB1.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -84,19 +72,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>:/Wag9/fs/SB2.png</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>(HB-2) CUBICLE AUXILIARY CIRCUITS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>HB2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>:/Wag9/fs/HB2.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
