@@ -13,3 +13,5 @@ Thumbs.db
 *.suo
 Wag9-log.txt
 *.qm
+.vscode/
+*.html

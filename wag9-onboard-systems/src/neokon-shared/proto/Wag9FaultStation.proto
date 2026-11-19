@@ -36,12 +36,12 @@ message Sb1 {
     bool sb1_24v_48v_power_supply = 9;
     bool sb1_lighting_front = 10;
     bool sb1_electronics_traction_converter_1 = 11;
-    bool sb1_power_supply_gate_units = 13;
-    bool sb1_monitoring = 14;
-    bool sb1_electronics_aux_converter_1 = 15;
-    bool sb1_central_electronics_1 = 16;
-    bool sb1_central_electronics_2 = 17;
-    bool sb1_speed_sensor = 18;
+    bool sb1_power_supply_gate_units = 12;
+    bool sb1_monitoring = 13;
+    bool sb1_electronics_aux_converter_1 = 14;
+    bool sb1_central_electronics_1 = 15;
+    bool sb1_central_electronics_2 = 16;
+    bool sb1_speed_sensor = 17;
 }
 
 message Hb1 {
@@ -63,25 +63,25 @@ message Sb2 {
     bool sb2_drivers_cab = 2;
     bool sb2_lighting_machine_room = 3;
     bool sb2_power_supply_gate_units = 4;
-    bool sb2_commissioning_1 = 7;
-    bool sb2_vigilance_control = 8;
-    bool sb2_pneumatic_panel = 9;
-    bool sb2_commissioning_2 = 10;
-    bool sb2_24v_48v_power_supply = 11;
-    bool sb2_marker_lights = 12;
-    bool sb2_lighting_front = 13;
-    bool sb2_electronics_traction_converter_2 = 14;
-    bool sb2_monitoring = 15;
-    bool sb2_electronics_aux_converter_2 = 16;
-    bool sb2_electronics_aux_converter_3 = 17;
-    bool sb2_central_electronics_2_1 = 18;
-    bool sb2_central_electronics_2_2 = 19;
-    bool sb2_memotel_speedometer = 20;
-    bool sb2_aux_contactor = 21;
-    bool sb2_power_supply_air_dryer = 22;
-    bool sb2_mcb_for_air_dryer = 23;
-    bool sb2_output_battery_charger = 5;
-    bool sb2_control_circuit_locomotive = 6;
+    bool sb2_commissioning_1 = 5;
+    bool sb2_vigilance_control = 6;
+    bool sb2_pneumatic_panel = 7;
+    bool sb2_commissioning_2 = 8;
+    bool sb2_24v_48v_power_supply = 9;
+    bool sb2_marker_lights = 10;
+    bool sb2_lighting_front = 11;
+    bool sb2_electronics_traction_converter_2 = 12;
+    bool sb2_monitoring = 13;
+    bool sb2_electronics_aux_converter_2 = 14;
+    bool sb2_electronics_aux_converter_3 = 15;
+    bool sb2_central_electronics_2 = 16;
+    bool sb2_central_electronics_3 = 17;
+    bool sb2_memotel_speedometer = 18;
+    bool sb2_aux_contactor = 19;
+    bool sb2_power_supply_air_dryer = 20;
+    bool sb2_mcb_for_air_dryer = 21;
+    bool sb2_output_battery_charger = 22;
+    bool sb2_control_circuit_locomotive = 23;
 }
 
 message Hb2 {
@@ -96,7 +96,7 @@ message Hb2 {
     bool hb2_circuit_breaker_for_cab_ac = 9;
 }
 
-message Pneumo {
+message PneumoCCB {
     bool ec_coc = 1;
     bool tc2_coc = 2;
     bool tc1_coc = 3;
@@ -116,18 +116,36 @@ message Pneumo {
     bool gp = 17;
 }
 
+message PneumoE70 {
+    int32 processor_fault = 1; // режимы 0, 1, 2, 3, 4
+    int32 system_fault = 2; // режимы 0, 1, 2, 3, 4
+    int32 psu_normal = 3; // режимы 0, 1, 2, 3, 4
+    int32 pan_sel_sw = 4; // кадры 0, 1, 2
+    bool switch_1 = 5;
+    bool switch_2 = 6;
+    bool pan1 = 7;
+    bool pan2 = 8;
+    bool vcb = 9;
+    bool pantog = 10;
+    bool brake_feed_pipe = 11;
+    bool dead_engine = 12;
+    bool sand_1 = 13;
+    bool sand_2 = 14;
+}
+
 message FaultStationOutgoingMessage {
     bool pantograph_1_raised = 1;  // false — опущен, кадр 01
     bool pantograph_2_raised = 2;
-    Pneumo pneumo = 3;
-    Sb1 sb1 = 4;
-    Hb1 hb1 = 5;
-    Sb2 sb2 = 6;
-    Hb2 hb2 = 7;
-    double manometer_pressure = 8;
+    optional PneumoCCB pneumo_ccb = 3;
+    optional PneumoE70 pneumo_e70 = 4;
+    Sb1 sb1 = 5;
+    Hb1 hb1 = 6;
+    Sb2 sb2 = 7;
+    Hb2 hb2 = 8;
 }
 
 message FaultStationIncomingMessage
 {
-    double manometer_pressure = 1;
+    optional double ccb_manometer_pressure = 1;
+    optional double e70_manometer_pressure = 2;
 }
