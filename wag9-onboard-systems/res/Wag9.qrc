@@ -1,32 +1,52 @@
 <RCC>
     <qresource prefix="/Wag9">
-        <file>fs/Background.png</file>
+        <file>fs/WAG9_FS_Background_CCB.png</file>
+        <file>fs/WAG9_FS_Background_E70.png</file>
         <file>fs/hints/PT.png</file>
         <file>fs/hints/SB1.png</file>
         <file>fs/hints/HB1.png</file>
         <file>fs/hints/SB2.png</file>
         <file>fs/hints/HB2.png</file>
-        <file>fs/pneumo/Background.png</file>
-        <file>fs/pneumo/ArrowBlack1.png</file>
-        <file>fs/pneumo/SwitchBlack1_01.png</file>
-        <file>fs/pneumo/SwitchBlack1_02.png</file>
-        <file>fs/pneumo/SwitchBlack1_03.png</file>
-        <file>fs/pneumo/SwitchBlack2_01.png</file>
-        <file>fs/pneumo/SwitchBlack2_02.png</file>
-        <file>fs/pneumo/SwitchBlack3_01.png</file>
-        <file>fs/pneumo/SwitchBlack3_02.png</file>
-        <file>fs/pneumo/SwitchBlack4_01.png</file>
-        <file>fs/pneumo/SwitchBlack4_02.png</file>
-        <file>fs/pneumo/SwitchKey_01.png</file>
-        <file>fs/pneumo/SwitchKey_02.png</file>
-        <file>fs/pneumo/SwitchRed1_01.png</file>
-        <file>fs/pneumo/SwitchRed1_02.png</file>
-        <file>fs/pneumo/SwitchYellow1_01.png</file>
-        <file>fs/pneumo/SwitchYellow1_02.png</file>
-        <file>fs/pneumo/SwitchYellow2_01.png</file>
-        <file>fs/pneumo/SwitchYellow2_02.png</file>
-        <file>fs/pneumo/SwitchYellow3_01.png</file>
-        <file>fs/pneumo/SwitchYellow3_02.png</file>
+        <file>fs/pneumo/ccb/Background.png</file>
+        <file>fs/pneumo/ccb/ArrowBlack1.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack1_01.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack1_02.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack1_03.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack2_01.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack2_02.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack3_01.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack3_02.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack4_01.png</file>
+        <file>fs/pneumo/ccb/SwitchBlack4_02.png</file>
+        <file>fs/pneumo/ccb/SwitchKey_01.png</file>
+        <file>fs/pneumo/ccb/SwitchKey_02.png</file>
+        <file>fs/pneumo/ccb/SwitchRed1_01.png</file>
+        <file>fs/pneumo/ccb/SwitchRed1_02.png</file>
+        <file>fs/pneumo/ccb/SwitchYellow1_01.png</file>
+        <file>fs/pneumo/ccb/SwitchYellow1_02.png</file>
+        <file>fs/pneumo/ccb/SwitchYellow2_01.png</file>
+        <file>fs/pneumo/ccb/SwitchYellow2_02.png</file>
+        <file>fs/pneumo/ccb/SwitchYellow3_01.png</file>
+        <file>fs/pneumo/ccb/SwitchYellow3_02.png</file>
+        <file>fs/pneumo/e70/ArrowBlack1.png</file>
+        <file>fs/pneumo/e70/BaseFrame.png</file>
+        <file>fs/pneumo/e70/Frame.png</file>
+        <file>fs/pneumo/e70/LED_Off.png</file>
+        <file>fs/pneumo/e70/LED_Red_On.png</file>
+        <file>fs/pneumo/e70/LED_Yellow_On.png</file>
+        <file>fs/pneumo/e70/LED_Green_On.png</file>
+        <file>fs/pneumo/e70/LED_White_On.png</file>
+        <file>fs/pneumo/e70/SwitchBlack10_01.png</file>
+        <file>fs/pneumo/e70/SwitchBlack10_02.png</file>
+        <file>fs/pneumo/e70/SwitchBlack10_03.png</file>
+        <file>fs/pneumo/e70/SwitchBlack11_01.png</file>
+        <file>fs/pneumo/e70/SwitchBlack11_02.png</file>
+        <file>fs/pneumo/e70/SwitchBlack12_01.png</file>
+        <file>fs/pneumo/e70/SwitchBlack12_02.png</file>
+        <file>fs/pneumo/e70/SwitchRed2_01.png</file>
+        <file>fs/pneumo/e70/SwitchRed2_02.png</file>
+        <file>fs/pneumo/e70/SwitchKey_01.png</file>
+        <file>fs/pneumo/e70/SwitchKey_02.png</file>
         <file>fs/cubicle/SB1_Background.png</file>
         <file>fs/cubicle/SB2_Background.png</file>
         <file>fs/cubicle/HB1_Background.png</file>
