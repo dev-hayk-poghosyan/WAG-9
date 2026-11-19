@@ -6,7 +6,7 @@
 #include <QStringList>
 
 Wag9SpriteSwitch::Wag9SpriteSwitch(const QStringList& frames, int initial, const QPoint& center,
-    QWidget* parent, SwitchActuation actuation)
+    QWidget* parent, SwitchActuation actuation, qreal scale)
     : QLabel(parent)
     , m_index(initial)
     , m_center(center)
@@ -15,7 +15,13 @@ Wag9SpriteSwitch::Wag9SpriteSwitch(const QStringList& frames, int initial, const
     m_frames.reserve(frames.size());
     for (const QString& frame : frames)
     {
-        m_frames << QPixmap(frame);
+        QPixmap pix(frame);
+        if (scale != 1)
+        {
+            pix = pix.scaled(qRound(pix.width() * scale), qRound(pix.height() * scale),
+                Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        }
+        m_frames << pix;
     }
     setCursor(Qt::PointingHandCursor);
     applyFrame();
@@ -77,9 +83,11 @@ QStringList framesOf(const QString& folder, const QString& sprite, const QList<i
 }
 
 void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
-    SwitchActuation actuation)
+    SwitchActuation actuation, qreal scale)
 {
     const QPixmap first(frames.at(initial));
-    const QPoint center(x + first.width() / 2, y + first.height() / 2);
-    new Wag9SpriteSwitch(frames, initial, center, parent, actuation);
+    const int width = qRound(first.width() * scale);
+    const int height = qRound(first.height() * scale);
+    const QPoint center(x + width / 2, y + height / 2);
+    new Wag9SpriteSwitch(frames, initial, center, parent, actuation, scale);
 }

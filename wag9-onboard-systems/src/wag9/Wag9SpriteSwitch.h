@@ -18,7 +18,7 @@ class Wag9SpriteSwitch  : public QLabel
 {
     public:
         explicit Wag9SpriteSwitch(const QStringList& frames, int initial, const QPoint& center, QWidget* parent,
-            SwitchActuation actuation = SwitchActuation::Cycle);
+            SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);
         virtual ~Wag9SpriteSwitch() override = default;
 
     protected:
@@ -35,4 +35,5 @@ class Wag9SpriteSwitch  : public QLabel
 };
 
 QStringList framesOf(const QString& folder, const QString& sprite, const QList<int>& indexes);
-void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y, SwitchActuation actuation = SwitchActuation::Cycle);
+void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
+    SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);

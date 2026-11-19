@@ -1,6 +1,7 @@
 #include "Wag9Fs.h"
 #include "Wag9CubiclePanel.h"
 #include "Wag9PneumoPanel.h"
+#include "Wag9PneumoE70Panel.h"
 
 #include <QDebug>
 #include <QLabel>
@@ -9,6 +10,7 @@
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QStringList>
+#include <QButtonGroup>
 
 #include <algorithm>
 
@@ -50,12 +52,16 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
     };
     m_popups.insert(QStringLiteral("PT"), new Wag9PneumoPanel(this));
     m_popups["PT"]->hide();
+    m_popups.insert(QStringLiteral("E70"), new Wag9PneumoE70Panel(this));
+    m_popups["E70"]->hide();
     for (const QString& zone : zones)
     {
         m_popups.insert(zone, new Wag9CubiclePanel(zone, this));
         m_popups[zone]->hide();
     }
     ui.background->lower();
+    ui.pneumoCcb->raise();
+    ui.pneumoE70->raise();
     ui.hintsButton->raise();
 
     createServer();
@@ -84,7 +90,13 @@ void Wag9Fs::prepareZones()
                 }
             }
 
-            QWidget* panel = m_popups.value(button->property("zone").toString());
+            QString zone = button->property("zone").toString();
+            if (zone == QLatin1String("PT") && ui.pneumoE70->isChecked())
+            {
+                zone = QStringLiteral("E70");
+            }
+
+            QWidget* panel = m_popups.value(zone);
             if (panel)
             {
                 showPopup(panel);
@@ -123,6 +135,30 @@ void Wag9Fs::prepareZones()
             }
         }
     });
+
+    auto *pneumoModes = new QButtonGroup(this);
+    pneumoModes->setExclusive(true);
+    pneumoModes->addButton(ui.pneumoCcb);
+    pneumoModes->addButton(ui.pneumoE70);
+
+    const auto applyPneumBackground = [this]()
+    {
+        const bool e70 = ui.pneumoE70->isChecked();
+        ui.background->setPixmap(e70
+            ? QStringLiteral(":/Wag9/fs/WAG9_FS_Background_E70.png")
+            : QStringLiteral(":/Wag9/fs/WAG9_FS_Background_CCB.png"));
+    };
+
+    const auto onModeToggled = [applyPneumBackground](bool checked)
+    {
+        if (checked)
+        {
+            applyPneumBackground();
+        }
+    };
+
+    connect(ui.pneumoCcb, &QPushButton::toggled, this, onModeToggled);
+    connect(ui.pneumoE70, &QPushButton::toggled, this, onModeToggled);
 }
 
 void Wag9Fs::createPantographs()
