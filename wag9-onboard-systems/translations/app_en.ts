@@ -83,6 +83,14 @@
         <source>HINTS</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PNEUMO: CCB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PNEUMO: E-70</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Wag9FsInfoPanel</name>
