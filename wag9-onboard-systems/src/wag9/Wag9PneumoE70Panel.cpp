@@ -20,8 +20,6 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
 
     const QPixmap picturePix(QStringLiteral(":/Wag9/fs/pneumo/e70/Frame.png"));
     auto* picture = new QLabel;
-    picture->setPixmap(picturePix);
-    picture->setFixedSize(picturePix.size());
 
     // Light opening inside BaseFrame.png, under the green title.
     auto* scroll = new QScrollArea(this);
@@ -37,19 +35,20 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
 
     const qreal scale = qreal(viewWidth) / picturePix.width();
     const QPixmap ledOff(QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Off.png"));
-    const auto placeLed = [picture, ledOff, scale](const char* name, int x, int y)
+    const QPixmap ledGreen(QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Green_On.png"));
+    const auto placeLed = [picture, scale](const char* name, int x, int y, const QPixmap& pix)
     {
         auto* led = new QLabel(picture);
         led->setObjectName(QString::fromLatin1(name));
-        led->setPixmap(ledOff);
-        led->setFixedSize(ledOff.size());
-        led->move(qRound(x * scale) - ledOff.width() / 2, qRound(y * scale) - ledOff.height() / 2);
+        led->setPixmap(pix);
+        led->setFixedSize(pix.size());
+        led->move(qRound(x * scale) - pix.width() / 2, qRound(y * scale) - pix.height() / 2);
         led->setAttribute(Qt::WA_TransparentForMouseEvents);
     };
-    // Centres of the dark lamps on Frame.png: PROCESSOR FAULT, SYSTEM FAULT, PSU NORMAL.
-    placeLed("processor_fault", 577, 26);
-    placeLed("system_fault", 577, 66);
-    placeLed("psu_normal", 577, 107);
+    // PROCESSOR FAULT and SYSTEM FAULT are dark. PSU NORMAL is lit green.
+    placeLed("processor_fault", 577, 26, ledOff);
+    placeLed("system_fault", 577, 66, ledOff);
+    placeLed("psu_normal", 577, 107, ledGreen);
 
     // pivotX/pivotY are on Frame.png. spritePivot is the hinge inside the unscaled frame;
     // (-1, -1) means the middle of the picture.
@@ -77,10 +76,10 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
     place("vcb", QStringLiteral("SwitchRed2"), {1, 2}, 0, 934, 1093, -1, -1);
     // Round seat to the right of the gauge, above the PANTOG plate.
     place("pantog", QStringLiteral("SwitchKey"), {1, 2}, 0, 801, 1090, -1, -1);
-    place("dead_engine", QStringLiteral("SwitchRed2"), {1, 2}, 0, 377, 1658, -1, -1);
+    place("dead_engine", QStringLiteral("SwitchRed2"), {1, 2}, 1, 372, 1658, -1, -1);
     // Small cock above the BRAKE FEED PIPE plate, not the green valve under it.
     place("brake_feed_pipe", QStringLiteral("SwitchBlack12"), {1, 2}, 0, 881, 1548, 124, 24);
-    place("sand_1", QStringLiteral("SwitchRed2"), {1, 2}, 0, 140, 1860, -1, -1);
+    place("sand_1", QStringLiteral("SwitchRed2"), {1, 2}, 0, 125, 1860, -1, -1);
     place("sand_2", QStringLiteral("SwitchRed2"), {1, 2}, 0, 280, 1860, -1, -1);
 
     const QPixmap needlePix(QStringLiteral(":/Wag9/fs/pneumo/e70/ArrowBlack1.png"));

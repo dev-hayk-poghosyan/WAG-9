@@ -1,10 +1,5 @@
 #include "Wag9SpriteSwitch.h"
 
-#include <QLabel>
-#include <QMouseEvent>
-#include <QPixmap>
-#include <QStringList>
-
 Wag9SpriteSwitch::Wag9SpriteSwitch(const QStringList& frames, int initial, const QPoint& center,
     QWidget* parent, SwitchActuation actuation, qreal scale)
     : QLabel(parent)
@@ -62,6 +57,11 @@ void Wag9SpriteSwitch::mouseReleaseEvent(QMouseEvent* event)
     event->accept();
 }
 
+int Wag9SpriteSwitch::position() const
+{
+    return m_actuation == SwitchActuation::Lamp ? static_cast<int>(m_on) : m_index;
+}
+
 void Wag9SpriteSwitch::applyFrame()
 {
     const QPixmap& pix = m_frames.at(m_index);
@@ -83,11 +83,13 @@ QStringList framesOf(const QString& folder, const QString& sprite, const QList<i
 }
 
 void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
-    SwitchActuation actuation, qreal scale)
+    const QString& name, SwitchActuation actuation, qreal scale)
 {
     const QPixmap first(frames.at(initial));
     const int width = qRound(first.width() * scale);
     const int height = qRound(first.height() * scale);
     const QPoint center(x + width / 2, y + height / 2);
-    new Wag9SpriteSwitch(frames, initial, center, parent, actuation, scale);
+
+    auto* sw = new Wag9SpriteSwitch(frames, initial, center, parent, actuation, scale);
+    sw->setObjectName(name);
 }

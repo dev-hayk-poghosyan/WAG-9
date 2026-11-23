@@ -23,37 +23,37 @@ Wag9PneumoPanel::Wag9PneumoPanel(QWidget* parent)
     needle->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     // EC-COC, TC2-COC, TC1-COC.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 82);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 147);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 211);
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 82, "ec_coc");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 147, "tc2_coc");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 211, "tc1_coc");
 
     // 21(SIFA)-COC, FP-COC.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 383, 126);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow1"), {1, 2}), 0, 364, 236);
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 383, 126, "sifa_coc");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow1"), {1, 2}), 0, 364, 236, "fp_coc");
 
     // SAND1-COC, SAND2-COC.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 551, 133);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 617, 133);
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 551, 133, "sand1_coc");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 617, 133, "sand2_coc");
 
-    // UL-COC, CB-COC. The second frame is the resting position.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 683, 136);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 745, 136);
+    // UL-COC, CB-COC. Vertical handle is the ON mark.
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 683, 136, "ul_coc");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 745, 136, "cb_coc");
 
-    // PANS COC, PAN1.COC, PAN2.COC.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchKey"), {1, 2}), 0, 818, 149);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 869, 136);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 931, 136);
+    // PANS COC. PAN1 and PAN2: the ON mark is the left handle, frame _01.
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchKey"), {1, 2}), 0, 818, 149, "pans_coc");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 869, 136, "pan1_coc");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 931, 136, "pan2_coc");
 
     // PAN-SEL-SW has three positions.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack1"), {1, 2, 3}), 0, 860, 82);
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack1"), {1, 2, 3}), 0, 860, 82, "pan_sel_sw");
 
     // PASS/GOODS, PER-COC.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack4"), {1, 2}), 0, 241, 612);
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 681, 677);
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack4"), {1, 2}), 0, 241, 612, "pass_goods");
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 681, 677, "per_coc");
 
-    // DEAD ENGINE. The second frame is the resting position.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow2"), {1, 2}), 1, 831, 696);
+    // DEAD ENGINE. A live locomotive starts closed: handle to the right, frame _01.
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow2"), {1, 2}), 0, 831, 696, "dead_engine");
 
     // G/P.
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow3"), {1, 2}), 0, 204, 878);
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow3"), {1, 2}), 0, 204, 878, "gp");
 }

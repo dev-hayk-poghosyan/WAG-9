@@ -9,17 +9,18 @@
 enum class SwitchActuation
 {
     Cycle,
-    // Frames: off, pressed off, pressed on, on. Press keeps the latched state and
-    // shows only its pressed frame. Release switches the state.
     Lamp
 };
 
-class Wag9SpriteSwitch  : public QLabel
+class Wag9SpriteSwitch : public QLabel
 {
+    Q_OBJECT
     public:
         explicit Wag9SpriteSwitch(const QStringList& frames, int initial, const QPoint& center, QWidget* parent,
             SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);
         virtual ~Wag9SpriteSwitch() override = default;
+
+        int position() const;
 
     protected:
         void mousePressEvent(QMouseEvent* event) override;
@@ -27,13 +28,15 @@ class Wag9SpriteSwitch  : public QLabel
 
     private:
         void applyFrame();
-        QVector<QPixmap> m_frames;
+
         int m_index = 0;
-        QPoint m_center;
-        SwitchActuation m_actuation = SwitchActuation::Cycle;
         bool m_on = false;
+        QPoint m_center;
+        QVector<QPixmap> m_frames;
+        SwitchActuation m_actuation = SwitchActuation::Cycle;
 };
 
 QStringList framesOf(const QString& folder, const QString& sprite, const QList<int>& indexes);
+
 void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
-    SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);
+    const QString& name = {}, SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);
