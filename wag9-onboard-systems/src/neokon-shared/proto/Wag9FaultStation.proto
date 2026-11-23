@@ -1,7 +1,6 @@
 syntax = "proto3";
 package proto.wag9.fs;
 
-// короткая часть: верх, затем влево
 enum Selector152 {
     SELECTOR_152_O = 0;
     SELECTOR_152_I = 1;
@@ -22,6 +21,14 @@ enum Selector160 {
 enum Selector237 {
     SELECTOR_237_I = 0;
     SELECTOR_237_O = 1;
+}
+
+enum LedState {
+    LED_STATE_OFF = 0;
+    LED_STATE_RED = 1;
+    LED_STATE_YELLOW = 2;
+    LED_STATE_GREEN = 3;
+    LED_STATE_WHITE = 4;
 }
 
 message Sb1 {
@@ -109,7 +116,7 @@ message PneumoCCB {
     bool pans_coc = 10;
     bool pan1_coc = 11;
     bool pan2_coc = 12;
-    int32 pan_sel_sw = 13; // кадры 0, 1, 2
+    int32 pan_sel_sw = 13;
     bool pass_goods = 14;
     bool per_coc = 15;
     bool dead_engine = 16;
@@ -117,10 +124,9 @@ message PneumoCCB {
 }
 
 message PneumoE70 {
-    int32 processor_fault = 1; // режимы 0, 1, 2, 3, 4
-    int32 system_fault = 2; // режимы 0, 1, 2, 3, 4
-    int32 psu_normal = 3; // режимы 0, 1, 2, 3, 4
-    int32 pan_sel_sw = 4; // кадры 0, 1, 2
+    reserved 1, 2, 3;
+    reserved "processor_fault", "system_fault", "psu_normal";
+    int32 pan_sel_sw = 4;
     bool switch_1 = 5;
     bool switch_2 = 6;
     bool pan1 = 7;
@@ -134,7 +140,7 @@ message PneumoE70 {
 }
 
 message FaultStationOutgoingMessage {
-    bool pantograph_1_raised = 1;  // false — опущен, кадр 01
+    bool pantograph_1_raised = 1;
     bool pantograph_2_raised = 2;
     optional PneumoCCB pneumo_ccb = 3;
     optional PneumoE70 pneumo_e70 = 4;
@@ -148,4 +154,7 @@ message FaultStationIncomingMessage
 {
     optional double ccb_manometer_pressure = 1;
     optional double e70_manometer_pressure = 2;
+    optional LedState e70_processor_fault = 3;
+    optional LedState e70_system_fault = 4;
+    optional LedState e70_psu_normal = 5;
 }
