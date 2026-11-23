@@ -15,3 +15,4 @@ Wag9-log.txt
 *.qm
 .vscode/
 *.html
+__pycache__/
