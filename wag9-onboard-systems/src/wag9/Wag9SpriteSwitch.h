@@ -36,7 +36,7 @@ class Wag9SpriteSwitch : public QLabel
         SwitchActuation m_actuation = SwitchActuation::Cycle;
 };
 
-QStringList framesOf(const QString& folder, const QString& sprite, const QList<int>& indexes);
+QStringList framesOf(const QString& folder, const QString& sprite, int frameCount);
 
 void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
     const QString& name = {}, SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);

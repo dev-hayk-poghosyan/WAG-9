@@ -70,14 +70,15 @@ void Wag9SpriteSwitch::applyFrame()
     move(m_center.x() - pix.width() / 2, m_center.y() - pix.height() / 2);
 }
 
-QStringList framesOf(const QString& folder, const QString& sprite, const QList<int>& indexes)
+QStringList framesOf(const QString& folder, const QString& sprite, int frameCount)
 {
     QStringList frames;
-    for (int index : indexes)
+
+    for (int i = 1; i <= frameCount; ++i)
     {
         frames << QStringLiteral(":/Wag9/fs/%1/%2_%3.png")
             .arg(folder, sprite)
-            .arg(index, 2, 10, QLatin1Char('0'));
+            .arg(i, 2, 10, QLatin1Char('0'));
     }
     return frames;
 }

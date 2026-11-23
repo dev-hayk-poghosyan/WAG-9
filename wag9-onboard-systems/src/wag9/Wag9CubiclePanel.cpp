@@ -10,7 +10,7 @@ namespace
 
 void addPair(QWidget* parent, const QString& sprite, int x, int y, const QString& name)
 {
-    addSwitch(parent, framesOf(QStringLiteral("cubicle"), sprite, {1, 2}), 0, x, y, name);
+    addSwitch(parent, framesOf(QStringLiteral("cubicle"), sprite, 2), 0, x, y, name);
 }
 
 void addRow(QWidget* parent, const QString& sprite, int y, const QList<int>& xs, const QStringList& names)
@@ -24,9 +24,9 @@ void addRow(QWidget* parent, const QString& sprite, int y, const QList<int>& xs,
 
 void buildSb1(QWidget* parent)
 {
-    const QStringList twoWay = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlack8"), {1, 2});
-    const QStringList fourWay = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlack8"), {1, 2, 3, 4});
-    const QStringList blueFrames = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlue"), {1, 2});
+    const QStringList twoWay = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlack8"), 2);
+    const QStringList fourWay = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlack8"), 4);
+    const QStringList blueFrames = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlue"), 2);
 
     addSwitch(parent, twoWay, 0, 65, 110, "sb1_failure_mode_operation");
     addSwitch(parent, fourWay, 0, 211, 110, "sb1_bogie_cut_out");
@@ -35,7 +35,7 @@ void buildSb1(QWidget* parent)
     addSwitch(parent, blueFrames, 0, 729, 132, "sb1_simulation");
 
     addSwitch(parent,
-        framesOf(QStringLiteral("cubicle"), QStringLiteral("BTN_YellowLamp1"), {1, 2, 3, 4}),
+        framesOf(QStringLiteral("cubicle"), QStringLiteral("BTN_YellowLamp1"), 4),
         0, 853, 124, "sb1_configuration_button", SwitchActuation::Lamp);
 
     addRow(parent, QStringLiteral("SwitchBlack6"), 342,
