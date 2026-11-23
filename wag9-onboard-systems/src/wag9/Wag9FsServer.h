@@ -27,6 +27,7 @@ public:
     bool sendMessages(const std::vector<proto::wag9::fs::FaultStationOutgoingMessage>& messages);
 
     std::string const& bindPoint() const { return m_bindPoint; }
+    bool hasClient() const { return m_routingId != 0; }
 
 signals:
     void connected();

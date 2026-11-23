@@ -47,4 +47,6 @@ class Wag9Fs : public QFrame
         QList<QPushButton*> m_linkButtons;
         QHash<QString, QWidget*> m_popups;
         QTimer m_reportTimer;
+        KeySwitchButton* m_pantograph1[2] = {};
+        KeySwitchButton* m_pantograph2[2] = {};
 };
