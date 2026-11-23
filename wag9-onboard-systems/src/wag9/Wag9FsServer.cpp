@@ -134,21 +134,24 @@ Wag9FsServer::processIncomingMessage(zmq::message_t const& zmqMsg, uint32_t rout
         qWarning() << "Wag9FsServer::Client connected. RouteID = " << m_routingId;
     }
 
-    proto::FaultStationInitMessage initMsg;
-    if (initMsg.ParseFromArray(zmqMsg.data(), zmqMsg.size())
-        && initMsg.vehicle_numbers_size() > 0)
+    proto::TrainSimToFaultStationMessage wrapper;
+    if (wrapper.ParseFromArray(zmqMsg.data(), zmqMsg.size())
+        && !wrapper.to_fault_station_bytes().empty())
     {
-        emit initMessageReceived(initMsg);
+        proto::wag9::fs::FaultStationIncomingMessage msg;
+        if (msg.ParseFromString(wrapper.to_fault_station_bytes()))
+        {
+            emit messageReceived(msg);
+        }
     }
     else
     {
-        proto::TrainSimToFaultStationMessage wrapper;
-        wrapper.ParseFromArray(zmqMsg.data(), zmqMsg.size());
-
-        proto::wag9::fs::FaultStationIncomingMessage msg;
-        msg.ParseFromString(wrapper.to_fault_station_bytes());
-
-        emit messageReceived(msg);
+        proto::FaultStationInitMessage initMsg;
+        if (initMsg.ParseFromArray(zmqMsg.data(), zmqMsg.size())
+            && initMsg.vehicle_numbers_size() > 0)
+        {
+            emit initMessageReceived(initMsg);
+        }
     }
 
     m_lastMessageTs = std::chrono::system_clock::now();

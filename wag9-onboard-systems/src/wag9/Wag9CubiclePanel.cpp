@@ -34,7 +34,6 @@ void buildSb1(QWidget* parent)
     addSwitch(parent, twoWay, 0, 502, 110, "sb1_vigilance_device_cut_off");
     addSwitch(parent, blueFrames, 0, 729, 132, "sb1_simulation");
 
-    // 01 off, 02 pressed off, 03 pressed on, 04 on.
     addSwitch(parent,
         framesOf(QStringLiteral("cubicle"), QStringLiteral("BTN_YellowLamp1"), {1, 2, 3, 4}),
         0, 853, 124, "sb1_configuration_button", SwitchActuation::Lamp);

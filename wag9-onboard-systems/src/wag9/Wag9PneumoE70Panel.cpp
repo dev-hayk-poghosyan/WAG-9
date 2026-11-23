@@ -1,11 +1,36 @@
 #include "Wag9PneumoE70Panel.h"
+
+#include "Wag9Needle.h"
 #include "Wag9SpriteSwitch.h"
 
+#include <QDebug>
 #include <QLabel>
 #include <QPixmap>
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QStringList>
+
+namespace
+{
+
+QString ledPicture(proto::wag9::fs::LedState state)
+{
+    switch (state)
+    {
+        case proto::wag9::fs::LED_STATE_RED:
+            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Red_On.png");
+        case proto::wag9::fs::LED_STATE_YELLOW:
+            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Yellow_On.png");
+        case proto::wag9::fs::LED_STATE_GREEN:
+            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Green_On.png");
+        case proto::wag9::fs::LED_STATE_WHITE:
+            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_White_On.png");
+        default:
+            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Off.png");
+    }
+}
+
+}
 
 Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
     : QWidget(parent)
@@ -21,77 +46,91 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
     const QPixmap picturePix(QStringLiteral(":/Wag9/fs/pneumo/e70/Frame.png"));
     auto* picture = new QLabel;
 
-    // Light opening inside BaseFrame.png, under the green title.
     auto* scroll = new QScrollArea(this);
     scroll->setGeometry(6, 57, 988, 937);
     scroll->setFrameShape(QFrame::NoFrame);
     scroll->setWidgetResizable(false);
     scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
     const int viewWidth = scroll->width() - scroll->verticalScrollBar()->sizeHint().width();
     const QPixmap fitted = picturePix.scaledToWidth(viewWidth, Qt::SmoothTransformation);
+
     picture->setPixmap(fitted);
     picture->setFixedSize(fitted.size());
 
     const qreal scale = qreal(viewWidth) / picturePix.width();
-    const QPixmap ledOff(QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Off.png"));
-    const QPixmap ledGreen(QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Green_On.png"));
-    const auto placeLed = [picture, scale](const char* name, int x, int y, const QPixmap& pix)
-    {
-        auto* led = new QLabel(picture);
-        led->setObjectName(QString::fromLatin1(name));
-        led->setPixmap(pix);
-        led->setFixedSize(pix.size());
-        led->move(qRound(x * scale) - pix.width() / 2, qRound(y * scale) - pix.height() / 2);
-        led->setAttribute(Qt::WA_TransparentForMouseEvents);
-    };
-    // PROCESSOR FAULT and SYSTEM FAULT are dark. PSU NORMAL is lit green.
-    placeLed("processor_fault", 577, 26, ledOff);
-    placeLed("system_fault", 577, 66, ledOff);
-    placeLed("psu_normal", 577, 107, ledGreen);
+    m_picture = picture;
+    m_scale = scale;
 
-    // pivotX/pivotY are on Frame.png. spritePivot is the hinge inside the unscaled frame;
-    // (-1, -1) means the middle of the picture.
-    const auto place = [picture, scale](const char* name, const QString& sprite, const QList<int>& indexes,
-        int initial, int pivotX, int pivotY, int spritePivotX, int spritePivotY)
-    {
-        const QStringList frames = framesOf(QStringLiteral("pneumo/e70"), sprite, indexes);
-        const QPixmap sample(frames.at(0));
-        const qreal originX = spritePivotX < 0 ? sample.width() / 2.0 : spritePivotX;
-        const qreal originY = spritePivotY < 0 ? sample.height() / 2.0 : spritePivotY;
-        const QPoint center(
-            qRound((pivotX - (originX - sample.width() / 2.0)) * scale),
-            qRound((pivotY - (originY - sample.height() / 2.0)) * scale));
-        auto* sw = new Wag9SpriteSwitch(frames, initial, center, picture, SwitchActuation::Cycle, scale);
-        sw->setObjectName(QString::fromLatin1(name));
-    };
 
-    // Centre of the white AUTO / I / II plate.
-    place("pan_sel_sw", QStringLiteral("SwitchBlack10"), {1, 2, 3}, 0, 85, 390, -1, -1);
-    // Hinge of SwitchBlack11 is the round end of the arm, not the picture centre.
-    place("switch_1", QStringLiteral("SwitchBlack11"), {1, 2}, 0, 670, 757, 176, 80);
-    place("switch_2", QStringLiteral("SwitchBlack11"), {1, 2}, 0, 904, 757, 176, 80);
-    place("pan2", QStringLiteral("SwitchRed2"), {1, 2}, 0, 699, 996, -1, -1);
-    place("pan1", QStringLiteral("SwitchRed2"), {1, 2}, 0, 934, 997, -1, -1);
-    place("vcb", QStringLiteral("SwitchRed2"), {1, 2}, 0, 934, 1093, -1, -1);
-    // Round seat to the right of the gauge, above the PANTOG plate.
-    place("pantog", QStringLiteral("SwitchKey"), {1, 2}, 0, 801, 1090, -1, -1);
-    place("dead_engine", QStringLiteral("SwitchRed2"), {1, 2}, 1, 372, 1658, -1, -1);
-    // Small cock above the BRAKE FEED PIPE plate, not the green valve under it.
-    place("brake_feed_pipe", QStringLiteral("SwitchBlack12"), {1, 2}, 0, 881, 1548, 124, 24);
-    place("sand_1", QStringLiteral("SwitchRed2"), {1, 2}, 0, 125, 1860, -1, -1);
-    place("sand_2", QStringLiteral("SwitchRed2"), {1, 2}, 0, 280, 1860, -1, -1);
+    placeLed("processor_fault", {577, 26}, proto::wag9::fs::LED_STATE_OFF);
+    placeLed("system_fault", {577, 66}, proto::wag9::fs::LED_STATE_OFF);
+    placeLed("psu_normal", {577, 107}, proto::wag9::fs::LED_STATE_GREEN);
+
+    place("pan_sel_sw", QStringLiteral("SwitchBlack10"), {85, 390}, 3);
+
+    place("switch_1", QStringLiteral("SwitchBlack11"), {670, 757}, 2, 0, QPoint(176, 80));
+    place("switch_2", QStringLiteral("SwitchBlack11"), {904, 757}, 2, 0, QPoint(176, 80));
+    place("pan2", QStringLiteral("SwitchRed2"), {699, 996});
+    place("pan1", QStringLiteral("SwitchRed2"), {934, 997});
+    place("vcb", QStringLiteral("SwitchRed2"), {934, 1093});
+
+    place("pantog", QStringLiteral("SwitchKey"), {801, 1090});
+    place("dead_engine", QStringLiteral("SwitchRed2"), {372, 1658}, 2, 1);
+
+    place("brake_feed_pipe", QStringLiteral("SwitchBlack12"), {881, 1548}, 2, 0, QPoint(124, 24));
+    place("sand_1", QStringLiteral("SwitchRed2"), {125, 1860});
+    place("sand_2", QStringLiteral("SwitchRed2"), {280, 1860});
 
     const QPixmap needlePix(QStringLiteral(":/Wag9/fs/pneumo/e70/ArrowBlack1.png"));
     const QPixmap needleFitted = needlePix.scaled(
         qRound(needlePix.width() * scale), qRound(needlePix.height() * scale),
         Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    auto* needle = new QLabel(picture);
+
+    auto* needle = new Wag9Needle(needleFitted, QPoint(qRound(688 * scale), qRound(1101 * scale)), 10, 270, picture);
     needle->setObjectName(QStringLiteral("manometer"));
-    needle->setPixmap(needleFitted);
-    needle->setFixedSize(needleFitted.size());
-    needle->move(qRound(688 * scale) - needleFitted.width() / 2, qRound(1101 * scale) - needleFitted.height() / 2);
-    needle->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     scroll->setWidget(picture);
+}
+
+void Wag9PneumoE70Panel::setLed(const QString &name, proto::wag9::fs::LedState state)
+{
+    auto* led = findChild<QLabel*>(name);
+    if (!led)
+    {
+        qWarning() << "Missing led" << name;
+        return;
+    }
+    led->setPixmap(QPixmap(ledPicture(state)));
+}
+
+void Wag9PneumoE70Panel::place(const char* name, const QString& sprite, const QPoint& pivot,
+    int frameCount, int initial, std::optional<QPoint> hinge)
+{
+    QList<int> indexes;
+    for (int i = 1; i <= frameCount; ++i)
+    {
+        indexes << i;
+    }
+
+    const QStringList frames = framesOf(QStringLiteral("pneumo/e70"), sprite, indexes);
+    const QPixmap sample(frames.at(0));
+    const QPointF middle(sample.width() / 2.0, sample.height() / 2.0);
+    const QPointF offset = hinge ? QPointF(*hinge) - middle : QPointF();
+    const QPoint center = ((QPointF(pivot) - offset) * m_scale).toPoint();
+
+    auto* sw = new Wag9SpriteSwitch(frames, initial, center, m_picture, SwitchActuation::Cycle, m_scale);
+    sw->setObjectName(QString::fromLatin1(name));
+}
+
+void Wag9PneumoE70Panel::placeLed(const char* name, const QPoint& pos, proto::wag9::fs::LedState state)
+{
+    const QPixmap pix(ledPicture(state));
+    auto* led = new QLabel(m_picture);
+    led->setObjectName(QString::fromLatin1(name));
+    led->setPixmap(pix);
+    led->setFixedSize(pix.size());
+    led->move(qRound(pos.x() * m_scale) - pix.width() / 2, qRound(pos.y() * m_scale) - pix.height() / 2);
+    led->setAttribute(Qt::WA_TransparentForMouseEvents);
 }

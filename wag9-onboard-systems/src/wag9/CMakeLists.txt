@@ -11,6 +11,7 @@ add_executable(
     Wag9SpriteSwitch.cpp Wag9SpriteSwitch.h
     Wag9FsInfoPanel.cpp Wag9FsInfoPanel.h
     Wag9FsServer.cpp Wag9FsServer.h
+    Wag9Needle.cpp Wag9Needle.h
     Wag9PanelFactory.cpp Wag9PanelFactory.h
     Wag9Panels.cpp Wag9Panels.h
     Wag9Vehicle.h

@@ -1,4 +1,6 @@
 #include "Wag9PneumoPanel.h"
+
+#include "Wag9Needle.h"
 #include "Wag9SpriteSwitch.h"
 
 #include <QLabel>
@@ -15,45 +17,33 @@ Wag9PneumoPanel::Wag9PneumoPanel(QWidget* parent)
     background->setPixmap(backgroundPix);
     background->setGeometry(0, 0, backgroundPix.width(), backgroundPix.height());
 
-    auto* needle = new QLabel(this);
-    const QPixmap needlePix(QStringLiteral(":/Wag9/fs/pneumo/ccb/ArrowBlack1.png"));
-    needle->setPixmap(needlePix);
-    needle->setFixedSize(needlePix.size());
-    needle->move(770, 238);
-    needle->setAttribute(Qt::WA_TransparentForMouseEvents);
+    auto* needle = new Wag9Needle(QPixmap(QStringLiteral(":/Wag9/fs/pneumo/ccb/ArrowBlack1.png")),
+            QPoint(826, 294), 10, 270, this);
+    needle->setObjectName(QStringLiteral("manometer"));
 
-    // EC-COC, TC2-COC, TC1-COC.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 82, "ec_coc");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 147, "tc2_coc");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 211, "tc1_coc");
 
-    // 21(SIFA)-COC, FP-COC.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 383, 126, "sifa_coc");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow1"), {1, 2}), 0, 364, 236, "fp_coc");
 
-    // SAND1-COC, SAND2-COC.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 551, 133, "sand1_coc");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 617, 133, "sand2_coc");
 
-    // UL-COC, CB-COC. Vertical handle is the ON mark.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 683, 136, "ul_coc");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 745, 136, "cb_coc");
 
-    // PANS COC. PAN1 and PAN2: the ON mark is the left handle, frame _01.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchKey"), {1, 2}), 0, 818, 149, "pans_coc");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 869, 136, "pan1_coc");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 931, 136, "pan2_coc");
 
-    // PAN-SEL-SW has three positions.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack1"), {1, 2, 3}), 0, 860, 82, "pan_sel_sw");
 
-    // PASS/GOODS, PER-COC.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack4"), {1, 2}), 0, 241, 612, "pass_goods");
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 681, 677, "per_coc");
 
-    // DEAD ENGINE. A live locomotive starts closed: handle to the right, frame _01.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow2"), {1, 2}), 0, 831, 696, "dead_engine");
 
-    // G/P.
     addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow3"), {1, 2}), 0, 204, 878, "gp");
 }
