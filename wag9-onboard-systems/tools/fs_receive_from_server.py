@@ -4,8 +4,8 @@
 Сервер — ZMQ_SERVER. Скрипт сам говорит на ZMTP как ZMQ_CLIENT:
 установленный pyzmq собран без этих сокетов и падает на рукопожатии.
 
-    python tools/fs_client.py
-    python tools/fs_client.py --check
+    python tools/fs_receive_from_server.py
+    python tools/fs_receive_from_server.py --check
 
 Окно wag9_fs должно быть уже запущено. Адрес берётся из data/Wag9.xml.
 """
@@ -33,8 +33,7 @@ MESSAGES = {
         15: "per_coc", 16: "dead_engine", 17: "gp",
     },
     "PneumoE70": {
-        1: "processor_fault", 2: "system_fault", 3: "psu_normal", 4: "pan_sel_sw",
-        5: "switch_1", 6: "switch_2", 7: "pan1", 8: "pan2", 9: "vcb", 10: "pantog",
+        4: "pan_sel_sw", 5: "switch_1", 6: "switch_2", 7: "pan1", 8: "pan2", 9: "vcb", 10: "pantog",
         11: "brake_feed_pipe", 12: "dead_engine", 13: "sand_1", 14: "sand_2",
     },
     "Sb1": {
@@ -78,7 +77,7 @@ MESSAGES = {
 # Поля, которые у нормального поезда не равны нулю.
 STARTUP = {
     "PneumoCCB": {"ul_coc": 1, "cb_coc": 1},
-    "PneumoE70": {"psu_normal": 3, "dead_engine": 1},
+    "PneumoE70": {"dead_engine": 1},
 }
 
 
@@ -188,7 +187,6 @@ GROUPS = (
     ("HB2", "hb2", "Hb2"),
 )
 
-LAMPS = {0: "погашена", 1: "красная", 2: "жёлтая", 3: "зелёная", 4: "белая"}
 SELECTOR_152 = {0: "O", 1: "I"}
 SELECTOR_154 = {0: "NORM", 1: "I", 2: "I+II", 3: "II"}
 SELECTOR_160 = {0: "I", 1: "O"}
@@ -208,8 +206,6 @@ def field_names(schema_name):
 def describe(group, name, value):
     if name in ("pantograph_1_raised", "pantograph_2_raised"):
         return "поднят" if value else "опущен"
-    if name in ("processor_fault", "system_fault", "psu_normal"):
-        return LAMPS.get(value, str(value))
     if name == "sb1_failure_mode_operation":
         return SELECTOR_152.get(value, str(value))
     if name == "sb1_bogie_cut_out":
@@ -344,12 +340,12 @@ class ZmtpClient:
         self._sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         self._buf = b""
 
-    def connect(self, address):
+    def connect(self, address, timeout=0.2):
         host, port = address.removeprefix("tcp://").rsplit(":", 1)
         self._sock.settimeout(1)
         self._sock.connect((host, int(port)))
         self._handshake()
-        self._sock.settimeout(0.2)
+        self._sock.settimeout(timeout)
 
     def close(self):
         self._sock.close()
@@ -398,24 +394,37 @@ class ZmtpClient:
             self._sock.sendall(bytes([4, len(pong)]) + pong)
 
     def _frame(self):
-        flags = self._exact(1)[0]
-        if flags & 2:
-            size = int.from_bytes(self._exact(8), "big")
-        else:
-            size = self._exact(1)[0]
-        return flags, self._exact(size)
+        # Кадр снимается с буфера только целиком: таймаут посреди кадра
+        # не должен съесть заголовок.
+        while True:
+            buf = self._buf
+            if len(buf) >= 2:
+                flags = buf[0]
+                if flags & 2:
+                    start = 9
+                    size = int.from_bytes(buf[1:9], "big") if len(buf) >= 9 else None
+                else:
+                    start = 2
+                    size = buf[1]
+                if size is not None and len(buf) >= start + size:
+                    self._buf = buf[start + size:]
+                    return flags, buf[start:start + size]
+            self._fill()
 
     def _exact(self, size):
         while len(self._buf) < size:
-            try:
-                chunk = self._sock.recv(65536)
-            except socket.timeout as error:
-                raise PeerTimeout from error
-            if not chunk:
-                raise ConnectionError("станция закрыла соединение")
-            self._buf += chunk
+            self._fill()
         data, self._buf = self._buf[:size], self._buf[size:]
         return data
+
+    def _fill(self):
+        try:
+            chunk = self._sock.recv(65536)
+        except socket.timeout as error:
+            raise PeerTimeout from error
+        if not chunk:
+            raise ConnectionError("станция закрыла соединение")
+        self._buf += chunk
 
 
 def listen(address, check, on_packet=None, stop=None):
