@@ -3,7 +3,6 @@
 #include "ui_Wag9Fs.h"
 #include "Wag9Configuration.h"
 #include "Wag9FsServer.h"
-#include "Wag9PanelFactory.h"
 #include "KeySwitchButton.h"
 #include "FaultStationMessages.pb.h"
 
@@ -18,6 +17,8 @@
 class QAbstractButton;
 class QLabel;
 class QPushButton;
+class Wag9PneumoPanel;
+class Wag9PneumoE70Panel;
 
 class Wag9Fs : public QFrame
 {
@@ -42,7 +43,6 @@ class Wag9Fs : public QFrame
         void hidePopups();
         void closeFrame();
         void createServer();
-        void setPressure(const QString& key, double value);
         void reportStationState();
         void handleInitMessage(const proto::FaultStationInitMessage& msg);
         void handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationIncomingMessage& msg);
@@ -50,11 +50,12 @@ class Wag9Fs : public QFrame
         Ui::Wag9Fs ui;
         std::shared_ptr<Wag9Configuration const> m_staticConfig;
         std::unique_ptr<Wag9FsServer> m_server;
-        std::unique_ptr<Wag9::PanelFactory> m_panelFactory;
         QRect m_frameRect;
         QList<QPushButton*> m_linkButtons;
         QList<QLabel*> m_hintLabels;
         QHash<QString, QWidget*> m_popups;
+        Wag9PneumoPanel* m_ccbPanel = nullptr;
+        Wag9PneumoE70Panel* m_e70Panel = nullptr;
         QTimer m_reportTimer;
         KeySwitchButton* m_pantograph1[2] = {};
         KeySwitchButton* m_pantograph2[2] = {};

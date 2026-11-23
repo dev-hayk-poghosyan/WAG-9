@@ -17,33 +17,42 @@ Wag9PneumoPanel::Wag9PneumoPanel(QWidget* parent)
     background->setPixmap(backgroundPix);
     background->setGeometry(0, 0, backgroundPix.width(), backgroundPix.height());
 
-    auto* needle = new Wag9Needle(QPixmap(QStringLiteral(":/Wag9/fs/pneumo/ccb/ArrowBlack1.png")),
-            QPoint(826, 294), 10, 270, this);
-    needle->setObjectName(QStringLiteral("manometer"));
+    m_needle = new Wag9Needle(QPixmap(QStringLiteral(":/Wag9/fs/pneumo/ccb/ArrowBlack1.png")),
+        QPoint(826, 294), kPantoGaugeMax, kPantoGaugeSweep, this);
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 82, "ec_coc");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 147, "tc2_coc");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 47, 211, "tc1_coc");
+    place("ec_coc", "SwitchBlack2", {47, 82});
+    place("tc2_coc", "SwitchBlack2", {47, 147});
+    place("tc1_coc", "SwitchBlack2", {47, 211});
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 383, 126, "sifa_coc");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow1"), {1, 2}), 0, 364, 236, "fp_coc");
+    place("sifa_coc", "SwitchRed1", {383, 126});
+    place("fp_coc", "SwitchYellow1", {364, 236});
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 551, 133, "sand1_coc");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack3"), {1, 2}), 0, 617, 133, "sand2_coc");
+    place("sand1_coc", "SwitchBlack3", {551, 133});
+    place("sand2_coc", "SwitchBlack3", {617, 133});
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 683, 136, "ul_coc");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 1, 745, 136, "cb_coc");
+    place("ul_coc", "SwitchBlack2", {683, 136}, 2, 1);
+    place("cb_coc", "SwitchBlack2", {745, 136}, 2, 1);
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchKey"), {1, 2}), 0, 818, 149, "pans_coc");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 869, 136, "pan1_coc");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack2"), {1, 2}), 0, 931, 136, "pan2_coc");
+    place("pans_coc", "SwitchKey", {818, 149}, 2, 1);
+    place("pan1_coc", "SwitchBlack2", {869, 136});
+    place("pan2_coc", "SwitchBlack2", {931, 136});
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack1"), {1, 2, 3}), 0, 860, 82, "pan_sel_sw");
+    place("pan_sel_sw", "SwitchBlack1", {860, 82}, 3);
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchBlack4"), {1, 2}), 0, 241, 612, "pass_goods");
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchRed1"), {1, 2}), 0, 681, 677, "per_coc");
+    place("pass_goods", "SwitchBlack4", {241, 612});
+    place("per_coc", "SwitchRed1", {681, 677});
+    place("dead_engine", "SwitchYellow2", {831, 696});
+    place("gp", "SwitchYellow3", {204, 878});
+}
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow2"), {1, 2}), 0, 831, 696, "dead_engine");
+void Wag9PneumoPanel::setPressure(double value)
+{
+    m_needle->setValue(value);
+}
 
-    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), QStringLiteral("SwitchYellow3"), {1, 2}), 0, 204, 878, "gp");
+void Wag9PneumoPanel::place(const char* name, const QString& sprite, const QPoint& topLeft,
+    int frameCount, int initial)
+{
+    addSwitch(this, framesOf(QStringLiteral("pneumo/ccb"), sprite, frameCount), initial,
+        topLeft.x(), topLeft.y(), QString::fromLatin1(name));
 }

@@ -2,7 +2,6 @@
 #include "Wag9CubiclePanel.h"
 #include "Wag9PneumoPanel.h"
 #include "Wag9PneumoE70Panel.h"
-#include "Wag9Needle.h"
 #include "Wag9SpriteSwitch.h"
 
 #include <QDebug>
@@ -25,6 +24,12 @@ const QString kSb1 = QStringLiteral("SB1");
 const QString kHb1 = QStringLiteral("HB1");
 const QString kSb2 = QStringLiteral("SB2");
 const QString kHb2 = QStringLiteral("HB2");
+
+constexpr int kReportIntervalMs = 100;
+constexpr int kPantographFrameCount = 10;
+
+const QString kBackgroundCcb = QStringLiteral(":/Wag9/fs/WAG9_FS_Background_CCB.png");
+const QString kBackgroundE70 = QStringLiteral(":/Wag9/fs/WAG9_FS_Background_E70.png");
 
 int positionOf(QWidget* panel, const char* name)
 {
@@ -167,7 +172,7 @@ void fillHb2(proto::wag9::fs::Hb2* hb2, QWidget* panel)
 QStringList pantographFrames(const QString& direction)
 {
     QStringList frames;
-    for (int i = 1; i <= 10; ++i)
+    for (int i = 1; i <= kPantographFrameCount; ++i)
     {
         frames << QStringLiteral(":/Wag9/fs/panto/%1/%2.png").arg(direction).arg(i, 2, 10, QLatin1Char('0'));
     }
@@ -178,7 +183,6 @@ QStringList pantographFrames(const QString& direction)
 
 Wag9Fs::Wag9Fs(QWidget *parent)
     : QFrame(parent)
-    , m_panelFactory(std::make_unique<Wag9::PanelFactory>())
 {}
 
 void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
@@ -192,18 +196,15 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
     prepareZones();
     createPantographs();
 
-    const QStringList zones = {
-        kSb1,
-        kHb1,
-        kSb2,
-        kHb2
-    };
+    const QStringList zones = { kSb1, kHb1, kSb2, kHb2 };
 
-    m_popups.insert(kPneumoCcb, new Wag9PneumoPanel(this));
-    m_popups[kPneumoCcb]->hide();
+    m_ccbPanel = new Wag9PneumoPanel(this);
+    m_ccbPanel->hide();
+    m_popups.insert(kPneumoCcb, m_ccbPanel);
 
-    m_popups.insert(kPneumoE70, new Wag9PneumoE70Panel(this));
-    m_popups[kPneumoE70]->hide();
+    m_e70Panel = new Wag9PneumoE70Panel(this);
+    m_e70Panel->hide();
+    m_popups.insert(kPneumoE70, m_e70Panel);
 
     for (const QString& zone : zones)
     {
@@ -308,9 +309,7 @@ void Wag9Fs::onPneumoModeToggled(bool checked)
     if (checked)
     {
         const bool e70 = ui.pneumoE70->isChecked();
-        ui.background->setPixmap(e70
-            ? QStringLiteral(":/Wag9/fs/WAG9_FS_Background_E70.png")
-            : QStringLiteral(":/Wag9/fs/WAG9_FS_Background_CCB.png"));
+        ui.background->setPixmap(e70 ? kBackgroundE70 : kBackgroundCcb);
     }
 }
 
@@ -446,7 +445,7 @@ void Wag9Fs::createServer()
     connect(m_server.get(), &Wag9FsServer::initMessageReceived, this, &Wag9Fs::handleInitMessage);
     connect(m_server.get(), &Wag9FsServer::messageReceived, this, &Wag9Fs::handleIncomingPackageFromSim);
 
-    m_reportTimer.setInterval(100);
+    m_reportTimer.setInterval(kReportIntervalMs);
     connect(&m_reportTimer, &QTimer::timeout, this, &Wag9Fs::reportStationState);
     m_reportTimer.start();
 }
@@ -461,11 +460,11 @@ void Wag9Fs::reportStationState()
     proto::wag9::fs::FaultStationOutgoingMessage msg;
     if (ui.pneumoE70->isChecked())
     {
-        fillPneumoE70(msg.mutable_pneumo_e70(), m_popups.value(kPneumoE70));
+        fillPneumoE70(msg.mutable_pneumo_e70(), m_e70Panel);
     }
     else
     {
-        fillPneumoCcb(msg.mutable_pneumo_ccb(), m_popups.value(kPneumoCcb));
+        fillPneumoCcb(msg.mutable_pneumo_ccb(), m_ccbPanel);
     }
 
     fillSb1(msg.mutable_sb1(), m_popups.value(kSb1));
@@ -484,42 +483,30 @@ void Wag9Fs::handleInitMessage(const proto::FaultStationInitMessage& msg)
     qDebug() << "Init from sim, vehicles:" << msg.vehicle_numbers_size();
 }
 
-void Wag9Fs::setPressure(const QString& key, double value)
-{
-    QWidget* panel = m_popups.value(key);
-    auto* needle = panel ? panel->findChild<Wag9Needle*>(QStringLiteral("manometer")) : nullptr;
-    if (needle)
-    {
-        needle->setValue(value);
-    }
-}
-
 void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationIncomingMessage& msg)
 {
     if (msg.has_ccb_manometer_pressure())
     {
-        setPressure(kPneumoCcb, msg.ccb_manometer_pressure());
+        m_ccbPanel->setPressure(msg.ccb_manometer_pressure());
     }
 
     if (msg.has_e70_manometer_pressure())
     {
-        setPressure(kPneumoE70, msg.e70_manometer_pressure());
+        m_e70Panel->setPressure(msg.e70_manometer_pressure());
     }
-
-    auto* e70 = static_cast<Wag9PneumoE70Panel *>(m_popups.value(kPneumoE70));
 
     if (msg.has_e70_processor_fault())
     {
-        e70->setLed(QStringLiteral("processor_fault"), msg.e70_processor_fault());
+        m_e70Panel->setLed(QStringLiteral("processor_fault"), msg.e70_processor_fault());
     }
 
     if (msg.has_e70_system_fault())
     {
-        e70->setLed(QStringLiteral("system_fault"), msg.e70_system_fault());
+        m_e70Panel->setLed(QStringLiteral("system_fault"), msg.e70_system_fault());
     }
 
     if (msg.has_e70_psu_normal())
     {
-        e70->setLed(QStringLiteral("psu_normal"), msg.e70_psu_normal());
+        m_e70Panel->setLed(QStringLiteral("psu_normal"), msg.e70_psu_normal());
     }
 }

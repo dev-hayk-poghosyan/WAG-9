@@ -3,6 +3,9 @@
 #include <QPixmap>
 #include <QWidget>
 
+constexpr qreal kPantoGaugeMax = 10;
+constexpr qreal kPantoGaugeSweep = 270;
+
 class Wag9Needle : public QWidget
 {
     Q_OBJECT

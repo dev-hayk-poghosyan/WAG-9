@@ -88,10 +88,15 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
         qRound(needlePix.width() * scale), qRound(needlePix.height() * scale),
         Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    auto* needle = new Wag9Needle(needleFitted, QPoint(qRound(688 * scale), qRound(1101 * scale)), 10, 270, picture);
-    needle->setObjectName(QStringLiteral("manometer"));
+    m_needle = new Wag9Needle(needleFitted, QPoint(qRound(688 * scale), qRound(1101 * scale)),
+            kPantoGaugeMax, kPantoGaugeSweep, picture);
 
     scroll->setWidget(picture);
+}
+
+void Wag9PneumoE70Panel::setPressure(double value)
+{
+    m_needle->setValue(value);
 }
 
 void Wag9PneumoE70Panel::setLed(const QString &name, proto::wag9::fs::LedState state)
@@ -108,13 +113,7 @@ void Wag9PneumoE70Panel::setLed(const QString &name, proto::wag9::fs::LedState s
 void Wag9PneumoE70Panel::place(const char* name, const QString& sprite, const QPoint& pivot,
     int frameCount, int initial, std::optional<QPoint> hinge)
 {
-    QList<int> indexes;
-    for (int i = 1; i <= frameCount; ++i)
-    {
-        indexes << i;
-    }
-
-    const QStringList frames = framesOf(QStringLiteral("pneumo/e70"), sprite, indexes);
+    const QStringList frames = framesOf(QStringLiteral("pneumo/e70"), sprite, frameCount);
     const QPixmap sample(frames.at(0));
     const QPointF middle(sample.width() / 2.0, sample.height() / 2.0);
     const QPointF offset = hinge ? QPointF(*hinge) - middle : QPointF();

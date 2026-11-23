@@ -8,11 +8,14 @@
 
 #include <optional>
 
+class Wag9Needle;
+
 class Wag9PneumoE70Panel : public QWidget
 {
     public:
         explicit Wag9PneumoE70Panel(QWidget *parent = nullptr);
 
+        void setPressure(double value);
         void setLed(const QString& name, proto::wag9::fs::LedState state);
 
     private:
@@ -23,4 +26,5 @@ class Wag9PneumoE70Panel : public QWidget
 
         QLabel* m_picture = nullptr;
         qreal m_scale = 1;
+        Wag9Needle* m_needle = nullptr;
 };
