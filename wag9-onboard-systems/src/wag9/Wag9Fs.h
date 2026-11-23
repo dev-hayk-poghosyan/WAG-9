@@ -15,6 +15,8 @@
 
 #include <memory>
 
+class QAbstractButton;
+class QLabel;
 class QPushButton;
 
 class Wag9Fs : public QFrame
@@ -30,11 +32,17 @@ class Wag9Fs : public QFrame
 
     private:
         void prepareZones();
+        void onLinkClicked(QAbstractButton* button);
+        void setHintsVisible(bool enabled);
+        void onPneumoModeToggled(bool checked);
         void createPantographs();
+        KeySwitchButton* addPantographView(const QStringList& frames, QPushButton* clickArea);
+        static void togglePantographPair(KeySwitchButton* a, KeySwitchButton* b);
         void showPopup(QWidget* panel);
         void hidePopups();
         void closeFrame();
         void createServer();
+        void setPressure(const QString& key, double value);
         void reportStationState();
         void handleInitMessage(const proto::FaultStationInitMessage& msg);
         void handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationIncomingMessage& msg);
@@ -45,6 +53,7 @@ class Wag9Fs : public QFrame
         std::unique_ptr<Wag9::PanelFactory> m_panelFactory;
         QRect m_frameRect;
         QList<QPushButton*> m_linkButtons;
+        QList<QLabel*> m_hintLabels;
         QHash<QString, QWidget*> m_popups;
         QTimer m_reportTimer;
         KeySwitchButton* m_pantograph1[2] = {};

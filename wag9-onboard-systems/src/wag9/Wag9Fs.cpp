@@ -2,6 +2,7 @@
 #include "Wag9CubiclePanel.h"
 #include "Wag9PneumoPanel.h"
 #include "Wag9PneumoE70Panel.h"
+#include "Wag9Needle.h"
 #include "Wag9SpriteSwitch.h"
 
 #include <QDebug>
@@ -70,9 +71,6 @@ void fillPneumoCcb(proto::wag9::fs::PneumoCCB* ccb, QWidget* panel)
 
 void fillPneumoE70(proto::wag9::fs::PneumoE70* e70, QWidget* panel)
 {
-    e70->set_processor_fault(0);
-    e70->set_system_fault(0);
-    e70->set_psu_normal(3);
     e70->set_pan_sel_sw(positionOf(panel, "pan_sel_sw"));
     e70->set_switch_1(flagOf(panel, "switch_1"));
     e70->set_switch_2(flagOf(panel, "switch_2"));
@@ -223,154 +221,163 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
 
 void Wag9Fs::prepareZones()
 {
+    auto* links = new QButtonGroup(this);
+    links->setExclusive(false);
     m_linkButtons = findChildren<QPushButton*>(QRegularExpression(QStringLiteral("^link_")));
     for (QPushButton* button : m_linkButtons)
     {
         button->setFocusPolicy(Qt::NoFocus);
         button->setCursor(Qt::PointingHandCursor);
-        connect(button, &QPushButton::clicked, this, [this, button](bool checked)
-        {
-            if (!checked)
-            {
-                closeFrame();
-                return;
-            }
-
-            for (QPushButton* other : m_linkButtons)
-            {
-                if (other != button)
-                {
-                    other->setChecked(false);
-                }
-            }
-
-            QString zone = button->property("zone").toString();
-            if (zone == kPneumoCcb && ui.pneumoE70->isChecked())
-            {
-                zone = kPneumoE70;
-            }
-
-            QWidget* panel = m_popups.value(zone);
-            if (panel)
-            {
-                showPopup(panel);
-            }
-        });
+        links->addButton(button);
     }
+    connect(links, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &Wag9Fs::onLinkClicked);
 
     ui.frameView->installEventFilter(this);
 
-    const auto hintLabels = findChildren<QLabel*>(QRegularExpression(QStringLiteral("^hint_")));
-    for (QLabel* label : hintLabels)
+    m_hintLabels = findChildren<QLabel*>(QRegularExpression(QStringLiteral("^hint_")));
+    for (QLabel* label : m_hintLabels)
     {
         label->setAttribute(Qt::WA_TransparentForMouseEvents);
     }
-
-    connect(ui.hintsButton, &QPushButton::toggled, this, [this, hintLabels](bool enabled)
-    {
-        for (QLabel* label : hintLabels)
-        {
-            label->setVisible(enabled);
-            if (enabled)
-            {
-                label->raise();
-            }
-        }
-
-        if (ui.frameView->isVisible())
-        {
-            ui.frameView->raise();
-        }
-
-        for (QWidget* popup : m_popups)
-        {
-            if (popup->isVisible())
-            {
-                popup->raise();
-            }
-        }
-    });
+    connect(ui.hintsButton, &QPushButton::toggled, this, &Wag9Fs::setHintsVisible);
 
     auto *pneumoModes = new QButtonGroup(this);
     pneumoModes->setExclusive(true);
     pneumoModes->addButton(ui.pneumoCcb);
     pneumoModes->addButton(ui.pneumoE70);
+    connect(ui.pneumoCcb, &QPushButton::toggled, this, &Wag9Fs::onPneumoModeToggled);
+    connect(ui.pneumoE70, &QPushButton::toggled, this, &Wag9Fs::onPneumoModeToggled);
+}
 
-    const auto applyPneumoBackground = [this]()
+void Wag9Fs::onLinkClicked(QAbstractButton* button)
+{
+    if (!button->isChecked())
+    {
+        closeFrame();
+        return;
+    }
+
+    for (QPushButton* other : m_linkButtons)
+    {
+        if (other != button)
+        {
+            other->setChecked(false);
+        }
+    }
+
+    QString zone = button->property("zone").toString();
+    if (zone == kPneumoCcb && ui.pneumoE70->isChecked())
+    {
+        zone = kPneumoE70;
+    }
+
+    QWidget* panel = m_popups.value(zone);
+    if (panel)
+    {
+        showPopup(panel);
+    }
+}
+
+void Wag9Fs::setHintsVisible(bool enabled)
+{
+    for (QLabel* label : m_hintLabels)
+    {
+        label->setVisible(enabled);
+        if (enabled)
+        {
+            label->raise();
+        }
+    }
+
+    if (ui.frameView->isVisible())
+    {
+        ui.frameView->raise();
+    }
+
+    for (QWidget* popup : m_popups)
+    {
+        if (popup->isVisible())
+        {
+            popup->raise();
+        }
+    }
+}
+
+void Wag9Fs::onPneumoModeToggled(bool checked)
+{
+    if (checked)
     {
         const bool e70 = ui.pneumoE70->isChecked();
         ui.background->setPixmap(e70
             ? QStringLiteral(":/Wag9/fs/WAG9_FS_Background_E70.png")
             : QStringLiteral(":/Wag9/fs/WAG9_FS_Background_CCB.png"));
-    };
-
-    const auto onModeToggled = [applyPneumoBackground](bool checked)
-    {
-        if (checked)
-        {
-            applyPneumoBackground();
-        }
-    };
-
-    connect(ui.pneumoCcb, &QPushButton::toggled, this, onModeToggled);
-    connect(ui.pneumoE70, &QPushButton::toggled, this, onModeToggled);
+    }
 }
 
 void Wag9Fs::createPantographs()
 {
-    const auto addView = [this](const QStringList& frames, QPushButton* clickArea) -> KeySwitchButton*
-    {
-        QStringList framesDown = frames;
-        std::reverse(framesDown.begin(), framesDown.end());
-
-        auto view = new KeySwitchButton(this);
-        view->setAnimationOnList(frames);
-        view->setAnimationOffList(framesDown);
-        view->setGeometry(clickArea->geometry());
-        view->setControlButtonGeometry(view->rect());
-        view->setSilent(true);
-        view->init();
-        view->setClickable(false);
-        view->show();
-
-        clickArea->setFocusPolicy(Qt::NoFocus);
-        clickArea->setCursor(Qt::PointingHandCursor);
-        clickArea->raise();
-        return view;
-    };
-
-    const auto bindPair = [this](QPushButton* firstClick, QPushButton* secondClick,
-        KeySwitchButton* a, KeySwitchButton* b)
-    {
-        const auto toggle = [a, b]()
-        {
-            if (a->animationState() != KeySwitchButton::AnimationState::None
-                || b->animationState() != KeySwitchButton::AnimationState::None)
-            {
-                return;
-            }
-
-            const auto next = a->state() == ControlButtonState::On
-                ? ControlButtonState::Off
-                : ControlButtonState::On;
-            a->setState(next);
-            b->setState(next);
-        };
-
-        connect(firstClick, &QPushButton::clicked, this, toggle);
-        connect(secondClick, &QPushButton::clicked, this, toggle);
-    };
-
     const QStringList pantograph1 = pantographFrames(QStringLiteral("left"));
     const QStringList pantograph2 = pantographFrames(QStringLiteral("right"));
 
-    m_pantograph1[0] = addView(pantograph1, ui.pan_right_1);
-    m_pantograph1[1] = addView(pantograph1, ui.pan_left_1);
-    bindPair(ui.pan_right_1, ui.pan_left_1, m_pantograph1[0], m_pantograph1[1]);
+    m_pantograph1[0] = addPantographView(pantograph1, ui.pan_right_1);
+    m_pantograph1[1] = addPantographView(pantograph1, ui.pan_left_1);
 
-    m_pantograph2[0] = addView(pantograph2, ui.pan_right_2);
-    m_pantograph2[1] = addView(pantograph2, ui.pan_left_2);
-    bindPair(ui.pan_right_2, ui.pan_left_2, m_pantograph2[0], m_pantograph2[1]);
+    connect(ui.pan_right_1, &QPushButton::clicked, this, [this]
+    {
+        togglePantographPair(m_pantograph1[0], m_pantograph1[1]);
+    });
+    connect(ui.pan_left_1, &QPushButton::clicked, this, [this]
+    {
+        togglePantographPair(m_pantograph1[0], m_pantograph1[1]);
+    });
+
+    m_pantograph2[0] = addPantographView(pantograph2, ui.pan_right_2);
+    m_pantograph2[1] = addPantographView(pantograph2, ui.pan_left_2);
+
+    connect(ui.pan_right_2, &QPushButton::clicked, this, [this]
+    {
+        togglePantographPair(m_pantograph2[0], m_pantograph2[1]);
+    });
+    connect(ui.pan_left_2, &QPushButton::clicked, this, [this]
+    {
+        togglePantographPair(m_pantograph2[0], m_pantograph2[1]);
+    });
+}
+
+KeySwitchButton* Wag9Fs::addPantographView(const QStringList& frames, QPushButton* clickArea)
+{
+    QStringList framesDown = frames;
+    std::reverse(framesDown.begin(), framesDown.end());
+
+    auto view = new KeySwitchButton(this);
+    view->setAnimationOnList(frames);
+    view->setAnimationOffList(framesDown);
+    view->setGeometry(clickArea->geometry());
+    view->setControlButtonGeometry(view->rect());
+    view->setSilent(true);
+    view->init();
+    view->setClickable(false);
+    view->show();
+
+    clickArea->setFocusPolicy(Qt::NoFocus);
+    clickArea->setCursor(Qt::PointingHandCursor);
+    clickArea->raise();
+    return view;
+}
+
+void Wag9Fs::togglePantographPair(KeySwitchButton* a, KeySwitchButton* b)
+{
+    if (a->animationState() != KeySwitchButton::AnimationState::None
+        || b->animationState() != KeySwitchButton::AnimationState::None)
+    {
+        return;
+    }
+
+    const auto next = a->state() == ControlButtonState::On
+        ? ControlButtonState::Off
+        : ControlButtonState::On;
+    a->setState(next);
+    b->setState(next);
 }
 
 void Wag9Fs::showPopup(QWidget* panel)
@@ -465,8 +472,10 @@ void Wag9Fs::reportStationState()
     fillHb1(msg.mutable_hb1(), m_popups.value(kHb1));
     fillSb2(msg.mutable_sb2(), m_popups.value(kSb2));
     fillHb2(msg.mutable_hb2(), m_popups.value(kHb2));
+
     msg.set_pantograph_1_raised(m_pantograph1[0]->state() == ControlButtonState::On);
     msg.set_pantograph_2_raised(m_pantograph2[0]->state() == ControlButtonState::On);
+
     m_server->sendMessage(msg);
 }
 
@@ -475,6 +484,42 @@ void Wag9Fs::handleInitMessage(const proto::FaultStationInitMessage& msg)
     qDebug() << "Init from sim, vehicles:" << msg.vehicle_numbers_size();
 }
 
-void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationIncomingMessage&)
+void Wag9Fs::setPressure(const QString& key, double value)
 {
+    QWidget* panel = m_popups.value(key);
+    auto* needle = panel ? panel->findChild<Wag9Needle*>(QStringLiteral("manometer")) : nullptr;
+    if (needle)
+    {
+        needle->setValue(value);
+    }
+}
+
+void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationIncomingMessage& msg)
+{
+    if (msg.has_ccb_manometer_pressure())
+    {
+        setPressure(kPneumoCcb, msg.ccb_manometer_pressure());
+    }
+
+    if (msg.has_e70_manometer_pressure())
+    {
+        setPressure(kPneumoE70, msg.e70_manometer_pressure());
+    }
+
+    auto* e70 = static_cast<Wag9PneumoE70Panel *>(m_popups.value(kPneumoE70));
+
+    if (msg.has_e70_processor_fault())
+    {
+        e70->setLed(QStringLiteral("processor_fault"), msg.e70_processor_fault());
+    }
+
+    if (msg.has_e70_system_fault())
+    {
+        e70->setLed(QStringLiteral("system_fault"), msg.e70_system_fault());
+    }
+
+    if (msg.has_e70_psu_normal())
+    {
+        e70->setLed(QStringLiteral("psu_normal"), msg.e70_psu_normal());
+    }
 }
