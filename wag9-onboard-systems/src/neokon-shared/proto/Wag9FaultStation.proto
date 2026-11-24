@@ -140,8 +140,8 @@ message PneumoE70 {
 }
 
 message FaultStationOutgoingMessage {
-    bool pantograph_1_raised = 1;
-    bool pantograph_2_raised = 2;
+    reserved 1, 2;
+    reserved "pantograph_1_raised", "pantograph_2_raised";
     optional PneumoCCB pneumo_ccb = 3;
     optional PneumoE70 pneumo_e70 = 4;
     Sb1 sb1 = 5;
@@ -157,4 +157,6 @@ message FaultStationIncomingMessage
     optional LedState e70_processor_fault = 3;
     optional LedState e70_system_fault = 4;
     optional LedState e70_psu_normal = 5;
+    optional bool pantograph_1_raised = 6;
+    optional bool pantograph_2_raised = 7;
 }
