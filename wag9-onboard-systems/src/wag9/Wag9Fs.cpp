@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QPushButton>
 #include <QRegularExpression>
+#include <QSignalBlocker>
 #include <QStringList>
 #include <QButtonGroup>
 
@@ -243,9 +244,11 @@ void Wag9Fs::prepareZones()
     connect(ui.hintsButton, &QPushButton::toggled, this, &Wag9Fs::setHintsVisible);
 
     auto *pneumoModes = new QButtonGroup(this);
+
     pneumoModes->setExclusive(true);
     pneumoModes->addButton(ui.pneumoCcb);
     pneumoModes->addButton(ui.pneumoE70);
+
     connect(ui.pneumoCcb, &QPushButton::toggled, this, &Wag9Fs::onPneumoModeToggled);
     connect(ui.pneumoE70, &QPushButton::toggled, this, &Wag9Fs::onPneumoModeToggled);
 }
@@ -267,12 +270,7 @@ void Wag9Fs::onLinkClicked(QAbstractButton* button)
     }
 
     QString zone = button->property("zone").toString();
-    if (zone == kPneumoCcb && ui.pneumoE70->isChecked())
-    {
-        zone = kPneumoE70;
-    }
-
-    QWidget* panel = m_popups.value(zone);
+    QWidget* panel = zone == kPneumoCcb ? getPneumoPanel() : m_popups.value(zone);
     if (panel)
     {
         showPopup(panel);
@@ -308,9 +306,37 @@ void Wag9Fs::onPneumoModeToggled(bool checked)
 {
     if (checked)
     {
-        const bool e70 = ui.pneumoE70->isChecked();
-        ui.background->setPixmap(e70 ? kBackgroundE70 : kBackgroundCcb);
+        setBrakeSystem(ui.pneumoE70->isChecked() ? BrakeSystem::E70 : BrakeSystem::Ccb);
+        ui.background->setPixmap(m_brakeSystem == BrakeSystem::E70 ? kBackgroundE70 : kBackgroundCcb);
     }
+}
+
+void Wag9Fs::setBrakeSystem(BrakeSystem system)
+{
+    const bool e70 = system == BrakeSystem::E70;
+
+    const QSignalBlocker blockCcb(ui.pneumoCcb);
+    const QSignalBlocker blockE70(ui.pneumoE70);
+
+    m_brakeSystem = system;
+
+    if (e70)
+    {
+        ui.pneumoE70->setChecked(true);
+    }
+    else
+    {
+        ui.pneumoCcb->setChecked(true);
+    }
+}
+
+QWidget *Wag9Fs::getPneumoPanel() const
+{
+    if (m_brakeSystem == BrakeSystem::E70)
+    {
+        return m_e70Panel;
+    }
+    return m_ccbPanel;
 }
 
 void Wag9Fs::createPantographs()
@@ -458,7 +484,7 @@ void Wag9Fs::reportStationState()
     }
 
     proto::wag9::fs::FaultStationOutgoingMessage msg;
-    if (ui.pneumoE70->isChecked())
+    if (m_brakeSystem == BrakeSystem::E70)
     {
         fillPneumoE70(msg.mutable_pneumo_e70(), m_e70Panel);
     }

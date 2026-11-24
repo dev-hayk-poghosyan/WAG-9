@@ -20,6 +20,12 @@ class QPushButton;
 class Wag9PneumoPanel;
 class Wag9PneumoE70Panel;
 
+enum class BrakeSystem
+{
+    Ccb,
+    E70
+};
+
 class Wag9Fs : public QFrame
 {
     Q_OBJECT
@@ -36,6 +42,8 @@ class Wag9Fs : public QFrame
         void onLinkClicked(QAbstractButton* button);
         void setHintsVisible(bool enabled);
         void onPneumoModeToggled(bool checked);
+        void setBrakeSystem(BrakeSystem system);
+        QWidget *getPneumoPanel() const;
         void createPantographs();
         KeySwitchButton* addPantographView(const QStringList& frames, QPushButton* clickArea);
         static void togglePantographPair(KeySwitchButton* a, KeySwitchButton* b);
@@ -56,6 +64,7 @@ class Wag9Fs : public QFrame
         QHash<QString, QWidget*> m_popups;
         Wag9PneumoPanel* m_ccbPanel = nullptr;
         Wag9PneumoE70Panel* m_e70Panel = nullptr;
+        BrakeSystem m_brakeSystem = BrakeSystem::Ccb;
         QTimer m_reportTimer;
         KeySwitchButton* m_pantograph1[2] = {};
         KeySwitchButton* m_pantograph2[2] = {};
