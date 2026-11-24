@@ -66,7 +66,7 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
 
     placeLed("processor_fault", {577, 26}, proto::wag9::fs::LED_STATE_OFF);
     placeLed("system_fault", {577, 66}, proto::wag9::fs::LED_STATE_OFF);
-    placeLed("psu_normal", {577, 107}, proto::wag9::fs::LED_STATE_GREEN);
+    placeLed("psu_normal", {577, 107}, proto::wag9::fs::LED_STATE_OFF);
 
     place("pan_sel_sw", QStringLiteral("SwitchBlack10"), {85, 390}, 3);
 

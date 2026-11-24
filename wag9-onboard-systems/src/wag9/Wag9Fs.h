@@ -43,6 +43,7 @@ class Wag9Fs : public QFrame
         void setHintsVisible(bool enabled);
         void onPneumoModeToggled(bool checked);
         void setBrakeSystem(BrakeSystem system);
+        void setBrakeSystemLocked(bool locked);
         QWidget *getPneumoPanel() const;
         void createPantographs();
         KeySwitchButton* addPantographView(const QStringList& frames, QPushButton* clickArea);

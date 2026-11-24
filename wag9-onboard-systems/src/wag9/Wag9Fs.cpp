@@ -330,6 +330,12 @@ void Wag9Fs::setBrakeSystem(BrakeSystem system)
     }
 }
 
+void Wag9Fs::setBrakeSystemLocked(bool locked)
+{
+    ui.pneumoCcb->setEnabled(!locked);
+    ui.pneumoE70->setEnabled(!locked);
+}
+
 QWidget *Wag9Fs::getPneumoPanel() const
 {
     if (m_brakeSystem == BrakeSystem::E70)
@@ -470,6 +476,9 @@ void Wag9Fs::createServer()
 
     connect(m_server.get(), &Wag9FsServer::initMessageReceived, this, &Wag9Fs::handleInitMessage);
     connect(m_server.get(), &Wag9FsServer::messageReceived, this, &Wag9Fs::handleIncomingPackageFromSim);
+
+    connect(m_server.get(), &Wag9FsServer::connected, this, [this] { setBrakeSystemLocked(true); });
+    connect(m_server.get(), &Wag9FsServer::disconnected, this, [this] { setBrakeSystemLocked(false); });
 
     m_reportTimer.setInterval(kReportIntervalMs);
     connect(&m_reportTimer, &QTimer::timeout, this, &Wag9Fs::reportStationState);
