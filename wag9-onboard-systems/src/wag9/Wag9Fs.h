@@ -47,7 +47,7 @@ class Wag9Fs : public QFrame
         QWidget *getPneumoPanel() const;
         void createPantographs();
         KeySwitchButton* addPantographView(const QStringList& frames, QPushButton* clickArea);
-        static void togglePantographPair(KeySwitchButton* a, KeySwitchButton* b);
+        static void setPantographPair(KeySwitchButton* a, KeySwitchButton* b, bool raised);
         void showPopup(QWidget* panel);
         void hidePopups();
         void closeFrame();

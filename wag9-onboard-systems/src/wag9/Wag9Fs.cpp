@@ -353,26 +353,8 @@ void Wag9Fs::createPantographs()
     m_pantograph1[0] = addPantographView(pantograph1, ui.pan_right_1);
     m_pantograph1[1] = addPantographView(pantograph1, ui.pan_left_1);
 
-    connect(ui.pan_right_1, &QPushButton::clicked, this, [this]
-    {
-        togglePantographPair(m_pantograph1[0], m_pantograph1[1]);
-    });
-    connect(ui.pan_left_1, &QPushButton::clicked, this, [this]
-    {
-        togglePantographPair(m_pantograph1[0], m_pantograph1[1]);
-    });
-
     m_pantograph2[0] = addPantographView(pantograph2, ui.pan_right_2);
     m_pantograph2[1] = addPantographView(pantograph2, ui.pan_left_2);
-
-    connect(ui.pan_right_2, &QPushButton::clicked, this, [this]
-    {
-        togglePantographPair(m_pantograph2[0], m_pantograph2[1]);
-    });
-    connect(ui.pan_left_2, &QPushButton::clicked, this, [this]
-    {
-        togglePantographPair(m_pantograph2[0], m_pantograph2[1]);
-    });
 }
 
 KeySwitchButton* Wag9Fs::addPantographView(const QStringList& frames, QPushButton* clickArea)
@@ -389,27 +371,23 @@ KeySwitchButton* Wag9Fs::addPantographView(const QStringList& frames, QPushButto
     view->init();
     view->setClickable(false);
     view->show();
+    clickArea->hide();
 
-    clickArea->setFocusPolicy(Qt::NoFocus);
-    clickArea->setCursor(Qt::PointingHandCursor);
-    clickArea->raise();
     return view;
 }
 
-void Wag9Fs::togglePantographPair(KeySwitchButton* a, KeySwitchButton* b)
+void Wag9Fs::setPantographPair(KeySwitchButton* a, KeySwitchButton* b, bool raised)
 {
-    if (a->animationState() != KeySwitchButton::AnimationState::None
-        || b->animationState() != KeySwitchButton::AnimationState::None)
+    const auto state = raised ? ControlButtonState::On : ControlButtonState::Off;
+    for (KeySwitchButton* view : {a, b})
     {
-        return;
+        if (view->animationState() == KeySwitchButton::AnimationState::None)
+        {
+            view->setState(state);
+        }
     }
-
-    const auto next = a->state() == ControlButtonState::On
-        ? ControlButtonState::Off
-        : ControlButtonState::On;
-    a->setState(next);
-    b->setState(next);
 }
+
 
 void Wag9Fs::showPopup(QWidget* panel)
 {
@@ -507,9 +485,6 @@ void Wag9Fs::reportStationState()
     fillSb2(msg.mutable_sb2(), m_popups.value(kSb2));
     fillHb2(msg.mutable_hb2(), m_popups.value(kHb2));
 
-    msg.set_pantograph_1_raised(m_pantograph1[0]->state() == ControlButtonState::On);
-    msg.set_pantograph_2_raised(m_pantograph2[0]->state() == ControlButtonState::On);
-
     m_server->sendMessage(msg);
 }
 
@@ -543,5 +518,15 @@ void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationInc
     if (msg.has_e70_psu_normal())
     {
         m_e70Panel->setLed(QStringLiteral("psu_normal"), msg.e70_psu_normal());
+    }
+
+    if (msg.has_pantograph_1_raised())
+    {
+        setPantographPair(m_pantograph1[0], m_pantograph1[1], msg.pantograph_1_raised());
+    }
+
+    if (msg.has_pantograph_2_raised())
+    {
+        setPantographPair(m_pantograph2[0], m_pantograph2[1], msg.pantograph_2_raised());
     }
 }
