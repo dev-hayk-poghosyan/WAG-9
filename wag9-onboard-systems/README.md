@@ -1,6 +1,8 @@
 # WAG-9 Fault Station
 
-Окно инструктора для электровоза WAG-9. Это программа `wag9_fs`: схема локомотива на весь экран, по которой включают пантографы, открывают шкафы и крутят краны пневмопанели. Состояние пока только рисуется локально. Сообщения симулятору уже обёрнуты в protobuf, но сами поля WAG-9 ещё пустые.
+Окно машинного отделения электровоза WAG-9. Это программа `wag9_fs`: схема локомотива на весь экран, по которой поднимают пантографы, открывают шкафы SB1, HB1, SB2, HB2 и крутят краны пневмопанели CCB или E-70.
+
+Раз в 100 мс окно отправляет симулятору положения всех органов. От симулятора оно получает давление для манометров и цвета ламп E-70.
 
 Окно фиксировано 1920×1080, без рамки Windows. Картинки лежат в ресурсах Qt и адресуются как `:/Wag9/...`.
 
@@ -13,23 +15,38 @@ cmake -S wag9-onboard-systems -B wag9-build -G "Visual Studio 17 2022" -A x64 -D
 cmake --build wag9-build --config Debug --target wag9_fs
 ```
 
-Стартовый проект в решении — `wag9_fs`. Готовый exe: `wag9-build\Debug\wag9_fs.exe`. Рядом с ним `CopyDependencies` кладёт `Wag9.xml`, Qt-плагины и переводы. Настройки программа читает из файла рядом с exe, а не из `data\` в исходниках.
+Конфигураций две: `Debug` и `RelWithDebInfo`. Стартовый проект в решении — `wag9_fs`. Готовый exe: `wag9-build\Debug\wag9_fs.exe`. Рядом с ним `CopyDependencies` кладёт `Wag9.xml`, Qt-плагины и переводы. Настройки программа читает из файла рядом с exe, а не из `data\` в исходниках.
 
 Новый `.cpp` в `src/wag9/CMakeLists.txt` требует повторного запуска CMake. Новая картинка в `res/Wag9.qrc` подхватывается обычной пересборкой.
 
-## Как устроены каталоги
+## Каталоги
 
 | Путь | Зачем |
 | --- | --- |
-| `src/wag9/` | Само окно FS, сервер, пневмопанель |
+| `src/wag9/` | Окно, панели, сервер |
 | `src/` | Библиотека `common`: кнопки, ZMQ, имена файлов |
 | `ui/Wag9Fs.ui` | Разметка главного окна |
 | `res/Wag9.qrc` и `res/fs/` | Картинки, которые попадают в exe |
 | `data/Wag9.xml` | Положение окна и адрес ZMQ |
-| `src/neokon-shared/proto/Wag9FaultStation.proto` | Пустые сообщения WAG-9 |
+| `src/neokon-shared/proto/Wag9FaultStation.proto` | Сообщения WAG-9 |
+| `tools/` | Тестеры на Python вместо симулятора |
 | `translations/` | `app_en.ts`, `app_ru.ts`, `app_lv.ts`. Без них цель `CompileTranslations` не собирается |
 
-`common` — это статическая библиотека из виджетов в `src/`, а не отдельная папка. `neokon-shared` — общий код поездов. Логика WAG-9 там не живёт, кроме proto-файла.
+`common` — статическая библиотека из виджетов в `src/`, а не отдельная папка. `neokon-shared` — общий код поездов. Логика WAG-9 там не живёт, кроме proto-файла.
+
+## Файлы в `src/wag9/`
+
+| Файл | Что внутри |
+| --- | --- |
+| `FaultStationMain.cpp` | `main`: Qt, лог, конфиг, окно |
+| `Wag9Fs` | Главное окно: зоны, попапы, пантографы, тормозная система, обмен с симулятором |
+| `Wag9CubiclePanel` | Шкафы SB1, HB1, SB2, HB2 |
+| `Wag9PneumoPanel` | Пневмопанель CCB |
+| `Wag9PneumoE70Panel` | Пневмопанель E-70 с лампами |
+| `Wag9SpriteSwitch` | Орган из нескольких кадров: кран, тумблер, автомат, кнопка с лампой |
+| `Wag9Needle` | Стрелка манометра |
+| `Wag9FsServer` | ZMQ-сервер, обёртки сообщений |
+| `Wag9Configuration` | Чтение `Wag9.xml` |
 
 ## Старт
 
@@ -48,27 +65,13 @@ fs.show();
 return app.exec();
 ```
 
-`Q_INIT_RESOURCE(Wag9)` требует, чтобы файл ресурсов назывался `Wag9.qrc`. Префикс внутри него — `/Wag9`, поэтому картинка `fs/Background.png` открывается как `:/Wag9/fs/Background.png`.
+`Q_INIT_RESOURCE(Wag9)` требует, чтобы файл ресурсов назывался `Wag9.qrc`. Префикс внутри него — `/Wag9`, поэтому `res/fs/panto/left/01.png` открывается как `:/Wag9/fs/panto/left/01.png`.
 
 `FileNames::Wag9Settings()` возвращает `Wag9.xml`, `FileNames::Wag9LogFileName()` — `Wag9-log.txt`. Оба файла ищутся в каталоге exe.
 
-Дальше `Wag9Fs::init` собирает интерфейс:
+`Wag9Fs::init` собирает окно: зоны, пантографы, шесть попапов (две пневмопанели и четыре шкафа, все скрыты) и сервер.
 
-```cpp
-ui.setupUi(this);
-setWindowFlag(Qt::FramelessWindowHint);
-setWindowFlag(Qt::WindowStaysOnTopHint, m_staticConfig->fsSettings().topMost);
-move(m_staticConfig->fsSettings().position);
-prepareZones();
-createPantographs();
-m_pneumoPanel = new Wag9PneumoPanel(this);
-m_pneumoPanel->hide();
-ui.background->lower();
-ui.hintsButton->raise();
-createServer();
-```
-
-`FramelessWindowHint` убирает заголовок Windows. Иначе клиентская область 1920×1080 вместе с заголовком не помещается на экран 1080 и низ картинки обрезается. Положение берётся из XML, размер окна XML не меняет.
+`FramelessWindowHint` убирает заголовок Windows. Иначе клиентская область 1920×1080 вместе с заголовком не помещается на экран 1080 и низ картинки обрезается. Положение окна берётся из XML, размер XML не меняет.
 
 `data/Wag9.xml`:
 
@@ -83,55 +86,22 @@ createServer();
 </FS>
 ```
 
-`Wag9Configuration` читает узел `FS` в `m_fsSettings`. Узлы панелей и контроллера в этом файле не обязательны: для них остаются значения по умолчанию.
-
 ## Главное окно
 
-`ui/Wag9Fs.ui` — форма `Wag9Fs` размером 1920×1080. Фон — это `QLabel` `background` с картинкой `:/Wag9/fs/Background.png`, а не `border-image`. Так поверх фона можно класть другие виджеты, не затирая их стилем.
+Фон — `QLabel` `background`. Картинка зависит от тормозной системы: `WAG9_FS_Background_CCB.png` или `WAG9_FS_Background_E70.png`. Поверх фона лежат прозрачные кнопки без рамки:
 
-Все `QPushButton` прозрачные и без рамки. Синяя подсветка наведения и нажатия не рисуется: голубые прямоугольники на исходных картинках только показывают границы кнопок.
+| Кнопки | Что делают |
+| --- | --- |
+| `link_PT`, `link_SB1`, `link_HB1`, `link_SB2`, `link_HB2` | Открывают попап зоны. Зона берётся из свойства `zone` |
+| `pan_right_1`, `pan_left_1`, `pan_right_2`, `pan_left_2` | Поднимают и опускают пантограф |
+| `pneumoCcb`, `pneumoE70` | Выбор тормозной системы, левый нижний угол |
+| `hintsButton` | Подписи зон, правый нижний угол |
 
-Зоны — прозрачные кнопки. У шкафов имя начинается с `link_`, у пантографов с `pan_`. У каждой кнопки есть свойства `zone`, `side` и, для шкафа, `frame` — путь к картинке, которую надо открыть.
+## Попапы
 
-Адреса зон заданы в `Wag9Vehicle.h`. Это стороны и места на локомотиве, а не вагоны Class 170.
+`m_popups` хранит панели по ключу зоны: `PT` — CCB, `E70` — E-70, `SB1`, `HB1`, `SB2`, `HB2` — шкафы. Обе пневмопанели дополнительно лежат в типизированных полях `m_ccbPanel` и `m_e70Panel`.
 
-```cpp
-enum class Wag9Side { Left, Right };
-
-enum class Wag9Zone
-{
-    Pantograph1,
-    PT,
-    SB1,
-    HB1,
-    Pantograph2,
-    SB2,
-    HB2,
-};
-```
-
-На правом виде слева направо: пантограф 1, PT, SB1, HB1, пантограф 2. На левом: пантограф 1, SB2, HB2, пантограф 2. Физических пантографов два, каждый нарисован на обеих сторонах. Клик двигает только тот рисунок, по которому попали.
-
-## Шкафы
-
-`prepareZones` находит кнопки `link_*` и по клику открывает кадр. Повторный клик по той же зоне или клик по другой зоне закрывает предыдущую.
-
-```cpp
-if (button == ui.link_PT)
-{
-    showPneumo();
-}
-else
-{
-    showFrame(button->property("frame").toString());
-}
-```
-
-`showFrame` кладёт картинку шкафа в `frameView` по центру. Если она больше 90% окна, уменьшает с сохранением пропорций. Вокруг остаётся затемнение `rgba(0,0,0,140)`.
-
-SB1, SB2, HB1 и HB2 — одна готовая картинка на шкаф. PT так не открывается: для него вызывается `showPneumo`.
-
-Закрытие — клик по затемнению вне кадра. `eventFilter` на `frameView` сравнивает точку с `m_frameRect`. Красной кнопки закрытия нет.
+Клик по `link_*` открывает панель зоны по центру окна поверх затемнения `frameView` (`rgba(0,0,0,140)`). Для `link_PT` панель выбирает `getPneumoPanel()` по текущей тормозной системе. Повторный клик по той же зоне, клик по другой зоне или клик по затемнению вне панели закрывает текущую.
 
 ```cpp
 if (!m_frameRect.contains(mouseEvent->pos()))
@@ -141,114 +111,96 @@ if (!m_frameRect.contains(mouseEvent->pos()))
 }
 ```
 
-`closeFrame` снимает отметку со всех `link_*`, прячет `frameView` и пневмопанель.
+Панели только прячутся, а не удаляются. Положения органов сохраняются между открытиями.
 
-## Подсказки
+## Органы
 
-Кнопка `hintsButton` стоит в правом нижнем углу, 1804×1032, размер 108×40. Выключенная — белая с синим текстом `#1c8fd4`. Нажатая — синяя с белым текстом. Это только стиль самой кнопки.
-
-Надписи PT, SB1, HB1, SB2 и HB2 — отдельные `QLabel` `hint_*`. В них лежат вырезанные плашки `res/fs/hints/*.png`, те же пиксели, что на исходной картинке с подписями. Пока кнопка не нажата, подписи скрыты.
+Каждый орган — `Wag9SpriteSwitch`, `QLabel` с набором кадров `<sprite>_01.png` … `<sprite>_NN.png`. `objectName` органа совпадает с именем поля в proto, по нему `Wag9Fs` читает положение.
 
 ```cpp
-connect(ui.hintsButton, &QPushButton::toggled, this, [this, hintLabels](bool enabled)
-{
-    for (QLabel* label : hintLabels)
-    {
-        label->setVisible(enabled);
-        if (enabled)
-        {
-            label->raise();
-        }
-    }
-});
+place("ul_coc", "SwitchBlack2", {683, 136}, 2, 1);   // name, sprite, position, frames, initial frame
 ```
 
-Фон при этом не меняется и остаётся `Background.png`. У подписей стоит `WA_TransparentForMouseEvents`, поэтому клик по надписи проходит в зону шкафа под ней. Если в этот момент открыт шкаф, `frameView` снова поднимается наверх и подписи не рисуются поверх затемнения.
+Режимы нажатия (`SwitchActuation`):
 
-## Пантографы
+- `Cycle` — клик переводит на следующий кадр, после последнего возвращается к первому. `position()` — номер кадра с нуля.
+- `Lamp` — кнопка с подсветкой (`sb1_configuration_button`). Пока кнопка нажата, показывается кадр нажатия. Отпускание над кнопкой переключает лампу. `position()` — 0 или 1.
 
-Кадры: `res/fs/panto/left/01.png` … `10.png` и то же для `right`. Кадр 01 — опущен, кадр 10 — поднят. Размер кадра 212×166. `left` — пантограф 1, рычаг уходит вправо. `right` — пантограф 2, рычаг уходит влево.
+`framesOf(folder, sprite, frameCount)` собирает список кадров из `:/Wag9/fs/<folder>/`.
 
-`createPantographs` на каждое место клика кладёт `KeySwitchButton` того же размера. Список подъёма — кадры 01…10, список опускания — тот же список задом наперёд. Кнопка видна, но сама не нажимается: клик принимает прозрачная кнопка поверх неё и переключает состояние.
+## Шкафы
 
-```cpp
-view->setAnimationOnList(frames);
-view->setAnimationOffList(framesDown);
-view->setSilent(true);
-view->init();
-view->setClickable(false);
+`Wag9CubiclePanel(zone)` берёт фон `cubicle/<zone>_Background.png` и кладёт органы своего шкафа. Ряды одинаковых автоматов задаются функцией `addRow`: спрайт, общая `y`, список `x` и список имён.
 
-connect(clickArea, &QPushButton::clicked, view, [view]
-{
-    if (view->animationState() != KeySwitchButton::AnimationState::None)
-    {
-        return;
-    }
-    view->setState(view->state() == ControlButtonState::On
-        ? ControlButtonState::Off
-        : ControlButtonState::On);
-});
-```
+## Пневмопанели
 
-`init()` сразу показывает первый кадр списка подъёма, то есть опущенный пантограф. Пока идёт анимация, повторный клик игнорируется. Звук выключен.
-
-Четыре рисунка независимы. `pan_right_1` и `pan_left_1` используют одни и те же кадры «левого» пантографа, но у каждого свой `KeySwitchButton`. Клик по одному не двигает второй.
-
-На фоне пантографа быть не должно. Кадры прозрачные и рисуются поверх крыши. Если пантограф нарисован ещё и на `Background.png`, после подъёма он остаётся виден в прозрачных местах кадра.
-
-## Пневмопанель
-
-`Wag9PneumoPanel` — виджет 1000×1000. Фон `res/fs/pneumo/Background.png` — пустая панель. Краны — отдельные спрайты поверх неё, каждый в положении с кадра `Pneumo1_Frame.png`.
-
-`showPneumo` центрирует этот виджет и оставляет вокруг то же затемнение. Клик по затемнению закрывает панель, клик по самому виджету — нет.
-
-Кран — маленький `QLabel`. Нажатие сменяет картинку на следующую и по кругу возвращается к первой.
-
-```cpp
-void mousePressEvent(QMouseEvent* event) override
-{
-    m_index = (m_index + 1) % m_frames.size();
-    setPixmap(QPixmap(m_frames.at(m_index)));
-    event->accept();
-}
-```
-
-Одинаковые краны делят один набор кадров, но у каждого свой индекс. Клик двигает только тот кран, по которому попали.
+**CCB** (`Wag9PneumoPanel`) — фон `pneumo/ccb/Background.png`, 17 органов, манометр. Координаты в `place` — левый верхний угол первого кадра.
 
 | Орган | Спрайт | Кадров | Стартовый кадр |
 | --- | --- | --- | --- |
-| EC-COC, TC2-COC, TC1-COC | `SwitchBlack2` | 2 | 1 |
-| 21(SIFA)-COC | `SwitchRed1` | 2 | 1 |
-| FP-COC | `SwitchYellow1` | 2 | 1 |
-| SAND1-COC, SAND2-COC | `SwitchBlack3` | 2 | 1 |
-| UL-COC, CB-COC, PAN1.COC, PAN2.COC | `SwitchBlack2` | 2 | 2 |
+| EC-COC, TC2-COC, TC1-COC | `SwitchBlack2` | 2 | 0 |
+| 21(SIFA)-COC | `SwitchRed1` | 2 | 0 |
+| FP-COC | `SwitchYellow1` | 2 | 0 |
+| SAND1-COC, SAND2-COC | `SwitchBlack3` | 2 | 0 |
+| UL-COC, CB-COC | `SwitchBlack2` | 2 | 1 |
 | PANS COC | `SwitchKey` | 2 | 1 |
-| PAN-SEL-SW | `SwitchBlack1` | 3 | 1 |
-| PASS/GOODS | `SwitchBlack4` | 2 | 1 |
-| PER-COC | `SwitchRed1` | 2 | 1 |
-| DEAD ENGINE | `SwitchYellow2` | 2 | 2 |
-| G/P | `SwitchYellow3` | 2 | 1 |
+| PAN1.COC, PAN2.COC | `SwitchBlack2` | 2 | 0 |
+| PAN-SEL-SW | `SwitchBlack1` | 3 | 0 |
+| PASS/GOODS | `SwitchBlack4` | 2 | 0 |
+| PER-COC | `SwitchRed1` | 2 | 0 |
+| DEAD ENGINE | `SwitchYellow2` | 2 | 0 |
+| G/P | `SwitchYellow3` | 2 | 0 |
 
-Имена файлов не совпадают с цветом органа: `SwitchKey` — синий рычаг PANS, `SwitchYellow1` — серый FP. Соответствие снято наложением спрайта на кадр с исходным положением.
+Имена файлов не совпадают с цветом органа: `SwitchKey` — синий рычаг PANS, `SwitchYellow1` — серый FP.
 
-Стрелка манометра — `ArrowBlack1.png`, один кадр, клики сквозь неё проходят. Шесть ножевых рубильников в среднем ряду нарисованы на фоне и не переключаются. Положения органов в симулятор пока не отправляются.
+**E-70** (`Wag9PneumoE70Panel`) — рамка `BaseFrame.png` и прокручиваемая картинка `Frame.png`, уменьшенная до ширины области прокрутки. Координаты в `place` даны в пикселях исходной `Frame.png` и умножаются на `m_scale`. Для рычагов, которые вращаются не вокруг центра кадра, передаётся точка оси `hinge`.
+
+Лампы PROCESSOR FAULT, SYSTEM FAULT и PSU NORMAL — `QLabel` с именами `processor_fault`, `system_fault`, `psu_normal`. При старте PSU NORMAL горит зелёным, остальные погашены. Цвет меняет `setLed(name, LedState)`.
+
+**Манометр.** На обеих панелях стрелка — `Wag9Needle`. Шкала 0…10 кгс/см² на 270° по часовой (`kPantoGaugeMax`, `kPantoGaugeSweep` в `Wag9Needle.h`). Картинка стрелки в исходном виде указывает на ноль, ось — центр картинки. Значение задаёт `setPressure(value)` панели.
+
+## Тормозная система
+
+На локомотиве стоит либо CCB, либо E-70. Текущая система хранится в `m_brakeSystem` (`BrakeSystem::Ccb` по умолчанию). От неё зависят:
+
+- какая пневмопанель открывается по `link_PT`;
+- какой блок, `pneumo_ccb` или `pneumo_e70`, уходит в исходящем пакете;
+- фон окна.
+
+Систему переключают кнопки `pneumoCcb` и `pneumoE70`. `setBrakeSystem` ставит поле и отмечает нужную кнопку под `QSignalBlocker`, фон меняет `onPneumoModeToggled`. Если систему начнёт задавать симулятор, фон нужно будет менять и там.
+
+## Пантографы
+
+Кадры: `res/fs/panto/left/01.png` … `10.png` и то же для `right`. Кадр 01 — опущен, кадр 10 — поднят. `left` — пантограф 1, `right` — пантограф 2.
+
+Каждый пантограф нарисован дважды: на правом и на левом виде локомотива. На каждое место клика `addPantographView` кладёт `KeySwitchButton` с кадрами подъёма и теми же кадрами задом наперёд для опускания. Сама кнопка не нажимается, клик принимает прозрачная `pan_*` поверх неё.
+
+Клик по любому из двух видов вызывает `togglePantographPair`: оба вида одного пантографа поднимаются или опускаются вместе. Пока идёт анимация, повторный клик игнорируется.
+
+## Подсказки
+
+`hintsButton` показывает и прячет `QLabel` `hint_*` с подписями PT, SB1, HB1, SB2, HB2. У подписей стоит `WA_TransparentForMouseEvents`, поэтому клик по надписи проходит в зону под ней. Если открыт попап, он остаётся поверх подписей.
 
 ## Связь с симулятором
 
-`createServer` открывает `Wag9FsServer` на адресе из `Wag9.xml`. Таймер раз в 100 мс вызывает `reportStationState`. Сейчас эта функция пустая.
+`Wag9FsServer` — ZMQ-сокет `SERVER` на адресе из `Wag9.xml`. Клиентом первым подключается симулятор. Пока клиента нет, исходящие пакеты не отправляются.
 
-Входящий пакет сначала пробуют разобрать как `FaultStationInitMessage`. Если в нём есть хотя бы один номер вагона, это инициализация. Иначе пакет читается как `TrainSimToFaultStationMessage`, а из поля `to_fault_station_bytes` достаётся `proto::wag9::fs::FaultStationIncomingMessage`.
+**Входящие пакеты.** Сначала пакет разбирается как `TrainSimToFaultStationMessage`. Если в нём непустое поле `to_fault_station_bytes`, оттуда достаётся `FaultStationIncomingMessage`. Иначе пакет пробуют прочитать как `FaultStationInitMessage`. Порядок важен: поле 1 в обоих сообщениях строковое, и пакет с данными иначе разбирается как init.
 
-```cpp
-proto::FaultStationInitMessage initMsg;
-if (initMsg.ParseFromArray(zmqMsg.data(), zmqMsg.size())
-    && initMsg.vehicle_numbers_size() > 0)
+```protobuf
+message FaultStationIncomingMessage
 {
-    emit initMessageReceived(initMsg);
+    optional double ccb_manometer_pressure = 1;   // kgf/cm2
+    optional double e70_manometer_pressure = 2;
+    optional LedState e70_processor_fault = 3;
+    optional LedState e70_system_fault = 4;
+    optional LedState e70_psu_normal = 5;
 }
 ```
 
-Исходящее сообщение заворачивается так:
+Все поля `optional`: симулятор шлёт только то, что изменилось, а `handleIncomingPackageFromSim` трогает только пришедшие поля.
+
+**Исходящие пакеты.** Раз в 100 мс (`kReportIntervalMs`) `reportStationState` собирает `FaultStationOutgoingMessage`: подняты ли пантографы, блок активной пневмопанели и четыре шкафа. Функции `fill*` читают положение каждого органа по имени. Если орган не найден, в лог пишется `Missing switch <name>` и в пакет уходит 0.
 
 ```cpp
 proto::TrainSimFromFaultStationMessage wrapper;
@@ -256,25 +208,29 @@ wrapper.set_vehicle_number("WAG9");
 wrapper.set_from_fault_station_bytes(msg.SerializeAsString());
 ```
 
-Пакет `proto.wag9.fs` в C++ называется `proto::wag9::fs`, не `proto::Wag9::fs`. Оба сообщения WAG-9 пока без полей:
+Если от симулятора 10 секунд нет пакетов, сервер забывает `routingId` и шлёт `disconnected`.
 
-```protobuf
-syntax = "proto3";
-package proto.wag9.fs;
+Пакет `proto.wag9.fs` в C++ называется `proto::wag9::fs`. Значения enum в proto3 живут в области пакета, поэтому у них префикс типа: `LED_STATE_GREEN`, `SELECTOR_154_I_PLUS_II`.
 
-message FaultStationIncomingMessage
-{
-}
+## Тестеры
 
-message FaultStationOutgoingMessage
-{
-}
+Оба скрипта в `tools/` заменяют симулятор. Сначала нужно запустить `wag9_fs`. Скрипты говорят на ZMTP сами, без pyzmq: установленный pyzmq собран без сокетов `CLIENT`/`SERVER`.
+
+```bat
+python tools/fs_receive_from_server.py            :: window with every field of the outgoing packet
+python tools/fs_receive_from_server.py --check    :: check one startup packet and exit
+
+python tools/fs_send_to_server.py                 :: window with gauge sliders and lamp colors
+python tools/fs_send_to_server.py --ccb 5 --e70 3.5 --psu-normal green
+python tools/fs_send_to_server.py --sweep         :: swing both needles and cycle lamp colors
 ```
 
-Если от симулятора 10 секунд нет пакетов, сервер забывает `routingId` и шлёт `disconnected`. Пока клиент не подключился, `sendMessage` ничего не отправляет.
+`--check` сверяет стартовый пакет с таблицей `STARTUP` в `fs_receive_from_server.py`: поля, которые у исправного поезда не равны нулю. При смене стартового кадра органа таблицу нужно поправить.
 
-## Что ещё не подключено
+Оба тестера можно держать открытыми одновременно.
 
-`Wag9::PanelFactory::create` для любой зоны возвращает `nullptr`. `Wag9FsInfoPanel` — заготовка панели с ключом `(зона, номер, сторона)` и пустыми `writeStateToProto` / `processIncomingMessage`. Главное окно её не показывает: шкафы открываются картинкой или `Wag9PneumoPanel`.
+## Что ещё не решено
 
-`Wag9Panels.cpp` пустой. В библиотеку `neokon` по-прежнему входит `Class170VarsToVirtualControlViewer`: это общий файл, к окну WAG-9 он не относится.
+- Кто шлёт тормозную систему и номер локомотива. Сейчас система выбирается кнопкой, номер всегда `WAG9`. `FaultStationInitMessage` разбирается, но никто его не отправляет.
+- Состояние пантографов уходит из окна в симулятор. По документации, возможно, оно должно приходить из симулятора.
+- На E-70 органы `switch_1` и `switch_2` пока без настоящих имён.
