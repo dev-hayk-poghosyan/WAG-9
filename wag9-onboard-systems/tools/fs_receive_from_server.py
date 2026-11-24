@@ -67,8 +67,8 @@ MESSAGES = {
         4: "hb2_traction_motor_blower", 5: "hb2_scavenge_blower_tm", 6: "hb2_vent_oil_cooler",
         7: "hb2_m_c_room_blower", 8: "hb2_scavenge_blower_mr", 9: "hb2_circuit_breaker_for_cab_ac",
     },
+    # Поля 1 и 2 (пантографы) зарезервированы: пантографы теперь приходят из симулятора.
     "FaultStationOutgoingMessage": {
-        1: "pantograph_1_raised", 2: "pantograph_2_raised",
         3: ("pneumo_ccb", "PneumoCCB"), 4: ("pneumo_e70", "PneumoE70"),
         5: ("sb1", "Sb1"), 6: ("hb1", "Hb1"), 7: ("sb2", "Sb2"), 8: ("hb2", "Hb2"),
     },
@@ -166,9 +166,9 @@ def startup_errors(state):
         if actual[name] != want:
             errors.append(f"{block}.{name}: {actual[name]}, ждём {want}")
 
-    for name in ("pantograph_1_raised", "pantograph_2_raised"):
-        if state.get(name, 0) != 0:
-            errors.append(f"{name}: поднят")
+    unknown = sorted(name for name in state if name.startswith("#"))
+    if unknown:
+        errors.append(f"лишние поля в пакете: {', '.join(unknown)}")
 
     for group in ("sb1", "hb1", "sb2", "hb2"):
         for name, value in state.get(group, {}).items():
@@ -178,7 +178,6 @@ def startup_errors(state):
 
 
 GROUPS = (
-    ("Пантографы", None, None),
     ("Пневмо CCB", "pneumo_ccb", "PneumoCCB"),
     ("Пневмо E-70", "pneumo_e70", "PneumoE70"),
     ("SB1", "sb1", "Sb1"),
@@ -204,8 +203,6 @@ def field_names(schema_name):
 
 
 def describe(group, name, value):
-    if name in ("pantograph_1_raised", "pantograph_2_raised"):
-        return "поднят" if value else "опущен"
     if name == "sb1_failure_mode_operation":
         return SELECTOR_152.get(value, str(value))
     if name == "sb1_bogie_cut_out":
@@ -257,15 +254,9 @@ class ReceiverWindow:
     def _build_rows(self):
         for title, key, schema in GROUPS:
             parent = self._tree.insert("", tk.END, text=title, open=True)
-            if key is None:
-                names = ("pantograph_1_raised", "pantograph_2_raised")
-                group = ""
-            else:
-                names = field_names(schema)
-                group = key
-            for name in names:
+            for name in field_names(schema):
                 item = self._tree.insert(parent, tk.END, text=name, values=("—",))
-                self._rows[(group, name)] = item
+                self._rows[(key, name)] = item
 
     def _close(self):
         self._stop.set()
@@ -301,21 +292,13 @@ class ReceiverWindow:
         self._status.set(f"{vehicle or '—'}   {active}   {time.strftime('%H:%M:%S')}")
         current = {}
         for title, key, schema in GROUPS:
-            if key is None:
-                names = ("pantograph_1_raised", "pantograph_2_raised")
-                block = state
-                present = True
-                group = ""
-            else:
-                names = field_names(schema)
-                block = state.get(key)
-                present = block is not None
-                group = key
-            for name in names:
+            block = state.get(key)
+            present = block is not None
+            for name in field_names(schema):
                 value = 0 if block is None else block.get(name, 0)
-                path = (group, name)
+                path = (key, name)
                 current[path] = value
-                text = describe(group, name, value) if present else "нет в пакете"
+                text = describe(key, name, value) if present else "нет в пакете"
                 tags = ()
                 if not present:
                     tags = ("absent",)

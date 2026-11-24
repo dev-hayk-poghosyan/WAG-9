@@ -1,15 +1,17 @@
-"""Передатчик в станцию неисправностей WAG-9: манометры и лампы E-70.
+"""Передатчик в станцию неисправностей WAG-9: манометры, лампы E-70, пантографы.
 
 Заменяет симулятор: раз в 100 мс шлёт TrainSimToFaultStationMessage
 с FaultStationIncomingMessage внутри. Давление в кгс/см², шкала 0..10.
 Лампа принимает цвет LedState: off, red, yellow, green, white.
+Пантограф: up или down.
 
     python tools/fs_send_to_server.py
     python tools/fs_send_to_server.py --ccb 5 --e70 3.5 --psu-normal green
+    python tools/fs_send_to_server.py --pantograph-1 up
     python tools/fs_send_to_server.py --sweep
 
-Без аргументов открывается окно. --sweep качает обе стрелки и перебирает
-цвета ламп. Окно wag9_fs должно быть уже запущено. Приёмник
+Без аргументов открывается окно. --sweep качает обе стрелки, перебирает
+цвета ламп и поднимает-опускает пантографы. Окно wag9_fs должно быть уже запущено. Приёмник
 fs_receive_from_server.py можно держать открытым одновременно: станция
 отвечает первому клиенту, а пакеты принимает от всех.
 """
@@ -29,6 +31,7 @@ PERIOD_S = 0.1
 MAX_PRESSURE = 10.0
 SWEEP_PERIOD_S = 10.0
 COLOR_PERIOD_S = 1.0
+PANTOGRAPH_PERIOD_S = 3.0
 
 # Номер поля в FaultStationIncomingMessage, имя ключа, подпись.
 GAUGES = (
@@ -40,8 +43,13 @@ LEDS = (
     (4, "system_fault", "SYSTEM FAULT"),
     (5, "psu_normal", "PSU NORMAL"),
 )
+PANTOGRAPHS = (
+    (6, "pantograph_1", "Пантограф 1"),
+    (7, "pantograph_2", "Пантограф 2"),
+)
 # Индекс совпадает со значением LedState.
 COLORS = ("off", "red", "yellow", "green", "white")
+POSITIONS = ("down", "up")
 
 
 def encode_varint(value):
@@ -64,19 +72,20 @@ def encode_double(number, value):
     return encode_varint(number << 3 | 1) + struct.pack("<d", value)
 
 
-def encode_enum(number, value):
-    return encode_varint(number << 3) + encode_varint(value)
+def encode_varint_field(number, value):
+    """enum и bool в protobuf кодируются одинаково: varint."""
+    return encode_varint(number << 3) + encode_varint(int(value))
 
 
 def build_packet(state):
-    """state: ключ из GAUGES/LEDS -> значение. None или нет ключа — поле не шлём."""
+    """state: ключ из GAUGES/LEDS/PANTOGRAPHS -> значение. None или нет ключа — поле не шлём."""
     incoming = b""
     for number, key, _ in GAUGES:
         if state.get(key) is not None:
             incoming += encode_double(number, state[key])
-    for number, key, _ in LEDS:
+    for number, key, _ in LEDS + PANTOGRAPHS:
         if state.get(key) is not None:
-            incoming += encode_enum(number, state[key])
+            incoming += encode_varint_field(number, state[key])
     return encode_bytes(1, b"WAG9") + encode_bytes(2, incoming)
 
 
@@ -88,6 +97,12 @@ def sweep_pressure(started):
 def cycle_color(started, offset):
     step = int((time.monotonic() - started) / COLOR_PERIOD_S)
     return (step + offset) % len(COLORS)
+
+
+def cycle_pantograph(started, offset):
+    """Пантографы поднимаются и опускаются по очереди, каждые PANTOGRAPH_PERIOD_S."""
+    step = int((time.monotonic() - started) / PANTOGRAPH_PERIOD_S)
+    return (step + offset) % 2 == 1
 
 
 def run_sender(address, values, stop, on_status):
@@ -163,6 +178,20 @@ class SenderWindow:
             self._leds[key] = (enabled, color)
             row += 1
 
+        ttk.Separator(self._root).grid(row=row, column=0, columnspan=4, sticky=tk.EW, pady=4)
+        row += 1
+
+        self._pantographs = {}
+        for _, key, title in PANTOGRAPHS:
+            enabled = tk.BooleanVar(value=True)
+            raised = tk.BooleanVar(value=False)
+            ttk.Checkbutton(self._root, text=title, variable=enabled).grid(
+                row=row, column=0, padx=8, sticky=tk.W)
+            ttk.Checkbutton(self._root, text="поднят", variable=raised).grid(
+                row=row, column=1, padx=4, pady=2, sticky=tk.W)
+            self._pantographs[key] = (enabled, raised)
+            row += 1
+
         self._sweep = tk.BooleanVar(value=False)
         ttk.Checkbutton(self._root,
                         text=f"качать стрелки 0..{MAX_PRESSURE:g} за {SWEEP_PERIOD_S:g} с",
@@ -172,7 +201,13 @@ class SenderWindow:
         self._cycle = tk.BooleanVar(value=False)
         ttk.Checkbutton(self._root, text=f"менять цвет ламп раз в {COLOR_PERIOD_S:g} с",
                         variable=self._cycle).grid(row=row, column=0, columnspan=4, padx=8,
-                                                   pady=(0, 8), sticky=tk.W)
+                                                   sticky=tk.W)
+        row += 1
+        self._toggle = tk.BooleanVar(value=False)
+        ttk.Checkbutton(self._root,
+                        text=f"поднимать и опускать пантографы раз в {PANTOGRAPH_PERIOD_S:g} с",
+                        variable=self._toggle).grid(row=row, column=0, columnspan=4, padx=8,
+                                                    pady=(0, 8), sticky=tk.W)
 
         self._root.protocol("WM_DELETE_WINDOW", self._close)
         threading.Thread(target=self._send, name="fs-sender", daemon=True).start()
@@ -191,6 +226,11 @@ class SenderWindow:
             if self._cycle.get():
                 color.set(COLORS[cycle_color(self._started, offset)])
             state[key] = COLORS.index(color.get()) if enabled.get() else None
+
+        for offset, (key, (enabled, raised)) in enumerate(self._pantographs.items()):
+            if self._toggle.get():
+                raised.set(cycle_pantograph(self._started, offset))
+            state[key] = raised.get() if enabled.get() else None
 
         with self._lock:
             self._current = state
@@ -219,20 +259,25 @@ class SenderWindow:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Передатчик манометров и ламп в WAG-9 FS")
+    parser = argparse.ArgumentParser(description="Передатчик манометров, ламп и пантографов в WAG-9 FS")
     parser.add_argument("--addr", default=ADDRESS)
     parser.add_argument("--ccb", type=float, help="давление CCB, кгс/см²")
     parser.add_argument("--e70", type=float, help="давление E-70, кгс/см²")
     for _, key, title in LEDS:
         parser.add_argument("--" + key.replace("_", "-"), choices=COLORS, help=f"лампа {title}")
+    for _, key, title in PANTOGRAPHS:
+        parser.add_argument("--" + key.replace("_", "-"), choices=POSITIONS, help=title)
     parser.add_argument("--sweep", action="store_true",
-                        help="без окна: качать стрелки и перебирать цвета ламп")
+                        help="без окна: качать стрелки, перебирать цвета ламп, двигать пантографы")
     args = parser.parse_args()
 
     fixed = {"ccb": args.ccb, "e70": args.e70}
     for _, key, _ in LEDS:
         color = getattr(args, key)
         fixed[key] = None if color is None else COLORS.index(color)
+    for _, key, _ in PANTOGRAPHS:
+        position = getattr(args, key)
+        fixed[key] = None if position is None else position == "up"
 
     if all(value is None for value in fixed.values()) and not args.sweep:
         SenderWindow(args.addr).run()
@@ -247,6 +292,8 @@ def main():
         state = {"ccb": pressure, "e70": pressure}
         for offset, (_, key, _) in enumerate(LEDS):
             state[key] = cycle_color(started, offset)
+        for offset, (_, key, _) in enumerate(PANTOGRAPHS):
+            state[key] = cycle_pantograph(started, offset)
         return state
 
     stop = threading.Event()
