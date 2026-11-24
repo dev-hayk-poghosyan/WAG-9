@@ -1,8 +1,8 @@
 # WAG-9 Fault Station
 
-Окно машинного отделения электровоза WAG-9. Это программа `wag9_fs`: схема локомотива на весь экран, по которой поднимают пантографы, открывают шкафы SB1, HB1, SB2, HB2 и крутят краны пневмопанели CCB или E-70.
+Окно машинного отделения электровоза WAG-9. Это программа `wag9_fs`: схема локомотива на весь экран, по которой открывают шкафы SB1, HB1, SB2, HB2 и крутят краны пневмопанели CCB или E-70.
 
-Раз в 100 мс окно отправляет симулятору положения всех органов. От симулятора оно получает давление для манометров и цвета ламп E-70.
+Раз в 100 мс окно отправляет симулятору положения всех органов, которыми управляет обучаемый. Всё, что делает сам локомотив, приходит из симулятора: давление для манометров, цвета ламп E-70, положение пантографов. Окно показывает присланное как есть, без своей логики.
 
 Окно фиксировано 1920×1080, без рамки Windows. Картинки лежат в ресурсах Qt и адресуются как `:/Wag9/...`.
 
@@ -93,7 +93,7 @@ return app.exec();
 | Кнопки | Что делают |
 | --- | --- |
 | `link_PT`, `link_SB1`, `link_HB1`, `link_SB2`, `link_HB2` | Открывают попап зоны. Зона берётся из свойства `zone` |
-| `pan_right_1`, `pan_left_1`, `pan_right_2`, `pan_left_2` | Поднимают и опускают пантограф |
+| `pan_right_1`, `pan_left_1`, `pan_right_2`, `pan_left_2` | Только задают место рисунка пантографа, сами скрыты |
 | `pneumoCcb`, `pneumoE70` | Выбор тормозной системы, левый нижний угол |
 | `hintsButton` | Подписи зон, правый нижний угол |
 
@@ -155,7 +155,7 @@ place("ul_coc", "SwitchBlack2", {683, 136}, 2, 1);   // name, sprite, position, 
 
 **E-70** (`Wag9PneumoE70Panel`) — рамка `BaseFrame.png` и прокручиваемая картинка `Frame.png`, уменьшенная до ширины области прокрутки. Координаты в `place` даны в пикселях исходной `Frame.png` и умножаются на `m_scale`. Для рычагов, которые вращаются не вокруг центра кадра, передаётся точка оси `hinge`.
 
-Лампы PROCESSOR FAULT, SYSTEM FAULT и PSU NORMAL — `QLabel` с именами `processor_fault`, `system_fault`, `psu_normal`. При старте PSU NORMAL горит зелёным, остальные погашены. Цвет меняет `setLed(name, LedState)`.
+Лампы PROCESSOR FAULT, SYSTEM FAULT и PSU NORMAL — `QLabel` с именами `processor_fault`, `system_fault`, `psu_normal`. При старте все три погашены, цвет присылает симулятор. Цвет меняет `setLed(name, LedState)`.
 
 **Манометр.** На обеих панелях стрелка — `Wag9Needle`. Шкала 0…10 кгс/см² на 270° по часовой (`kPantoGaugeMax`, `kPantoGaugeSweep` в `Wag9Needle.h`). Картинка стрелки в исходном виде указывает на ноль, ось — центр картинки. Значение задаёт `setPressure(value)` панели.
 
@@ -167,15 +167,19 @@ place("ul_coc", "SwitchBlack2", {683, 136}, 2, 1);   // name, sprite, position, 
 - какой блок, `pneumo_ccb` или `pneumo_e70`, уходит в исходящем пакете;
 - фон окна.
 
-Систему переключают кнопки `pneumoCcb` и `pneumoE70`. `setBrakeSystem` ставит поле и отмечает нужную кнопку под `QSignalBlocker`, фон меняет `onPneumoModeToggled`. Если систему начнёт задавать симулятор, фон нужно будет менять и там.
+Систему переключают кнопки `pneumoCcb` и `pneumoE70`. `setBrakeSystem` ставит поле и отмечает нужную кнопку под `QSignalBlocker`, фон меняет `onPneumoModeToggled`.
+
+Систему выбирают до запуска симулятора. Пока симулятор подключён, обе кнопки заблокированы: на работающем локомотиве оборудование не меняется. Блокировку ставит `setBrakeSystemLocked` по сигналам `connected` и `disconnected` сервера. Симулятор узнаёт систему по тому, какой блок пришёл в пакете: `pneumo_ccb` или `pneumo_e70`.
 
 ## Пантографы
 
 Кадры: `res/fs/panto/left/01.png` … `10.png` и то же для `right`. Кадр 01 — опущен, кадр 10 — поднят. `left` — пантограф 1, `right` — пантограф 2.
 
-Каждый пантограф нарисован дважды: на правом и на левом виде локомотива. На каждое место клика `addPantographView` кладёт `KeySwitchButton` с кадрами подъёма и теми же кадрами задом наперёд для опускания. Сама кнопка не нажимается, клик принимает прозрачная `pan_*` поверх неё.
+Каждый пантограф нарисован дважды: на правом и на левом виде локомотива. На место каждой кнопки `pan_*` `addPantographView` кладёт `KeySwitchButton` с кадрами подъёма и теми же кадрами задом наперёд для опускания, а саму кнопку прячет. Кликать по пантографам нельзя: их поднимают из кабины.
 
-Клик по любому из двух видов вызывает `togglePantographPair`: оба вида одного пантографа поднимаются или опускаются вместе. Пока идёт анимация, повторный клик игнорируется.
+Положение присылает симулятор в полях `pantograph_1_raised` и `pantograph_2_raised`. `setPantographPair` двигает оба вида одного пантографа вместе.
+
+Пока идёт анимация (~0,6 с), пакеты для этого пантографа пропускаются. `KeySwitchButton` обновляет своё состояние только в конце анимации, поэтому `setState` посреди неё запустил бы анимацию заново, и при пакетах раз в 100 мс пантограф никогда бы не доехал. Если состояние сменилось во время анимации, его применит первый пакет после неё.
 
 ## Подсказки
 
@@ -195,12 +199,14 @@ message FaultStationIncomingMessage
     optional LedState e70_processor_fault = 3;
     optional LedState e70_system_fault = 4;
     optional LedState e70_psu_normal = 5;
+    optional bool pantograph_1_raised = 6;
+    optional bool pantograph_2_raised = 7;
 }
 ```
 
-Все поля `optional`: симулятор шлёт только то, что изменилось, а `handleIncomingPackageFromSim` трогает только пришедшие поля.
+Все поля `optional`: симулятор может слать только то, что изменилось, а `handleIncomingPackageFromSim` трогает только пришедшие поля.
 
-**Исходящие пакеты.** Раз в 100 мс (`kReportIntervalMs`) `reportStationState` собирает `FaultStationOutgoingMessage`: подняты ли пантографы, блок активной пневмопанели и четыре шкафа. Функции `fill*` читают положение каждого органа по имени. Если орган не найден, в лог пишется `Missing switch <name>` и в пакет уходит 0.
+**Исходящие пакеты.** Раз в 100 мс (`kReportIntervalMs`) `reportStationState` собирает `FaultStationOutgoingMessage`: блок активной пневмопанели и четыре шкафа. Поля 1 и 2 (пантографы) в нём зарезервированы: пантографы переехали во входящее сообщение. Функции `fill*` читают положение каждого органа по имени. Если орган не найден, в лог пишется `Missing switch <name>` и в пакет уходит 0.
 
 ```cpp
 proto::TrainSimFromFaultStationMessage wrapper;
@@ -220,9 +226,10 @@ wrapper.set_from_fault_station_bytes(msg.SerializeAsString());
 python tools/fs_receive_from_server.py            :: window with every field of the outgoing packet
 python tools/fs_receive_from_server.py --check    :: check one startup packet and exit
 
-python tools/fs_send_to_server.py                 :: window with gauge sliders and lamp colors
+python tools/fs_send_to_server.py                 :: window: gauges, lamp colors, pantographs
 python tools/fs_send_to_server.py --ccb 5 --e70 3.5 --psu-normal green
-python tools/fs_send_to_server.py --sweep         :: swing both needles and cycle lamp colors
+python tools/fs_send_to_server.py --pantograph-1 up
+python tools/fs_send_to_server.py --sweep         :: swing needles, cycle lamps, raise/lower pantographs
 ```
 
 `--check` сверяет стартовый пакет с таблицей `STARTUP` в `fs_receive_from_server.py`: поля, которые у исправного поезда не равны нулю. При смене стартового кадра органа таблицу нужно поправить.
@@ -232,5 +239,4 @@ python tools/fs_send_to_server.py --sweep         :: swing both needles and cycl
 ## Что ещё не решено
 
 - Кто шлёт тормозную систему и номер локомотива. Сейчас система выбирается кнопкой, номер всегда `WAG9`. `FaultStationInitMessage` разбирается, но никто его не отправляет.
-- Состояние пантографов уходит из окна в симулятор. По документации, возможно, оно должно приходить из симулятора.
 - На E-70 органы `switch_1` и `switch_2` пока без настоящих имён.
