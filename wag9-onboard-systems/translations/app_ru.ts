@@ -93,25 +93,6 @@
     </message>
 </context>
 <context>
-    <name>Wag9FsInfoPanel</name>
-    <message>
-        <source>&lt;p style=&quot;line-height:60%&quot;&gt;
-        Vehicle  &lt;b&gt;%1&lt;/b&gt; &lt;br/&gt;
-        Ref Num  &lt;b&gt;%2&lt;/b&gt; &lt;br/&gt;
-        Side     &lt;b&gt;%3&lt;/b&gt; &lt;br/&gt;
-        </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>25</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>--</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>XmlIO</name>
     <message>
         <source>Ошибка загрузки документа &quot;%1&quot;:
