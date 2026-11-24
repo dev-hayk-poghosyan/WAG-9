@@ -16,3 +16,4 @@ Wag9-log.txt
 .vscode/
 *.html
 __pycache__/
+unused/

@@ -13,8 +13,7 @@ set_property(
 set(
     ui_files
 
-    ../ui/Wag9FsInfoPanel.ui
-	../ui/Wag9Fs.ui
+    ../ui/Wag9Fs.ui
 )
 source_group("Sources" FILES ${ui_files})
 qt5_wrap_ui(ui_sources ${ui_files})
