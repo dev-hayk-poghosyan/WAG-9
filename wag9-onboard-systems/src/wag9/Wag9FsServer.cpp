@@ -127,7 +127,7 @@ Wag9FsServer::serverName()
 void
 Wag9FsServer::processIncomingMessage(zmq::message_t const& zmqMsg, uint32_t routingId)
 {
-    const bool isNewClient = (m_routingId == 0);
+    const bool isNewClient = (m_routingId != routingId);
     if (isNewClient)
     {
         m_routingId = routingId;
