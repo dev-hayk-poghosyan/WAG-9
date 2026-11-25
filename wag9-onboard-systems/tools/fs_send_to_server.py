@@ -2,16 +2,16 @@
 
 Заменяет симулятор: раз в 100 мс шлёт TrainSimToFaultStationMessage
 с FaultStationIncomingMessage внутри. Давление в кгс/см², шкала 0..10.
-Лампа принимает цвет LedState: off, red, yellow, green, white.
+Лампа: on или off, цвет у каждой свой и задан в окне станции.
 Пантограф: up или down.
 
     python tools/fs_send_to_server.py
-    python tools/fs_send_to_server.py --ccb 5 --e70 3.5 --psu-normal green
+    python tools/fs_send_to_server.py --ccb 5 --e70 3.5 --psu-normal on
     python tools/fs_send_to_server.py --pantograph-1 up
     python tools/fs_send_to_server.py --sweep
 
-Без аргументов открывается окно. --sweep качает обе стрелки, перебирает
-цвета ламп и поднимает-опускает пантографы. Окно wag9_fs должно быть уже запущено. Приёмник
+Без аргументов открывается окно. --sweep качает обе стрелки, зажигает
+лампы по очереди и поднимает-опускает пантографы. Окно wag9_fs должно быть уже запущено. Приёмник
 fs_receive_from_server.py можно держать открытым одновременно: станция
 отвечает первому клиенту, а пакеты принимает от всех.
 """
@@ -30,7 +30,7 @@ from fs_receive_from_server import ADDRESS, PeerTimeout, ZmtpClient
 PERIOD_S = 0.1
 MAX_PRESSURE = 10.0
 SWEEP_PERIOD_S = 10.0
-COLOR_PERIOD_S = 1.0
+LAMP_PERIOD_S = 1.0
 PANTOGRAPH_PERIOD_S = 3.0
 
 # Номер поля в FaultStationIncomingMessage, имя ключа, подпись.
@@ -47,8 +47,7 @@ PANTOGRAPHS = (
     (6, "pantograph_1", "Пантограф 1"),
     (7, "pantograph_2", "Пантограф 2"),
 )
-# Индекс совпадает со значением LedState.
-COLORS = ("off", "red", "yellow", "green", "white")
+LAMP_STATES = ("off", "on")
 POSITIONS = ("down", "up")
 
 
@@ -72,8 +71,7 @@ def encode_double(number, value):
     return encode_varint(number << 3 | 1) + struct.pack("<d", value)
 
 
-def encode_varint_field(number, value):
-    """enum и bool в protobuf кодируются одинаково: varint."""
+def encode_bool(number, value):
     return encode_varint(number << 3) + encode_varint(int(value))
 
 
@@ -85,7 +83,7 @@ def build_packet(state):
             incoming += encode_double(number, state[key])
     for number, key, _ in LEDS + PANTOGRAPHS:
         if state.get(key) is not None:
-            incoming += encode_varint_field(number, state[key])
+            incoming += encode_bool(number, state[key])
     return encode_bytes(1, b"WAG9") + encode_bytes(2, incoming)
 
 
@@ -94,9 +92,10 @@ def sweep_pressure(started):
     return MAX_PRESSURE / 2 * (1 - math.cos(phase))
 
 
-def cycle_color(started, offset):
-    step = int((time.monotonic() - started) / COLOR_PERIOD_S)
-    return (step + offset) % len(COLORS)
+def cycle_lamp(started, offset):
+    """Лампы зажигаются по очереди, по одной на LAMP_PERIOD_S."""
+    step = int((time.monotonic() - started) / LAMP_PERIOD_S)
+    return step % len(LEDS) == offset
 
 
 def cycle_pantograph(started, offset):
@@ -170,12 +169,12 @@ class SenderWindow:
         self._leds = {}
         for _, key, title in LEDS:
             enabled = tk.BooleanVar(value=True)
-            color = tk.StringVar(value="green" if key == "psu_normal" else "off")
+            lit = tk.BooleanVar(value=False)
             ttk.Checkbutton(self._root, text=title, variable=enabled).grid(
                 row=row, column=0, padx=8, sticky=tk.W)
-            ttk.Combobox(self._root, textvariable=color, values=COLORS, state="readonly",
-                         width=10).grid(row=row, column=1, padx=4, pady=2, sticky=tk.W)
-            self._leds[key] = (enabled, color)
+            ttk.Checkbutton(self._root, text="горит", variable=lit).grid(
+                row=row, column=1, padx=4, pady=2, sticky=tk.W)
+            self._leds[key] = (enabled, lit)
             row += 1
 
         ttk.Separator(self._root).grid(row=row, column=0, columnspan=4, sticky=tk.EW, pady=4)
@@ -199,7 +198,7 @@ class SenderWindow:
                                                    pady=(6, 0), sticky=tk.W)
         row += 1
         self._cycle = tk.BooleanVar(value=False)
-        ttk.Checkbutton(self._root, text=f"менять цвет ламп раз в {COLOR_PERIOD_S:g} с",
+        ttk.Checkbutton(self._root, text=f"зажигать лампы по очереди раз в {LAMP_PERIOD_S:g} с",
                         variable=self._cycle).grid(row=row, column=0, columnspan=4, padx=8,
                                                    sticky=tk.W)
         row += 1
@@ -222,10 +221,10 @@ class SenderWindow:
                 text.set(f"{pressure:.1f}")
             state[key] = value.get() if enabled.get() else None
 
-        for offset, (key, (enabled, color)) in enumerate(self._leds.items()):
+        for offset, (key, (enabled, lit)) in enumerate(self._leds.items()):
             if self._cycle.get():
-                color.set(COLORS[cycle_color(self._started, offset)])
-            state[key] = COLORS.index(color.get()) if enabled.get() else None
+                lit.set(cycle_lamp(self._started, offset))
+            state[key] = lit.get() if enabled.get() else None
 
         for offset, (key, (enabled, raised)) in enumerate(self._pantographs.items()):
             if self._toggle.get():
@@ -264,17 +263,17 @@ def main():
     parser.add_argument("--ccb", type=float, help="давление CCB, кгс/см²")
     parser.add_argument("--e70", type=float, help="давление E-70, кгс/см²")
     for _, key, title in LEDS:
-        parser.add_argument("--" + key.replace("_", "-"), choices=COLORS, help=f"лампа {title}")
+        parser.add_argument("--" + key.replace("_", "-"), choices=LAMP_STATES, help=f"лампа {title}")
     for _, key, title in PANTOGRAPHS:
         parser.add_argument("--" + key.replace("_", "-"), choices=POSITIONS, help=title)
     parser.add_argument("--sweep", action="store_true",
-                        help="без окна: качать стрелки, перебирать цвета ламп, двигать пантографы")
+                        help="без окна: качать стрелки, зажигать лампы по очереди, двигать пантографы")
     args = parser.parse_args()
 
     fixed = {"ccb": args.ccb, "e70": args.e70}
     for _, key, _ in LEDS:
-        color = getattr(args, key)
-        fixed[key] = None if color is None else COLORS.index(color)
+        lamp = getattr(args, key)
+        fixed[key] = None if lamp is None else lamp == "on"
     for _, key, _ in PANTOGRAPHS:
         position = getattr(args, key)
         fixed[key] = None if position is None else position == "up"
@@ -291,7 +290,7 @@ def main():
         pressure = sweep_pressure(started)
         state = {"ccb": pressure, "e70": pressure}
         for offset, (_, key, _) in enumerate(LEDS):
-            state[key] = cycle_color(started, offset)
+            state[key] = cycle_lamp(started, offset)
         for offset, (_, key, _) in enumerate(PANTOGRAPHS):
             state[key] = cycle_pantograph(started, offset)
         return state

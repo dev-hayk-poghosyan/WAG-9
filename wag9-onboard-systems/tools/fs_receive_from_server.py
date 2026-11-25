@@ -33,7 +33,7 @@ MESSAGES = {
         15: "per_coc", 16: "dead_engine", 17: "gp",
     },
     "PneumoE70": {
-        4: "pan_sel_sw", 5: "switch_1", 6: "switch_2", 7: "pan1", 8: "pan2", 9: "vcb", 10: "pantog",
+        4: "pan_sel_sw", 5: "emergency_cock", 6: "brake_pipe_cock", 7: "pan1", 8: "pan2", 9: "vcb", 10: "pantog",
         11: "brake_feed_pipe", 12: "dead_engine", 13: "sand_1", 14: "sand_2",
     },
     "Sb1": {
