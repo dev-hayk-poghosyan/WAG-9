@@ -76,8 +76,9 @@ MESSAGES = {
 
 # Поля, которые у нормального поезда не равны нулю.
 STARTUP = {
-    "PneumoCCB": {"ul_coc": 1, "cb_coc": 1, "pans_coc": 1},
-    "PneumoE70": {"dead_engine": 1},
+    "PneumoCCB": {"pans_coc": 1, "pan1_coc": 1, "pan2_coc": 1},
+    "PneumoE70": {"emergency_cock": 1, "brake_pipe_cock": 1, "pan1": 1, "pan2": 1, "vcb": 1,
+                  "pantog": 1, "brake_feed_pipe": 1, "sand_1": 1, "sand_2": 1},
 }
 
 

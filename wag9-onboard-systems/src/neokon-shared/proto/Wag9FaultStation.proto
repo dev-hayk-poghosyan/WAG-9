@@ -95,6 +95,9 @@ message Hb2 {
     bool hb2_circuit_breaker_for_cab_ac = 9;
 }
 
+// Pneumatic panel cocks and keys: true = ON / open.
+// Exceptions until the customer confirms them: PneumoCCB.pass_goods and PneumoCCB.gp
+// (true = the second handle position). pan_sel_sw is the selector position index.
 message PneumoCCB {
     bool ec_coc = 1;
     bool tc2_coc = 2;

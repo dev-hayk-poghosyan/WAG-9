@@ -46,6 +46,7 @@ int positionOf(QWidget* panel, const char* name)
         qWarning() << "Missing switch" << name;
         return 0;
     }
+
     return sw->position();
 }
 
@@ -54,40 +55,51 @@ bool flagOf(QWidget* panel, const char* name)
     return positionOf(panel, name) != 0;
 }
 
-void fillPneumoCcb(proto::wag9::fs::PneumoCCB* ccb, QWidget* panel)
+// true when the control stands on the given frame (counted from 0).
+bool isOnFrame(QWidget* panel, const char* name, int frame)
 {
-    ccb->set_ec_coc(flagOf(panel, "ec_coc"));
-    ccb->set_tc2_coc(flagOf(panel, "tc2_coc"));
-    ccb->set_tc1_coc(flagOf(panel, "tc1_coc"));
-    ccb->set_sifa_coc(flagOf(panel, "sifa_coc"));
-    ccb->set_fp_coc(flagOf(panel, "fp_coc"));
-    ccb->set_sand1_coc(flagOf(panel, "sand1_coc"));
-    ccb->set_sand2_coc(flagOf(panel, "sand2_coc"));
-    ccb->set_ul_coc(flagOf(panel, "ul_coc"));
-    ccb->set_cb_coc(flagOf(panel, "cb_coc"));
-    ccb->set_pans_coc(flagOf(panel, "pans_coc"));
-    ccb->set_pan1_coc(flagOf(panel, "pan1_coc"));
-    ccb->set_pan2_coc(flagOf(panel, "pan2_coc"));
-    ccb->set_pan_sel_sw(positionOf(panel, "pan_sel_sw"));
-    ccb->set_pass_goods(flagOf(panel, "pass_goods"));
-    ccb->set_per_coc(flagOf(panel, "per_coc"));
-    ccb->set_dead_engine(flagOf(panel, "dead_engine"));
-    ccb->set_gp(flagOf(panel, "gp"));
+    return positionOf(panel, name) == frame;
 }
 
+// true = ON / open. The ON frame comes from the arrow on each cock plate (↓ON, ↑ON, ←ON):
+// the handle points along the arrow when ON. Confirmed by the customer for PAN1, PAN2 and PANS.
+void fillPneumoCcb(proto::wag9::fs::PneumoCCB* ccb, QWidget* panel)
+{
+    ccb->set_ec_coc(isOnFrame(panel, "ec_coc", 1));             // ↓ON, frame 2 vertical
+    ccb->set_tc2_coc(isOnFrame(panel, "tc2_coc", 1));           // ↓ON
+    ccb->set_tc1_coc(isOnFrame(panel, "tc1_coc", 1));           // ↓ON
+    ccb->set_sifa_coc(isOnFrame(panel, "sifa_coc", 1));         // ↑ON
+    ccb->set_fp_coc(isOnFrame(panel, "fp_coc", 1));             // ←ON, frame 2 horizontal
+    ccb->set_sand1_coc(isOnFrame(panel, "sand1_coc", 1));       // ↑ON
+    ccb->set_sand2_coc(isOnFrame(panel, "sand2_coc", 1));       // ↑ON
+    ccb->set_ul_coc(isOnFrame(panel, "ul_coc", 0));             // ←ON, frame 1 horizontal
+    ccb->set_cb_coc(isOnFrame(panel, "cb_coc", 0));             // ←ON
+    ccb->set_pans_coc(isOnFrame(panel, "pans_coc", 1));         // ↓ON, IG-38 key vertical
+    ccb->set_pan1_coc(isOnFrame(panel, "pan1_coc", 0));         // ←ON
+    ccb->set_pan2_coc(isOnFrame(panel, "pan2_coc", 0));         // ←ON
+    ccb->set_pan_sel_sw(positionOf(panel, "pan_sel_sw"));
+    ccb->set_pass_goods(flagOf(panel, "pass_goods"));           // TODO: meaning to be confirmed by the customer
+    ccb->set_per_coc(isOnFrame(panel, "per_coc", 1));           // ↑ON
+    ccb->set_dead_engine(isOnFrame(panel, "dead_engine", 1));   // frame 2 points to OPEN
+    ccb->set_gp(flagOf(panel, "gp"));                           // TODO: meaning to be confirmed by the customer
+}
+
+// true = ON / open. E-70 cocks: horizontal = open, vertical = closed, as on the OPEN/CLOSED
+// plates (customer for 74, 70, 47; photos of a real E-70 for PAN2; same cock type for the rest).
+// Cock 136 is the exception: horizontal = closed, turned down = open.
 void fillPneumoE70(proto::wag9::fs::PneumoE70* e70, QWidget* panel)
 {
     e70->set_pan_sel_sw(positionOf(panel, "pan_sel_sw"));
-    e70->set_emergency_cock(flagOf(panel, "emergency_cock"));
-    e70->set_brake_pipe_cock(flagOf(panel, "brake_pipe_cock"));
-    e70->set_pan1(flagOf(panel, "pan1"));
-    e70->set_pan2(flagOf(panel, "pan2"));
-    e70->set_vcb(flagOf(panel, "vcb"));
-    e70->set_pantog(flagOf(panel, "pantog"));
-    e70->set_brake_feed_pipe(flagOf(panel, "brake_feed_pipe"));
-    e70->set_dead_engine(flagOf(panel, "dead_engine"));
-    e70->set_sand_1(flagOf(panel, "sand_1"));
-    e70->set_sand_2(flagOf(panel, "sand_2"));
+    e70->set_emergency_cock(isOnFrame(panel, "emergency_cock", 0));     // 74
+    e70->set_brake_pipe_cock(isOnFrame(panel, "brake_pipe_cock", 0));   // 70
+    e70->set_pan1(isOnFrame(panel, "pan1", 0));
+    e70->set_pan2(isOnFrame(panel, "pan2", 0));
+    e70->set_vcb(isOnFrame(panel, "vcb", 0));
+    e70->set_pantog(isOnFrame(panel, "pantog", 0));                     // IG-38 key, horizontal on E-70 (TSD F0103P1)
+    e70->set_brake_feed_pipe(isOnFrame(panel, "brake_feed_pipe", 1));   // 136: turned down = open
+    e70->set_dead_engine(isOnFrame(panel, "dead_engine", 0));           // 47
+    e70->set_sand_1(isOnFrame(panel, "sand_1", 0));
+    e70->set_sand_2(isOnFrame(panel, "sand_2", 0));
 }
 
 void fillSb1(proto::wag9::fs::Sb1* sb1, QWidget* panel)

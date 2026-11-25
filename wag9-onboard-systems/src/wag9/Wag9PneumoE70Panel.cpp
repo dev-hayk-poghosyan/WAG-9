@@ -66,7 +66,7 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
     place("pantog", QStringLiteral("SwitchKey"), {801, 1090});
     place("dead_engine", QStringLiteral("SwitchRed2"), {372, 1658}, 2, 1);
 
-    place("brake_feed_pipe", QStringLiteral("SwitchBlack12"), {881, 1548}, 2, 0, QPoint(124, 24));
+    place("brake_feed_pipe", QStringLiteral("SwitchBlack12"), {881, 1548}, 2, 1, QPoint(124, 24));
     place("sand_1", QStringLiteral("SwitchRed2"), {125, 1860});
     place("sand_2", QStringLiteral("SwitchRed2"), {280, 1860});
 
