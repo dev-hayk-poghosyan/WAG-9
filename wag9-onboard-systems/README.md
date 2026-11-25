@@ -80,6 +80,7 @@ return app.exec();
     <Geometry left="0" top="0"/>
     <Debug>False</Debug>
     <TopMost>False</TopMost>
+    <BrakeSystem>CCB</BrakeSystem>
     <Network>
         <BindAddr>tcp://127.0.0.1:12282</BindAddr>
     </Network>
@@ -94,7 +95,7 @@ return app.exec();
 | --- | --- |
 | `link_PT`, `link_SB1`, `link_HB1`, `link_SB2`, `link_HB2` | Открывают попап зоны. Зона берётся из свойства `zone` |
 | `pan_right_1`, `pan_left_1`, `pan_right_2`, `pan_left_2` | Только задают место рисунка пантографа, сами скрыты |
-| `pneumoCcb`, `pneumoE70` | Выбор тормозной системы, левый нижний угол |
+| `pneumoCcb`, `pneumoE70` | Выбор тормозной системы, левый нижний угол. Заблокированы, пока подключён TrainSim |
 | `hintsButton` | Подписи зон, правый нижний угол |
 
 ## Попапы
@@ -155,21 +156,31 @@ place("ul_coc", "SwitchBlack2", {683, 136}, 2, 1);   // name, sprite, position, 
 
 **E-70** (`Wag9PneumoE70Panel`) — рамка `BaseFrame.png` и прокручиваемая картинка `Frame.png`, уменьшенная до ширины области прокрутки. Координаты в `place` даны в пикселях исходной `Frame.png` и умножаются на `m_scale`. Для рычагов, которые вращаются не вокруг центра кадра, передаётся точка оси `hinge`.
 
-Лампы PROCESSOR FAULT, SYSTEM FAULT и PSU NORMAL — `QLabel` с именами `processor_fault`, `system_fault`, `psu_normal`. При старте все три погашены, цвет присылает симулятор. Цвет меняет `setLed(name, LedState)`.
+Два чёрных рычага в середине панели — краны 74 (`emergency_cock`, слева) и 70 (`brake_pipe_cock`, справа). У них, как и у 47 (`dead_engine`) и 136 (`brake_feed_pipe`), рукоятка горизонтально — открыт, вертикально — закрыт. При старте краны стоят как у исправного ведущего локомотива по табличке «ISOLATING COCK POSITION»: 74, 70 и 136 открыты, 47 закрыт.
+
+Лампы PROCESSOR FAULT, SYSTEM FAULT и PSU NORMAL — `QLabel` с именами `processor_fault`, `system_fault`, `psu_normal`. Цвет у каждой лампы свой и не меняется: PROCESSOR FAULT и SYSTEM FAULT красные, PSU NORMAL зелёная. Симулятор присылает только «горит / не горит», лампу переключает `setLed(name, on)`. При старте все три погашены. На локомотиве PSU NORMAL загорается после ключа BL, а аварийные лампы — при неисправности блока; решает это симулятор.
 
 **Манометр.** На обеих панелях стрелка — `Wag9Needle`. Шкала 0…10 кгс/см² на 270° по часовой (`kPantoGaugeMax`, `kPantoGaugeSweep` в `Wag9Needle.h`). Картинка стрелки в исходном виде указывает на ноль, ось — центр картинки. Значение задаёт `setPressure(value)` панели.
 
 ## Тормозная система
 
-На локомотиве стоит либо CCB, либо E-70. Текущая система хранится в `m_brakeSystem` (`BrakeSystem::Ccb` по умолчанию). От неё зависят:
+На установке стоит одна тормозная система, CCB или E-70: её определяет кран машиниста, который поставляет заказчик. Обе в одном симуляторе не бывают. Систему при старте ФС задаёт конфиг:
+
+```xml
+<FS>
+    <BrakeSystem>CCB</BrakeSystem>   <!-- CCB or E70 -->
+</FS>
+```
+
+`Wag9Configuration::brakeSystem()` читает это значение. Без узла или при неизвестном значении берётся CCB, а в лог пишется предупреждение. `Wag9Fs::init` вызывает `setBrakeSystem`, а тот ставит `m_brakeSystem`, отмечает нужную кнопку под `QSignalBlocker` и меняет фон. От системы зависят:
 
 - какая пневмопанель открывается по `link_PT`;
-- какой блок, `pneumo_ccb` или `pneumo_e70`, уходит в исходящем пакете;
+- какой блок, `pneumo_ccb` или `pneumo_e70`, уходит в исходящем пакете (по нему симулятор и узнаёт систему);
 - фон окна.
 
-Систему переключают кнопки `pneumoCcb` и `pneumoE70`. `setBrakeSystem` ставит поле и отмечает нужную кнопку под `QSignalBlocker`, фон меняет `onPneumoModeToggled`.
+Пока TrainSim не подключён, систему можно сменить кнопками `pneumoCcb` и `pneumoE70`. Выбор действует до перезапуска ФС, в конфиг он не сохраняется. Когда TrainSim подключается, `setBrakeSystemLocked` блокирует кнопки: на работающем локомотиве оборудование не меняется. Блокировку ставят и снимают сигналы сервера `connected` и `disconnected`, а `disconnected` приходит через 10 секунд тишины.
 
-Систему выбирают до запуска симулятора. Пока симулятор подключён, обе кнопки заблокированы: на работающем локомотиве оборудование не меняется. Блокировку ставит `setBrakeSystemLocked` по сигналам `connected` и `disconnected` сервера. Симулятор узнаёт систему по тому, какой блок пришёл в пакете: `pneumo_ccb` или `pneumo_e70`.
+Сервер не отличает TrainSim от тестера, поэтому при `<Debug>True</Debug>` кнопки не блокируются: иначе любой открытый тестер запирал бы их.
 
 ## Пантографы
 
@@ -196,9 +207,9 @@ message FaultStationIncomingMessage
 {
     optional double ccb_manometer_pressure = 1;   // kgf/cm2
     optional double e70_manometer_pressure = 2;
-    optional LedState e70_processor_fault = 3;
-    optional LedState e70_system_fault = 4;
-    optional LedState e70_psu_normal = 5;
+    optional bool e70_processor_fault = 3;
+    optional bool e70_system_fault = 4;
+    optional bool e70_psu_normal = 5;
     optional bool pantograph_1_raised = 6;
     optional bool pantograph_2_raised = 7;
 }
@@ -216,7 +227,7 @@ wrapper.set_from_fault_station_bytes(msg.SerializeAsString());
 
 Если от симулятора 10 секунд нет пакетов, сервер забывает `routingId` и шлёт `disconnected`.
 
-Пакет `proto.wag9.fs` в C++ называется `proto::wag9::fs`. Значения enum в proto3 живут в области пакета, поэтому у них префикс типа: `LED_STATE_GREEN`, `SELECTOR_154_I_PLUS_II`.
+Пакет `proto.wag9.fs` в C++ называется `proto::wag9::fs`. Значения enum в proto3 живут в области пакета, поэтому у них префикс типа: `SELECTOR_152_O`, `SELECTOR_154_I_PLUS_II`.
 
 ## Тестеры
 
@@ -226,10 +237,10 @@ wrapper.set_from_fault_station_bytes(msg.SerializeAsString());
 python tools/fs_receive_from_server.py            :: window with every field of the outgoing packet
 python tools/fs_receive_from_server.py --check    :: check one startup packet and exit
 
-python tools/fs_send_to_server.py                 :: window: gauges, lamp colors, pantographs
-python tools/fs_send_to_server.py --ccb 5 --e70 3.5 --psu-normal green
+python tools/fs_send_to_server.py                 :: window: gauges, lamps, pantographs
+python tools/fs_send_to_server.py --ccb 5 --e70 3.5 --psu-normal on
 python tools/fs_send_to_server.py --pantograph-1 up
-python tools/fs_send_to_server.py --sweep         :: swing needles, cycle lamps, raise/lower pantographs
+python tools/fs_send_to_server.py --sweep         :: swing needles, blink lamps, raise/lower pantographs
 ```
 
 `--check` сверяет стартовый пакет с таблицей `STARTUP` в `fs_receive_from_server.py`: поля, которые у исправного поезда не равны нулю. При смене стартового кадра органа таблицу нужно поправить.
@@ -238,5 +249,4 @@ python tools/fs_send_to_server.py --sweep         :: swing needles, cycle lamps,
 
 ## Что ещё не решено
 
-- Кто шлёт тормозную систему и номер локомотива. Сейчас система выбирается кнопкой, номер всегда `WAG9`. `FaultStationInitMessage` разбирается, но никто его не отправляет.
-- На E-70 органы `switch_1` и `switch_2` пока без настоящих имён.
+- Номер локомотива: сейчас всегда `WAG9`. `FaultStationInitMessage` разбирается, но никто его не отправляет.
