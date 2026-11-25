@@ -23,14 +23,6 @@ enum Selector237 {
     SELECTOR_237_O = 1;
 }
 
-enum LedState {
-    LED_STATE_OFF = 0;
-    LED_STATE_RED = 1;
-    LED_STATE_YELLOW = 2;
-    LED_STATE_GREEN = 3;
-    LED_STATE_WHITE = 4;
-}
-
 message Sb1 {
     Selector152 sb1_failure_mode_operation = 1;
     Selector154 sb1_bogie_cut_out = 2;
@@ -127,8 +119,8 @@ message PneumoE70 {
     reserved 1, 2, 3;
     reserved "processor_fault", "system_fault", "psu_normal";
     int32 pan_sel_sw = 4;
-    bool switch_1 = 5;
-    bool switch_2 = 6;
+    bool emergency_cock = 5;
+    bool brake_pipe_cock = 6;
     bool pan1 = 7;
     bool pan2 = 8;
     bool vcb = 9;
@@ -154,9 +146,9 @@ message FaultStationIncomingMessage
 {
     optional double ccb_manometer_pressure = 1;
     optional double e70_manometer_pressure = 2;
-    optional LedState e70_processor_fault = 3;
-    optional LedState e70_system_fault = 4;
-    optional LedState e70_psu_normal = 5;
+    optional bool e70_processor_fault = 3;
+    optional bool e70_system_fault = 4;
+    optional bool e70_psu_normal = 5;
     optional bool pantograph_1_raised = 6;
     optional bool pantograph_2_raised = 7;
 }
