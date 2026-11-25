@@ -52,6 +52,14 @@
  color: white;
  background: #1c8fd4;
 }
+#pneumoCcb:disabled, #pneumoE70:disabled {
+ color: #9bbfd6;
+ border-color: #9bbfd6;
+}
+#pneumoCcb:checked:disabled, #pneumoE70:checked:disabled {
+ color: white;
+ background: #9bbfd6;
+}
 #frameView {
  background-color: rgba(0, 0, 0, 140);
  border-image: none;

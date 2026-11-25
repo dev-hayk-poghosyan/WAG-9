@@ -345,6 +345,10 @@ void Wag9Fs::setBrakeSystemLocked(bool locked)
 
     ui.pneumoCcb->setEnabled(!locked);
     ui.pneumoE70->setEnabled(!locked);
+
+    const Qt::CursorShape cursor = locked ? Qt::ArrowCursor : Qt::PointingHandCursor;
+    ui.pneumoCcb->setCursor(cursor);
+    ui.pneumoE70->setCursor(cursor);
 }
 
 QWidget *Wag9Fs::getPneumoPanel() const
