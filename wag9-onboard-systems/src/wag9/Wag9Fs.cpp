@@ -78,8 +78,8 @@ void fillPneumoCcb(proto::wag9::fs::PneumoCCB* ccb, QWidget* panel)
 void fillPneumoE70(proto::wag9::fs::PneumoE70* e70, QWidget* panel)
 {
     e70->set_pan_sel_sw(positionOf(panel, "pan_sel_sw"));
-    e70->set_switch_1(flagOf(panel, "switch_1"));
-    e70->set_switch_2(flagOf(panel, "switch_2"));
+    e70->set_emergency_cock(flagOf(panel, "emergency_cock"));
+    e70->set_brake_pipe_cock(flagOf(panel, "brake_pipe_cock"));
     e70->set_pan1(flagOf(panel, "pan1"));
     e70->set_pan2(flagOf(panel, "pan2"));
     e70->set_vcb(flagOf(panel, "vcb"));
@@ -218,6 +218,8 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
     ui.pneumoE70->raise();
     ui.hintsButton->raise();
 
+    setBrakeSystem(m_staticConfig->brakeSystem());
+
     createServer();
 }
 
@@ -307,7 +309,6 @@ void Wag9Fs::onPneumoModeToggled(bool checked)
     if (checked)
     {
         setBrakeSystem(ui.pneumoE70->isChecked() ? BrakeSystem::E70 : BrakeSystem::Ccb);
-        ui.background->setPixmap(m_brakeSystem == BrakeSystem::E70 ? kBackgroundE70 : kBackgroundCcb);
     }
 }
 
@@ -328,10 +329,20 @@ void Wag9Fs::setBrakeSystem(BrakeSystem system)
     {
         ui.pneumoCcb->setChecked(true);
     }
+
+    ui.background->setPixmap(e70 ? kBackgroundE70 : kBackgroundCcb);
 }
 
+// The brake system comes from Wag9.xml and may be changed until TrainSim connects.
+// A running loco can't change its equipment, so the buttons are locked while it is connected.
+// In debug mode they stay enabled: the testers connect like TrainSim and would lock them.
 void Wag9Fs::setBrakeSystemLocked(bool locked)
 {
+    if (locked && m_staticConfig->fsSettings().debug)
+    {
+        return;
+    }
+
     ui.pneumoCcb->setEnabled(!locked);
     ui.pneumoE70->setEnabled(!locked);
 }

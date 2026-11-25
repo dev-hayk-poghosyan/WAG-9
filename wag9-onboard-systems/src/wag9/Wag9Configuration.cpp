@@ -19,6 +19,20 @@ Wag9Configuration::Wag9Configuration(pugi::xml_node rootNode)
     m_remoteAddress = panelsNode.child("Network").child("ConnectAddr").text().as_string();
 
     m_fsSettings = readWindowSettings(rootNode.child("FS"));
+
+    const QString brakeSystem = QString::fromUtf8(
+        rootNode.child("FS").child("BrakeSystem").text().as_string("CCB")
+    ).trimmed().toUpper();
+
+    if (brakeSystem == QLatin1String("E70"))
+    {
+        m_brakeSystem = BrakeSystem::E70;
+    }
+
+    else if (brakeSystem != QLatin1String("CCB"))
+    {
+        qWarning() << "Unknown BrakeSystem" << brakeSystem << "in config, using CCB";
+    }
 }
 
 const Wag9Configuration::WindowSettings&
@@ -43,6 +57,12 @@ const Wag9Configuration::WindowSettings&
 Wag9Configuration::fsSettings() const
 {
     return m_fsSettings;
+}
+
+BrakeSystem
+Wag9Configuration::brakeSystem() const
+{
+    return m_brakeSystem;
 }
 
 const Wag9Configuration::ControllerSettings&

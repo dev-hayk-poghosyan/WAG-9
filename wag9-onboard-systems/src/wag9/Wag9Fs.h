@@ -20,12 +20,6 @@ class QPushButton;
 class Wag9PneumoPanel;
 class Wag9PneumoE70Panel;
 
-enum class BrakeSystem
-{
-    Ccb,
-    E70
-};
-
 class Wag9Fs : public QFrame
 {
     Q_OBJECT

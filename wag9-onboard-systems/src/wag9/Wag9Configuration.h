@@ -16,6 +16,12 @@
 #include <memory>
 #include <optional>
 
+enum class BrakeSystem
+{
+    Ccb,
+    E70
+};
+
 class Wag9Configuration
 {
 public:
@@ -57,6 +63,7 @@ public:
     const WindowSettings& speedmeterSettings() const;
     const WindowSettings& mcbSettings() const;
     const WindowSettings& fsSettings() const;
+    BrakeSystem brakeSystem() const;
     const ControllerSettings& controllerSettings() const;
 
     const WindowSettings& pultScreen1Settings() const;
@@ -77,6 +84,8 @@ private:
     WindowSettings m_pultScreen1;
     WindowSettings m_pultScreen2;
     WindowSettings m_pultScreen3;
+
+    BrakeSystem m_brakeSystem = BrakeSystem::Ccb;
 
     std::string m_remoteAddress;
 };

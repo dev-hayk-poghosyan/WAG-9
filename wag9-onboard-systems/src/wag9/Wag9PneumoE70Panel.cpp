@@ -13,22 +13,9 @@
 namespace
 {
 
-QString ledPicture(proto::wag9::fs::LedState state)
-{
-    switch (state)
-    {
-        case proto::wag9::fs::LED_STATE_RED:
-            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Red_On.png");
-        case proto::wag9::fs::LED_STATE_YELLOW:
-            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Yellow_On.png");
-        case proto::wag9::fs::LED_STATE_GREEN:
-            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Green_On.png");
-        case proto::wag9::fs::LED_STATE_WHITE:
-            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_White_On.png");
-        default:
-            return QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Off.png");
-    }
-}
+const QString kLedOff = QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Off.png");
+const QString kLedRed = QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Red_On.png");
+const QString kLedGreen = QStringLiteral(":/Wag9/fs/pneumo/e70/LED_Green_On.png");
 
 }
 
@@ -64,14 +51,14 @@ Wag9PneumoE70Panel::Wag9PneumoE70Panel(QWidget* parent)
     m_scale = scale;
 
 
-    placeLed("processor_fault", {577, 26}, proto::wag9::fs::LED_STATE_OFF);
-    placeLed("system_fault", {577, 66}, proto::wag9::fs::LED_STATE_OFF);
-    placeLed("psu_normal", {577, 107}, proto::wag9::fs::LED_STATE_OFF);
+    placeLed("processor_fault", {577, 26});
+    placeLed("system_fault", {577, 66});
+    placeLed("psu_normal", {577, 107});
 
     place("pan_sel_sw", QStringLiteral("SwitchBlack10"), {85, 390}, 3);
 
-    place("switch_1", QStringLiteral("SwitchBlack11"), {670, 757}, 2, 0, QPoint(176, 80));
-    place("switch_2", QStringLiteral("SwitchBlack11"), {904, 757}, 2, 0, QPoint(176, 80));
+    place("emergency_cock", QStringLiteral("SwitchBlack11"), {670, 757}, 2, 0, QPoint(176, 80));
+    place("brake_pipe_cock", QStringLiteral("SwitchBlack11"), {904, 757}, 2, 0, QPoint(176, 80));
     place("pan2", QStringLiteral("SwitchRed2"), {699, 996});
     place("pan1", QStringLiteral("SwitchRed2"), {934, 997});
     place("vcb", QStringLiteral("SwitchRed2"), {934, 1093});
@@ -99,15 +86,18 @@ void Wag9PneumoE70Panel::setPressure(double value)
     m_needle->setValue(value);
 }
 
-void Wag9PneumoE70Panel::setLed(const QString &name, proto::wag9::fs::LedState state)
+void Wag9PneumoE70Panel::setLed(const QString &name, bool on)
 {
     auto* led = findChild<QLabel*>(name);
+
     if (!led)
     {
         qWarning() << "Missing led" << name;
         return;
     }
-    led->setPixmap(QPixmap(ledPicture(state)));
+
+    const QString& onPicture = name == QLatin1String("psu_normal") ? kLedGreen : kLedRed;
+    led->setPixmap(QPixmap(on ? onPicture : kLedOff));
 }
 
 void Wag9PneumoE70Panel::place(const char* name, const QString& sprite, const QPoint& pivot,
@@ -123,10 +113,11 @@ void Wag9PneumoE70Panel::place(const char* name, const QString& sprite, const QP
     sw->setObjectName(QString::fromLatin1(name));
 }
 
-void Wag9PneumoE70Panel::placeLed(const char* name, const QPoint& pos, proto::wag9::fs::LedState state)
+void Wag9PneumoE70Panel::placeLed(const char* name, const QPoint& pos)
 {
-    const QPixmap pix(ledPicture(state));
+    const QPixmap pix(kLedOff);
     auto* led = new QLabel(m_picture);
+
     led->setObjectName(QString::fromLatin1(name));
     led->setPixmap(pix);
     led->setFixedSize(pix.size());

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Wag9FaultStation.pb.h"
-
 #include <QLabel>
 #include <QPoint>
 #include <QWidget>
@@ -16,10 +14,10 @@ class Wag9PneumoE70Panel : public QWidget
         explicit Wag9PneumoE70Panel(QWidget *parent = nullptr);
 
         void setPressure(double value);
-        void setLed(const QString& name, proto::wag9::fs::LedState state);
+        void setLed(const QString& name, bool on);
 
     private:
-        void placeLed(const char* name, const QPoint& pos, proto::wag9::fs::LedState state);
+        void placeLed(const char* name, const QPoint& pos);
 
         void place(const char* name, const QString& sprite, const QPoint& pivot,
                 int frameCount = 2, int initial = 0, std::optional<QPoint> hinge = std::nullopt);
