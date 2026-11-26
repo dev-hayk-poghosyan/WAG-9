@@ -76,7 +76,9 @@ MESSAGES = {
 
 # Поля, которые у нормального поезда не равны нулю.
 STARTUP = {
-    "PneumoCCB": {"pans_coc": 1, "pan1_coc": 1, "pan2_coc": 1},
+    "PneumoCCB": {"ec_coc": 1, "tc2_coc": 1, "tc1_coc": 1, "sifa_coc": 1, "fp_coc": 1,
+                  "sand1_coc": 1, "sand2_coc": 1, "ul_coc": 1, "cb_coc": 1, "pans_coc": 1,
+                  "pan1_coc": 1, "pan2_coc": 1, "pan_sel_sw": 2, "per_coc": 1},
     "PneumoE70": {"emergency_cock": 1, "brake_pipe_cock": 1, "pan1": 1, "pan2": 1, "vcb": 1,
                   "pantog": 1, "brake_feed_pipe": 1, "sand_1": 1, "sand_2": 1},
 }
@@ -193,6 +195,7 @@ SELECTOR_160 = {0: "I", 1: "O"}
 SELECTOR_237 = {0: "I", 1: "O"}
 E70_PAN = {0: "AUTO", 1: "I", 2: "II"}
 CCB_PAN = {0: "P1", 1: "P2", 2: "AUTO"}
+TRAIN_MODE = {0: "GOODS", 1: "PASSENGER"}
 
 
 def field_names(schema_name):
@@ -216,6 +219,8 @@ def describe(group, name, value):
         return E70_PAN.get(value, str(value))
     if name == "pan_sel_sw":
         return CCB_PAN.get(value, str(value))
+    if name in ("pass_goods", "gp"):
+        return TRAIN_MODE.get(value, str(value))
     return "true" if value else "false"
 
 
