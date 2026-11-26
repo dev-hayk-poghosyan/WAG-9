@@ -135,22 +135,24 @@ place("ul_coc", "SwitchBlack2", {683, 136}, 2, 1);   // name, sprite, position, 
 
 ## Пневмопанели
 
-**CCB** (`Wag9PneumoPanel`) — фон `pneumo/ccb/Background.png`, 17 органов, манометр. Координаты в `place` — левый верхний угол первого кадра.
+**CCB** (`Wag9PneumoPanel`) — фон `pneumo/ccb/Background.png`, 17 органов, манометр. Координаты в `place` — левый верхний угол стартового кадра. Все кадры одного спрайта одного размера, поэтому смена стартового кадра орган не сдвигает.
 
-| Орган | Спрайт | Кадров | Стартовый кадр |
-| --- | --- | --- | --- |
-| EC-COC, TC2-COC, TC1-COC | `SwitchBlack2` | 2 | 0 |
-| 21(SIFA)-COC | `SwitchRed1` | 2 | 0 |
-| FP-COC | `SwitchYellow1` | 2 | 0 |
-| SAND1-COC, SAND2-COC | `SwitchBlack3` | 2 | 0 |
-| UL-COC, CB-COC | `SwitchBlack2` | 2 | 1 |
-| PANS COC | `SwitchKey` | 2 | 1 |
-| PAN1.COC, PAN2.COC | `SwitchBlack2` | 2 | 0 |
-| PAN-SEL-SW | `SwitchBlack1` | 3 | 0 |
-| PASS/GOODS | `SwitchBlack4` | 2 | 0 |
-| PER-COC | `SwitchRed1` | 2 | 0 |
-| DEAD ENGINE | `SwitchYellow2` | 2 | 0 |
-| G/P | `SwitchYellow3` | 2 | 0 |
+Направление ON нарисовано стрелкой на табличке каждого крана (`↓ON`, `↑ON`, `←ON`): во включённом положении рукоятка смотрит по стрелке. По ответу заказчика при старте все краны ON, кроме DEAD ENGINE (на ведущем локомотиве он закрыт), PAN-SEL-SW стоит в AUTO, а PASS/GOODS и G/P — в GOODS: WAG-9 грузовой локомотив.
+
+| Орган | Спрайт | Кадров | Стартовый кадр | Положение при старте |
+| --- | --- | --- | --- | --- |
+| EC-COC, TC2-COC, TC1-COC | `SwitchBlack2` | 2 | 1 | ON, вертикально |
+| 21(SIFA)-COC | `SwitchRed1` | 2 | 1 | ON, вертикально |
+| FP-COC | `SwitchYellow1` | 2 | 1 | ON, горизонтально |
+| SAND1-COC, SAND2-COC | `SwitchBlack3` | 2 | 1 | ON, вертикально |
+| UL-COC, CB-COC | `SwitchBlack2` | 2 | 0 | ON, горизонтально |
+| PANS COC | `SwitchKey` | 2 | 1 | ON, вертикально |
+| PAN1.COC, PAN2.COC | `SwitchBlack2` | 2 | 0 | ON, горизонтально |
+| PAN-SEL-SW | `SwitchBlack1` | 3 | 2 | AUTO (кадры: P1, P2, AUTO) |
+| PASS/GOODS | `SwitchBlack4` | 2 | 0 | GOODS (кадры: GOODS, PASS) |
+| PER-COC | `SwitchRed1` | 2 | 1 | ON, вертикально |
+| DEAD ENGINE | `SwitchYellow2` | 2 | 0 | закрыт |
+| G/P | `SwitchYellow3` | 2 | 0 | G (кадры: G, P) |
 
 Имена файлов не совпадают с цветом органа: `SwitchKey` — синий рычаг PANS, `SwitchYellow1` — серый FP.
 
@@ -217,7 +219,7 @@ message FaultStationIncomingMessage
 
 Все поля `optional`: симулятор может слать только то, что изменилось, а `handleIncomingPackageFromSim` трогает только пришедшие поля.
 
-**Исходящие пакеты.** Раз в 100 мс (`kReportIntervalMs`) `reportStationState` собирает `FaultStationOutgoingMessage`: блок активной пневмопанели и четыре шкафа. Поля 1 и 2 (пантографы) в нём зарезервированы: пантографы переехали во входящее сообщение. Функции `fill*` читают положение каждого органа по имени. У кранов и ключей пневмопанелей `true` = ON / открыт: для каждого крана в `fillPneumoCcb` / `fillPneumoE70` явно указан кадр ON (`isOnFrame`) с комментарием, откуда он взят. Исключения, пока заказчик не ответил: `pass_goods` и `gp` на CCB. Если орган не найден, в лог пишется `Missing switch <name>` и в пакет уходит 0.
+**Исходящие пакеты.** Раз в 100 мс (`kReportIntervalMs`) `reportStationState` собирает `FaultStationOutgoingMessage`: блок активной пневмопанели и четыре шкафа. Поля 1 и 2 (пантографы) в нём зарезервированы: пантографы переехали во входящее сообщение. Функции `fill*` читают положение каждого органа по имени. У кранов и ключей пневмопанелей `true` = ON / открыт: для каждого крана в `fillPneumoCcb` / `fillPneumoE70` явно указан кадр ON (`isOnFrame`) с комментарием, откуда он взят. `pass_goods` и `gp` на CCB — не краны, а режим поезда: enum `TrainMode` (`TRAIN_MODE_GOODS = 0`, `TRAIN_MODE_PASSENGER = 1`). Если орган не найден, в лог пишется `Missing switch <name>` и в пакет уходит 0.
 
 ```cpp
 proto::TrainSimFromFaultStationMessage wrapper;

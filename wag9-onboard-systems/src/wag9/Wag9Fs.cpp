@@ -78,10 +78,10 @@ void fillPneumoCcb(proto::wag9::fs::PneumoCCB* ccb, QWidget* panel)
     ccb->set_pan1_coc(isOnFrame(panel, "pan1_coc", 0));         // ←ON
     ccb->set_pan2_coc(isOnFrame(panel, "pan2_coc", 0));         // ←ON
     ccb->set_pan_sel_sw(positionOf(panel, "pan_sel_sw"));
-    ccb->set_pass_goods(flagOf(panel, "pass_goods"));           // TODO: meaning to be confirmed by the customer
+    ccb->set_pass_goods(static_cast<proto::wag9::fs::TrainMode>(positionOf(panel, "pass_goods")));   // frame 1 GOODS, frame 2 PASS
     ccb->set_per_coc(isOnFrame(panel, "per_coc", 1));           // ↑ON
     ccb->set_dead_engine(isOnFrame(panel, "dead_engine", 1));   // frame 2 points to OPEN
-    ccb->set_gp(flagOf(panel, "gp"));                           // TODO: meaning to be confirmed by the customer
+    ccb->set_gp(static_cast<proto::wag9::fs::TrainMode>(positionOf(panel, "gp")));                   // frame 1 G, frame 2 P
 }
 
 // true = ON / open. E-70 cocks: horizontal = open, vertical = closed, as on the OPEN/CLOSED

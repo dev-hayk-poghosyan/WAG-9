@@ -23,6 +23,11 @@ enum Selector237 {
     SELECTOR_237_O = 1;
 }
 
+enum TrainMode {
+    TRAIN_MODE_GOODS = 0;
+    TRAIN_MODE_PASSENGER = 1;
+}
+
 message Sb1 {
     Selector152 sb1_failure_mode_operation = 1;
     Selector154 sb1_bogie_cut_out = 2;
@@ -96,8 +101,7 @@ message Hb2 {
 }
 
 // Pneumatic panel cocks and keys: true = ON / open.
-// Exceptions until the customer confirms them: PneumoCCB.pass_goods and PneumoCCB.gp
-// (true = the second handle position). pan_sel_sw is the selector position index.
+// pan_sel_sw is the selector position index; pass_goods and gp are TrainMode.
 message PneumoCCB {
     bool ec_coc = 1;
     bool tc2_coc = 2;
@@ -112,10 +116,10 @@ message PneumoCCB {
     bool pan1_coc = 11;
     bool pan2_coc = 12;
     int32 pan_sel_sw = 13;
-    bool pass_goods = 14;
+    TrainMode pass_goods = 14;
     bool per_coc = 15;
     bool dead_engine = 16;
-    bool gp = 17;
+    TrainMode gp = 17;
 }
 
 message PneumoE70 {
