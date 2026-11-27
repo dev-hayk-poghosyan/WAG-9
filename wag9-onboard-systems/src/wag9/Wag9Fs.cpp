@@ -3,6 +3,7 @@
 #include "Wag9PneumoPanel.h"
 #include "Wag9PneumoE70Panel.h"
 #include "Wag9SpriteSwitch.h"
+#include "Wag9StatusSprite.h"
 
 #include <QDebug>
 #include <QLabel>
@@ -218,6 +219,56 @@ QStringList pantographFrames(const QString& direction)
     return frames;
 }
 
+/*
+Debug aid: paints every clickable zone light blue (zone buttons on the main window and
+clickable controls on all panels). Called only with <Debug>True</Debug> in Wag9.xml.
+*/
+void highlightClickableZones(QWidget* window)
+{
+    const QString zoneStyle = QStringLiteral(
+        "background: rgba(0, 170, 255, 90); border: 1px solid rgb(0, 170, 255);");
+
+    const auto zones = window->findChildren<QPushButton*>(QRegularExpression(QStringLiteral("^(link_|pan_)")));
+    for (QPushButton* zone : zones)
+    {
+        zone->setStyleSheet(zoneStyle);
+    }
+
+    for (Wag9SpriteSwitch* control : window->findChildren<Wag9SpriteSwitch*>())
+    {
+        if (control->isClickable())
+        {
+            control->setStyleSheet(zoneStyle);
+        }
+    }
+}
+
+QStringList statusFrames(const QString& folder, const QString& name, int count)
+{
+    QStringList frames;
+    for (int i = 1; i <= count; ++i)
+    {
+        frames << QStringLiteral(":/Wag9/fs/%1/%2_%3.png").arg(folder, name).arg(i, 2, 10, QLatin1Char('0'));
+    }
+    return frames;
+}
+
+void showBlower(Wag9StatusSprite* blower, const QString& kind, proto::wag9::fs::BlowerState state)
+{
+    switch (state)
+    {
+        case proto::wag9::fs::BLOWER_STATE_WORKING:
+            blower->setFrames(statusFrames(QStringLiteral("blowers"), QStringLiteral("Working_") + kind, 3), 150);
+            break;
+        case proto::wag9::fs::BLOWER_STATE_FAILURE:
+            blower->setFrames(statusFrames(QStringLiteral("blowers"), QStringLiteral("Failure_") + kind, 6), 100, true);
+            break;
+        default:
+            blower->setFrames({QStringLiteral(":/Wag9/fs/blowers/StandBy_%1.png").arg(kind)});
+            break;
+    }
+}
+
 }
 
 Wag9Fs::Wag9Fs(QWidget *parent)
@@ -234,6 +285,7 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
     move(m_staticConfig->fsSettings().position);
     prepareZones();
     createPantographs();
+    createBlowersAndVcb();
 
     const QStringList zones = { kSb1, kHb1, kSb2, kHb2 };
 
@@ -257,6 +309,11 @@ void Wag9Fs::init(std::shared_ptr<Wag9Configuration const> config)
     ui.hintsButton->raise();
 
     setBrakeSystem(m_staticConfig->brakeSystem());
+
+    if (m_staticConfig->fsSettings().debug)
+    {
+        highlightClickableZones(this);
+    }
 
     createServer();
 }
@@ -441,6 +498,38 @@ void Wag9Fs::setPantographPair(KeySwitchButton* a, KeySwitchButton* b, bool rais
     }
 }
 
+void Wag9Fs::createBlowersAndVcb()
+{
+    m_tractionMotorBlower[1] = new Wag9StatusSprite(this);
+    m_tractionMotorBlower[1]->move(475, 264);
+    m_machineRoomBlower[0] = new Wag9StatusSprite(this);
+    m_machineRoomBlower[0]->move(1113, 270);
+    m_vcb[0] = new Wag9StatusSprite(this);
+    m_vcb[0]->move(1023, 169);
+
+    m_tractionMotorBlower[0] = new Wag9StatusSprite(this);
+    m_tractionMotorBlower[0]->move(475, 773);
+    m_machineRoomBlower[1] = new Wag9StatusSprite(this);
+    m_machineRoomBlower[1]->move(1113, 780);
+    m_vcb[1] = new Wag9StatusSprite(this, true);
+    m_vcb[1]->move(844, 678);
+
+    for (int i = 0; i < 2; ++i)
+    {
+        showBlower(m_tractionMotorBlower[i], QStringLiteral("TMB"), proto::wag9::fs::BLOWER_STATE_POWER_OFF);
+        showBlower(m_machineRoomBlower[i], QStringLiteral("MRB"), proto::wag9::fs::BLOWER_STATE_POWER_OFF);
+    }
+    setVcbFailure(false);
+}
+
+void Wag9Fs::setVcbFailure(bool failure)
+{
+    const QStringList frames = failure ? statusFrames(QStringLiteral("vcb"), QStringLiteral("VCBOff"), 5) : QStringList();
+    for (Wag9StatusSprite* vcb : m_vcb)
+    {
+        vcb->setFrames(frames, 100, true);
+    }
+}
 
 void Wag9Fs::showPopup(QWidget* panel)
 {
@@ -608,5 +697,26 @@ void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationInc
     if (msg.has_sb1_ocr_tripped())
     {
         setFrameOf(sb1, "sb1_ocr", msg.sb1_ocr_tripped() ? 1 : 0);
+    }
+
+    if (msg.has_traction_motor_blower_1())
+    {
+        showBlower(m_tractionMotorBlower[0], QStringLiteral("TMB"), msg.traction_motor_blower_1());
+    }
+    if (msg.has_traction_motor_blower_2())
+    {
+        showBlower(m_tractionMotorBlower[1], QStringLiteral("TMB"), msg.traction_motor_blower_2());
+    }
+    if (msg.has_machine_room_blower_1())
+    {
+        showBlower(m_machineRoomBlower[0], QStringLiteral("MRB"), msg.machine_room_blower_1());
+    }
+    if (msg.has_machine_room_blower_2())
+    {
+        showBlower(m_machineRoomBlower[1], QStringLiteral("MRB"), msg.machine_room_blower_2());
+    }
+    if (msg.has_vcb_failure())
+    {
+        setVcbFailure(msg.vcb_failure());
     }
 }

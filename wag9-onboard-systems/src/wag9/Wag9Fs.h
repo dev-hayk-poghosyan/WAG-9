@@ -19,6 +19,7 @@ class QLabel;
 class QPushButton;
 class Wag9PneumoPanel;
 class Wag9PneumoE70Panel;
+class Wag9StatusSprite;
 
 class Wag9Fs : public QFrame
 {
@@ -42,6 +43,8 @@ class Wag9Fs : public QFrame
         void createPantographs();
         KeySwitchButton* addPantographView(const QStringList& frames, QPushButton* clickArea);
         static void setPantographPair(KeySwitchButton* a, KeySwitchButton* b, bool raised);
+        void createBlowersAndVcb();
+        void setVcbFailure(bool failure);
         void showPopup(QWidget* panel);
         void hidePopups();
         void closeFrame();
@@ -63,4 +66,9 @@ class Wag9Fs : public QFrame
         QTimer m_reportTimer;
         KeySwitchButton* m_pantograph1[2] = {};
         KeySwitchButton* m_pantograph2[2] = {};
+        // Index 0 is blower 1, index 1 is blower 2 (TSD: unit 1 is fed from HB1, unit 2 from HB2).
+        Wag9StatusSprite* m_tractionMotorBlower[2] = {};
+        Wag9StatusSprite* m_machineRoomBlower[2] = {};
+        // One VCB drawn on both views: right view, left view.
+        Wag9StatusSprite* m_vcb[2] = {};
 };

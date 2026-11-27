@@ -9,6 +9,7 @@ add_executable(
     Wag9PneumoE70Panel.cpp Wag9PneumoE70Panel.h
     Wag9CubiclePanel.cpp Wag9CubiclePanel.h
     Wag9SpriteSwitch.cpp Wag9SpriteSwitch.h
+    Wag9StatusSprite.cpp Wag9StatusSprite.h
     Wag9FsServer.cpp Wag9FsServer.h
     Wag9Needle.cpp Wag9Needle.h
     ${wag9_resource_sources}

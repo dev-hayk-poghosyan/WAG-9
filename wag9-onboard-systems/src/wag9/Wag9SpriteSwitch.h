@@ -30,6 +30,7 @@ class Wag9SpriteSwitch : public QLabel
 
         int position() const;
         int pressCount() const;
+        bool isClickable() const { return m_actuation != SwitchActuation::Indicator; }
         void setPosition(int frame);
         void setChoices(const QVector<QPair<QString, int>>& choices);
 
