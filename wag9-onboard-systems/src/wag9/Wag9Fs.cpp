@@ -55,10 +55,33 @@ bool flagOf(QWidget* panel, const char* name)
     return positionOf(panel, name) != 0;
 }
 
-// true when the control stands on the given frame (counted from 0).
 bool isOnFrame(QWidget* panel, const char* name, int frame)
 {
     return positionOf(panel, name) == frame;
+}
+
+Wag9SpriteSwitch* switchOf(QWidget* panel, const char* name)
+{
+    auto* sw = panel ? panel->findChild<Wag9SpriteSwitch*>(QLatin1String(name)) : nullptr;
+    if (!sw)
+    {
+        qWarning() << "Missing switch" << name;
+    }
+    return sw;
+}
+
+int pressesOf(QWidget* panel, const char* name)
+{
+    auto* sw = switchOf(panel, name);
+    return sw ? sw->pressCount() : 0;
+}
+
+void setFrameOf(QWidget* panel, const char* name, int frame)
+{
+    if (auto* sw = switchOf(panel, name))
+    {
+        sw->setPosition(frame);
+    }
 }
 
 // true = ON / open. The ON frame comes from the arrow on each cock plate (↓ON, ↑ON, ←ON):
@@ -125,6 +148,8 @@ void fillSb1(proto::wag9::fs::Sb1* sb1, QWidget* panel)
     sb1->set_sb1_central_electronics_1(flagOf(panel, "sb1_central_electronics_1"));
     sb1->set_sb1_central_electronics_2(flagOf(panel, "sb1_central_electronics_2"));
     sb1->set_sb1_speed_sensor(flagOf(panel, "sb1_speed_sensor"));
+    sb1->set_sb1_power_supply_cab_contactor(pressesOf(panel, "sb1_power_supply_cab_contactor"));
+    sb1->set_sb1_auxiliary_contactor_vcb(pressesOf(panel, "sb1_auxiliary_contactor_vcb"));
 }
 
 void fillHb1(proto::wag9::fs::Hb1* hb1, QWidget* panel)
@@ -555,5 +580,28 @@ void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationInc
     if (msg.has_pantograph_2_raised())
     {
         setPantographPair(m_pantograph2[0], m_pantograph2[1], msg.pantograph_2_raised());
+    }
+
+    QWidget* sb1 = m_popups.value(kSb1);
+
+    if (msg.has_sb1_relay_control_electronics_off_tripped())
+    {
+        setFrameOf(sb1, "sb1_relay_control_electronics_off",
+            msg.sb1_relay_control_electronics_off_tripped() ? 1 : 0);
+    }
+    if (msg.has_sb1_relay_time_delay_vcb_tripped())
+    {
+        setFrameOf(sb1, "sb1_relay_time_delay_vcb", 
+            msg.sb1_relay_time_delay_vcb_tripped() ? 1 : 0);
+    }
+    if (msg.has_sb1_power_supply_cab_contactor_closed())
+    {
+        setFrameOf(sb1, "sb1_power_supply_cab_contactor",
+            msg.sb1_power_supply_cab_contactor_closed() ? 0 : 1);
+    }
+    if (msg.has_sb1_auxiliary_contactor_vcb_closed())
+    {
+        setFrameOf(sb1, "sb1_auxiliary_contactor_vcb",
+            msg.sb1_auxiliary_contactor_vcb_closed() ? 0 : 1);
     }
 }

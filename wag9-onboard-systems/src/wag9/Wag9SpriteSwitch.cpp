@@ -26,15 +26,25 @@ Wag9SpriteSwitch::Wag9SpriteSwitch(const QStringList& frames, int initial, const
 
 void Wag9SpriteSwitch::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() != Qt::LeftButton)
+    if (event->button() != Qt::LeftButton || m_actuation == SwitchActuation::Indicator)
     {
         return;
     }
 
-    if (m_actuation == SwitchActuation::Lamp)
+    if (m_actuation == SwitchActuation::PushIn)
+    {
+        if (m_index == 1)
+        {
+            m_index = 0;
+            ++m_pressCount;
+        }
+    }
+
+    else if (m_actuation == SwitchActuation::Lamp)
     {
         m_index = m_on ? 2 : 1;
     }
+
     else if (m_actuation == SwitchActuation::Choose)
     {
         QMenu menu(this);
@@ -47,10 +57,12 @@ void Wag9SpriteSwitch::mousePressEvent(QMouseEvent* event)
 
         menu.exec(event->globalPos());
     }
+
     else
     {
         m_index = (m_index + 1) % m_frames.size();
     }
+
     applyFrame();
     event->accept();
 }
@@ -79,6 +91,20 @@ int Wag9SpriteSwitch::position() const
 void Wag9SpriteSwitch::setChoices(const QVector<QPair<QString, int>>& choices)
 {
     m_choices = choices;
+}
+
+void Wag9SpriteSwitch::setPosition(int frame)
+{
+    if (frame != m_index && frame >= 0 && frame < m_frames.size())
+    {
+        m_index = frame;
+        applyFrame();
+    }
+}
+
+int Wag9SpriteSwitch::pressCount() const
+{
+    return m_pressCount;
 }
 
 void Wag9SpriteSwitch::applyFrame()

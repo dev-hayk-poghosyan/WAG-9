@@ -27,6 +27,7 @@ void buildSb1(QWidget* parent)
     const QStringList twoWay = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlack8"), 2);
     const QStringList fourWay = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlack8"), 4);
     const QStringList blueFrames = framesOf(QStringLiteral("cubicle"), QStringLiteral("SwitchBlue"), 2);
+    const QStringList relayFrames = framesOf(QStringLiteral("cubicle"), QStringLiteral("BTN_White1"), 2);
 
     addSwitch(parent, twoWay, 0, 65, 110, "sb1_failure_mode_operation");
     addSwitch(parent, twoWay, 0, 357, 110, "sb1_configuration_switch");
@@ -56,12 +57,10 @@ void buildSb1(QWidget* parent)
             QStringLiteral("sb1_speed_sensor")
         });
 
-    addRow(parent, QStringLiteral("BTN_White1"), 682, {58, 213, 365, 520}, {
-        QStringLiteral("sb1_relay_control_electronics_off"),
-        QStringLiteral("sb1_contactor_power_supply_cab"),
-        QStringLiteral("sb1_contactor_auxiliary_contactor_vcb"),
-        QStringLiteral("sb1_relay_time_delay_vcb")
-    });
+    addSwitch(parent, relayFrames, 0, 58, 682, "sb1_relay_control_electronics_off", SwitchActuation::Indicator);
+    addSwitch(parent, relayFrames, 0, 213, 682, "sb1_power_supply_cab_contactor", SwitchActuation::PushIn);
+    addSwitch(parent, relayFrames, 0, 365, 682, "sb1_auxiliary_contactor_vcb", SwitchActuation::PushIn);
+    addSwitch(parent, relayFrames, 0, 520, 682, "sb1_relay_time_delay_vcb", SwitchActuation::Indicator);
 }
 
 void buildHb1(QWidget* parent)

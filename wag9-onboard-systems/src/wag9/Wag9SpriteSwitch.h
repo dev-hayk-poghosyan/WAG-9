@@ -11,20 +11,24 @@ enum class SwitchActuation
 {
     Cycle,
     Lamp,
-    Choose
+    Choose,
+    Indicator,
+    PushIn
 };
 
 class Wag9SpriteSwitch : public QLabel
 {
     Q_OBJECT
+
     public:
-        explicit Wag9SpriteSwitch(const QStringList& frames, int initial, const QPoint& center, QWidget* parent,
+        explicit Wag9SpriteSwitch(const QStringList& frames, int initial,
+            const QPoint& center, QWidget* parent,
             SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);
         virtual ~Wag9SpriteSwitch() override = default;
 
         int position() const;
-
-        // Menu entries for SwitchActuation::Choose: label and the frame it selects.
+        int pressCount() const;
+        void setPosition(int frame);
         void setChoices(const QVector<QPair<QString, int>>& choices);
 
     protected:
@@ -35,6 +39,7 @@ class Wag9SpriteSwitch : public QLabel
         void applyFrame();
 
         int m_index = 0;
+        int m_pressCount = 0;
         bool m_on = false;
         QPoint m_center;
         QVector<QPixmap> m_frames;
