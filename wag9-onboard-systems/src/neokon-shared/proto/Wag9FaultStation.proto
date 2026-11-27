@@ -23,6 +23,12 @@ enum Selector237 {
     SELECTOR_237_O = 1;
 }
 
+enum BlowerState {
+    BLOWER_STATE_POWER_OFF = 0;
+    BLOWER_STATE_WORKING = 1;
+    BLOWER_STATE_FAILURE = 2;
+}
+
 enum TrainMode {
     TRAIN_MODE_GOODS = 0;
     TRAIN_MODE_PASSENGER = 1;
@@ -168,4 +174,9 @@ message FaultStationIncomingMessage
     optional bool sb1_power_supply_cab_contactor_closed = 10;
     optional bool sb1_auxiliary_contactor_vcb_closed = 11;
     optional bool sb1_ocr_tripped = 12;
+    optional BlowerState traction_motor_blower_1 = 13;
+    optional BlowerState traction_motor_blower_2 = 14;
+    optional BlowerState machine_room_blower_1 = 15;
+    optional BlowerState machine_room_blower_2 = 16;
+    optional bool vcb_failure = 17;
 }
