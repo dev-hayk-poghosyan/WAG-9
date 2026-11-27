@@ -47,6 +47,7 @@ MESSAGES = {
         # 18, 21 (relays) are reserved: relay plates now come from the simulator.
         # 19, 20 count how many times each contactor button was pushed in.
         19: "sb1_power_supply_cab_contactor", 20: "sb1_auxiliary_contactor_vcb",
+        22: "sb1_ocr",
     },
     "Hb1": {
         1: "hb1_transformer_oil_pump", 2: "hb1_converter_oil_pump", 3: "hb1_main_compressor",
@@ -226,6 +227,8 @@ def describe(group, name, value):
         return TRAIN_MODE.get(value, str(value))
     if name in ("sb1_power_supply_cab_contactor", "sb1_auxiliary_contactor_vcb"):
         return f"нажата {value} раз"
+    if name == "sb1_ocr":
+        return f"сброшено {value} раз"
     return "true" if value else "false"
 
 

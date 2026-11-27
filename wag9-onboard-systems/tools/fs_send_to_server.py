@@ -54,6 +54,7 @@ SB1_STATES = (
     (9, "relay_time_delay_vcb_tripped", "SB1 RELAY TIME DELAY VCB", "сработало", False),
     (10, "power_supply_cab_contactor_closed", "SB1 POWER SUPPLY CAB CONTACTOR", "замкнут", True),
     (11, "auxiliary_contactor_vcb_closed", "SB1 AUXILIARY CONTACTOR VCB", "замкнут", True),
+    (12, "ocr_tripped", "SB1 78 OCR", "сработало", True),
 )
 LAMP_STATES = ("off", "on")
 POSITIONS = ("down", "up")
