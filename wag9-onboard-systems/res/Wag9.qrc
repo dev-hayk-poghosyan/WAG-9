@@ -78,6 +78,31 @@
         <file>fs/cubicle/OCR_03.png</file>
         <file>fs/cubicle/OCR_04.png</file>
         <file>fs/cubicle/OCR_05.png</file>
+        <file>fs/blowers/StandBy_TMB.png</file>
+        <file>fs/blowers/Working_TMB_01.png</file>
+        <file>fs/blowers/Working_TMB_02.png</file>
+        <file>fs/blowers/Working_TMB_03.png</file>
+        <file>fs/blowers/Failure_TMB_01.png</file>
+        <file>fs/blowers/Failure_TMB_02.png</file>
+        <file>fs/blowers/Failure_TMB_03.png</file>
+        <file>fs/blowers/Failure_TMB_04.png</file>
+        <file>fs/blowers/Failure_TMB_05.png</file>
+        <file>fs/blowers/Failure_TMB_06.png</file>
+        <file>fs/blowers/StandBy_MRB.png</file>
+        <file>fs/blowers/Working_MRB_01.png</file>
+        <file>fs/blowers/Working_MRB_02.png</file>
+        <file>fs/blowers/Working_MRB_03.png</file>
+        <file>fs/blowers/Failure_MRB_01.png</file>
+        <file>fs/blowers/Failure_MRB_02.png</file>
+        <file>fs/blowers/Failure_MRB_03.png</file>
+        <file>fs/blowers/Failure_MRB_04.png</file>
+        <file>fs/blowers/Failure_MRB_05.png</file>
+        <file>fs/blowers/Failure_MRB_06.png</file>
+        <file>fs/vcb/VCBOff_01.png</file>
+        <file>fs/vcb/VCBOff_02.png</file>
+        <file>fs/vcb/VCBOff_03.png</file>
+        <file>fs/vcb/VCBOff_04.png</file>
+        <file>fs/vcb/VCBOff_05.png</file>
         <file>fs/panto/left/01.png</file>
         <file>fs/panto/left/02.png</file>
         <file>fs/panto/left/03.png</file>
