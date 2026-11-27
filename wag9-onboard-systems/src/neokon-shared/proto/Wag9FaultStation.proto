@@ -46,6 +46,10 @@ message Sb1 {
     bool sb1_central_electronics_1 = 15;
     bool sb1_central_electronics_2 = 16;
     bool sb1_speed_sensor = 17;
+    reserved 18, 21;
+    reserved "sb1_relay_control_electronics_off", "sb1_relay_time_delay_vcb";
+    uint32 sb1_power_supply_cab_contactor = 19;
+    uint32 sb1_auxiliary_contactor_vcb = 20;
 }
 
 message Hb1 {
@@ -158,4 +162,8 @@ message FaultStationIncomingMessage
     optional bool e70_psu_normal = 5;
     optional bool pantograph_1_raised = 6;
     optional bool pantograph_2_raised = 7;
+    optional bool sb1_relay_control_electronics_off_tripped = 8;
+    optional bool sb1_relay_time_delay_vcb_tripped = 9;
+    optional bool sb1_power_supply_cab_contactor_closed = 10;
+    optional bool sb1_auxiliary_contactor_vcb_closed = 11;
 }
