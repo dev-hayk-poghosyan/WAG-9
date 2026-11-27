@@ -84,10 +84,10 @@
   <widget class="QPushButton" name="link_PT">
    <property name="geometry">
     <rect>
-     <x>503</x>
-     <y>278</y>
-     <width>165</width>
-     <height>135</height>
+     <x>570</x>
+     <y>245</y>
+     <width>70</width>
+     <height>145</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -112,10 +112,10 @@
   <widget class="QPushButton" name="link_SB1">
    <property name="geometry">
     <rect>
-     <x>1230</x>
+     <x>1320</x>
      <y>240</y>
-     <width>135</width>
-     <height>180</height>
+     <width>60</width>
+     <height>150</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -140,10 +140,10 @@
   <widget class="QPushButton" name="link_HB1">
    <property name="geometry">
     <rect>
-     <x>1365</x>
+     <x>1390</x>
      <y>240</y>
-     <width>135</width>
-     <height>180</height>
+     <width>75</width>
+     <height>150</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -268,10 +268,10 @@
   <widget class="QPushButton" name="link_SB2">
    <property name="geometry">
     <rect>
-     <x>1230</x>
+     <x>1320</x>
      <y>750</y>
-     <width>135</width>
-     <height>180</height>
+     <width>60</width>
+     <height>150</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -296,10 +296,10 @@
   <widget class="QPushButton" name="link_HB2">
    <property name="geometry">
     <rect>
-     <x>1365</x>
+     <x>1400</x>
      <y>750</y>
-     <width>135</width>
-     <height>180</height>
+     <width>75</width>
+     <height>150</height>
     </rect>
    </property>
    <property name="toolTip">
