@@ -50,6 +50,7 @@ message Sb1 {
     reserved "sb1_relay_control_electronics_off", "sb1_relay_time_delay_vcb";
     uint32 sb1_power_supply_cab_contactor = 19;
     uint32 sb1_auxiliary_contactor_vcb = 20;
+    uint32 sb1_ocr = 22;
 }
 
 message Hb1 {
@@ -166,4 +167,5 @@ message FaultStationIncomingMessage
     optional bool sb1_relay_time_delay_vcb_tripped = 9;
     optional bool sb1_power_supply_cab_contactor_closed = 10;
     optional bool sb1_auxiliary_contactor_vcb_closed = 11;
+    optional bool sb1_ocr_tripped = 12;
 }

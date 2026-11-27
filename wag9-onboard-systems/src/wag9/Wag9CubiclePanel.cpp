@@ -61,6 +61,10 @@ void buildSb1(QWidget* parent)
     addSwitch(parent, relayFrames, 0, 213, 682, "sb1_power_supply_cab_contactor", SwitchActuation::PushIn);
     addSwitch(parent, relayFrames, 0, 365, 682, "sb1_auxiliary_contactor_vcb", SwitchActuation::PushIn);
     addSwitch(parent, relayFrames, 0, 520, 682, "sb1_relay_time_delay_vcb", SwitchActuation::Indicator);
+
+    // 78 OCR: starts tripped (red "Locked" flag), a click on the knob resets it.
+    addSwitch(parent, framesOf(QStringLiteral("cubicle"), QStringLiteral("OCR"), 5), 1, 758, 420,
+        "sb1_ocr", SwitchActuation::Reset);
 }
 
 void buildHb1(QWidget* parent)

@@ -21,6 +21,10 @@ Wag9SpriteSwitch::Wag9SpriteSwitch(const QStringList& frames, int initial, const
         m_frames << pix;
     }
     setCursor(Qt::PointingHandCursor);
+
+    m_animation.setInterval(100);
+    connect(&m_animation, &QTimer::timeout, this, &Wag9SpriteSwitch::stepAnimation);
+
     applyFrame();
 }
 
@@ -28,6 +32,21 @@ void Wag9SpriteSwitch::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() != Qt::LeftButton || m_actuation == SwitchActuation::Indicator)
     {
+        return;
+    }
+
+    if (m_actuation == SwitchActuation::Reset)
+    {
+        // The knob is the right half of the sprite; the flag on the left is not clickable.
+        const bool onKnob = event->pos().x() >= width() / 2;
+        if (onKnob && m_index == 1 && !m_animation.isActive())
+        {
+            ++m_pressCount;
+            m_index = 2;
+            applyFrame();
+            m_animation.start();
+        }
+        event->accept();
         return;
     }
 
@@ -95,6 +114,12 @@ void Wag9SpriteSwitch::setChoices(const QVector<QPair<QString, int>>& choices)
 
 void Wag9SpriteSwitch::setPosition(int frame)
 {
+    // A packet from the simulator must not cut the reset animation short.
+    if (m_animation.isActive())
+    {
+        return;
+    }
+
     if (frame != m_index && frame >= 0 && frame < m_frames.size())
     {
         m_index = frame;
@@ -105,6 +130,17 @@ void Wag9SpriteSwitch::setPosition(int frame)
 int Wag9SpriteSwitch::pressCount() const
 {
     return m_pressCount;
+}
+
+// Plays the reset frames 2.. and stops on frame 0 (normal).
+void Wag9SpriteSwitch::stepAnimation()
+{
+    m_index = m_index + 1 < m_frames.size() ? m_index + 1 : 0;
+    if (m_index == 0)
+    {
+        m_animation.stop();
+    }
+    applyFrame();
 }
 
 void Wag9SpriteSwitch::applyFrame()

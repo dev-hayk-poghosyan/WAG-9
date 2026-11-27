@@ -5,6 +5,7 @@
 #include <QPair>
 #include <QPixmap>
 #include <QStringList>
+#include <QTimer>
 #include <QVector>
 
 enum class SwitchActuation
@@ -13,7 +14,8 @@ enum class SwitchActuation
     Lamp,
     Choose,
     Indicator,
-    PushIn
+    PushIn,
+    Reset       // a tripped relay (frame 1) is reset by a click on its knob: frames 2.. are played, then frame 0
 };
 
 class Wag9SpriteSwitch : public QLabel
@@ -37,6 +39,7 @@ class Wag9SpriteSwitch : public QLabel
 
     private:
         void applyFrame();
+        void stepAnimation();
 
         int m_index = 0;
         int m_pressCount = 0;
@@ -45,6 +48,7 @@ class Wag9SpriteSwitch : public QLabel
         QVector<QPixmap> m_frames;
         SwitchActuation m_actuation = SwitchActuation::Cycle;
         QVector<QPair<QString, int>> m_choices;
+        QTimer m_animation;
 };
 
 QStringList framesOf(const QString& folder, const QString& sprite, int frameCount);

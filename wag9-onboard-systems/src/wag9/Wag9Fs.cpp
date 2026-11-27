@@ -150,6 +150,7 @@ void fillSb1(proto::wag9::fs::Sb1* sb1, QWidget* panel)
     sb1->set_sb1_speed_sensor(flagOf(panel, "sb1_speed_sensor"));
     sb1->set_sb1_power_supply_cab_contactor(pressesOf(panel, "sb1_power_supply_cab_contactor"));
     sb1->set_sb1_auxiliary_contactor_vcb(pressesOf(panel, "sb1_auxiliary_contactor_vcb"));
+    sb1->set_sb1_ocr(pressesOf(panel, "sb1_ocr"));
 }
 
 void fillHb1(proto::wag9::fs::Hb1* hb1, QWidget* panel)
@@ -603,5 +604,9 @@ void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationInc
     {
         setFrameOf(sb1, "sb1_auxiliary_contactor_vcb",
             msg.sb1_auxiliary_contactor_vcb_closed() ? 0 : 1);
+    }
+    if (msg.has_sb1_ocr_tripped())
+    {
+        setFrameOf(sb1, "sb1_ocr", msg.sb1_ocr_tripped() ? 1 : 0);
     }
 }
