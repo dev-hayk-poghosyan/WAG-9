@@ -56,6 +56,15 @@ SB1_STATES = (
     (11, "auxiliary_contactor_vcb_closed", "SB1 AUXILIARY CONTACTOR VCB", "замкнут", True),
     (12, "ocr_tripped", "SB1 78 OCR", "сработало", True),
 )
+# Blowers: field number, key, caption. The value is BlowerState: index in BLOWER_STATES.
+BLOWERS = (
+    (13, "traction_motor_blower_1", "TMB-1 (левый вид)"),
+    (14, "traction_motor_blower_2", "TMB-2 (правый вид)"),
+    (15, "machine_room_blower_1", "MRB-1 (правый вид)"),
+    (16, "machine_room_blower_2", "MRB-2 (левый вид)"),
+)
+BLOWER_STATES = ("power_off", "working", "failure")
+VCB_FAILURE_FIELD = 17
 LAMP_STATES = ("off", "on")
 POSITIONS = ("down", "up")
 
@@ -96,6 +105,11 @@ def build_packet(state):
     for number, key, _, _, _ in SB1_STATES:
         if state.get(key) is not None:
             incoming += encode_bool(number, state[key])
+    for number, key, _ in BLOWERS:
+        if state.get(key) is not None:
+            incoming += encode_bool(number, state[key])     # enum and bool are both varints
+    if state.get("vcb_failure") is not None:
+        incoming += encode_bool(VCB_FAILURE_FIELD, state["vcb_failure"])
     return encode_bytes(1, b"WAG9") + encode_bytes(2, incoming)
 
 
@@ -217,6 +231,28 @@ class SenderWindow:
             self._sb1[key] = (enabled, value)
             row += 1
 
+        ttk.Separator(self._root).grid(row=row, column=0, columnspan=4, sticky=tk.EW, pady=4)
+        row += 1
+
+        self._blowers = {}
+        for _, key, title in BLOWERS:
+            enabled = tk.BooleanVar(value=True)
+            blower = tk.StringVar(value="power_off")
+            ttk.Checkbutton(self._root, text=title, variable=enabled).grid(
+                row=row, column=0, padx=8, sticky=tk.W)
+            ttk.Combobox(self._root, textvariable=blower, values=BLOWER_STATES, state="readonly",
+                         width=10).grid(row=row, column=1, padx=4, pady=2, sticky=tk.W)
+            self._blowers[key] = (enabled, blower)
+            row += 1
+
+        self._vcb_enabled = tk.BooleanVar(value=True)
+        self._vcb_failure = tk.BooleanVar(value=False)
+        ttk.Checkbutton(self._root, text="VCB", variable=self._vcb_enabled).grid(
+            row=row, column=0, padx=8, sticky=tk.W)
+        ttk.Checkbutton(self._root, text="ошибка", variable=self._vcb_failure).grid(
+            row=row, column=1, padx=4, pady=2, sticky=tk.W)
+        row += 1
+
         self._sweep = tk.BooleanVar(value=False)
         ttk.Checkbutton(self._root,
                         text=f"качать стрелки 0..{MAX_PRESSURE:g} за {SWEEP_PERIOD_S:g} с",
@@ -259,6 +295,10 @@ class SenderWindow:
 
         for key, (enabled, value) in self._sb1.items():
             state[key] = value.get() if enabled.get() else None
+
+        for key, (enabled, blower) in self._blowers.items():
+            state[key] = BLOWER_STATES.index(blower.get()) if enabled.get() else None
+        state["vcb_failure"] = self._vcb_failure.get() if self._vcb_enabled.get() else None
 
         with self._lock:
             self._current = state
