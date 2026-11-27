@@ -4,8 +4,8 @@
 #include "LogMessageHandler.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QDir>
-#include <QFontDatabase>
 #include <QMessageBox>
 
 int main(int argc, char *argv[])
@@ -47,19 +47,6 @@ int main(int argc, char *argv[])
 
         return 1;
     }
-    static const auto fontName = QStringLiteral(":/fonts/Oswald-VariableFont_wght.ttf");
-
-    const int dottedFontId = QFontDatabase::addApplicationFont(fontName);
-
-    if (dottedFontId == -1)
-    {
-        qWarning() << "Failed to load custom font " << fontName;
-    }
-    else
-    {
-        qDebug() << "Added custom font:" << QFontDatabase::applicationFontFamilies(dottedFontId);
-    }
-
     Wag9Fs fs{};
     fs.init(staticConfig);
     fs.show();

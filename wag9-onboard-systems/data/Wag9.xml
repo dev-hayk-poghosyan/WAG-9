@@ -6,7 +6,6 @@
         <TopMost>False</TopMost>
         <!-- CCB or E70. Selects the pneumatic panel, the background and the packet block. -->
         <BrakeSystem>CCB</BrakeSystem>
-        <AudionOutput></AudionOutput>
         <Network>
             <BindAddr>tcp://127.0.0.1:12282</BindAddr>
         </Network>

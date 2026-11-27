@@ -144,15 +144,6 @@ Wag9FsServer::processIncomingMessage(zmq::message_t const& zmqMsg, uint32_t rout
             emit messageReceived(msg);
         }
     }
-    else
-    {
-        proto::FaultStationInitMessage initMsg;
-        if (initMsg.ParseFromArray(zmqMsg.data(), zmqMsg.size())
-            && initMsg.vehicle_numbers_size() > 0)
-        {
-            emit initMessageReceived(initMsg);
-        }
-    }
 
     m_lastMessageTs = std::chrono::system_clock::now();
     if (!m_timeoutWatcher.isActive())

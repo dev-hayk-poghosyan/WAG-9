@@ -42,16 +42,13 @@ source_group("Sources\\neokon-shared\\WorldParse" FILES ${neokon_shared_world_pa
 
 set(
     common_sources
-    AutomatonButton.cpp AutomatonButton.h
     ControlButtonState.cpp ControlButtonState.h
     EventExecutor.cpp EventExecutor.h
     ExecEvent.cpp ExecEvent.h
     FileNames.cpp FileNames.h
-    HitachiButton.cpp HitachiButton.h
     KeySwitchButton.cpp KeySwitchButton.h
     LogMessageHandler.cpp LogMessageHandler.h
     ScopeGuard.h
-    UncheckableButtonGroup.cpp UncheckableButtonGroup.h
     XmlIO.cpp XmlIO.h
     ZmqBasicServer.cpp ZmqBasicServer.h
 )

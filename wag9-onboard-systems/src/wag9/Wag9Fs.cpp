@@ -228,7 +228,7 @@ void highlightClickableZones(QWidget* window)
     const QString zoneStyle = QStringLiteral(
         "background: rgba(0, 170, 255, 90); border: 1px solid rgb(0, 170, 255);");
 
-    const auto zones = window->findChildren<QPushButton*>(QRegularExpression(QStringLiteral("^(link_|pan_)")));
+    const auto zones = window->findChildren<QPushButton*>(QRegularExpression(QStringLiteral("^link_")));
     for (QPushButton* zone : zones)
     {
         zone->setStyleSheet(zoneStyle);
@@ -594,7 +594,6 @@ void Wag9Fs::createServer()
         return;
     }
 
-    connect(m_server.get(), &Wag9FsServer::initMessageReceived, this, &Wag9Fs::handleInitMessage);
     connect(m_server.get(), &Wag9FsServer::messageReceived, this, &Wag9Fs::handleIncomingPackageFromSim);
 
     connect(m_server.get(), &Wag9FsServer::connected, this, [this] { setBrakeSystemLocked(true); });
@@ -628,11 +627,6 @@ void Wag9Fs::reportStationState()
     fillHb2(msg.mutable_hb2(), m_popups.value(kHb2));
 
     m_server->sendMessage(msg);
-}
-
-void Wag9Fs::handleInitMessage(const proto::FaultStationInitMessage& msg)
-{
-    qDebug() << "Init from sim, vehicles:" << msg.vehicle_numbers_size();
 }
 
 void Wag9Fs::handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationIncomingMessage& msg)

@@ -33,7 +33,6 @@ signals:
     void connected();
     void disconnected();
     void messageReceived(proto::wag9::fs::FaultStationIncomingMessage const& msg);
-    void initMessageReceived(proto::FaultStationInitMessage const& msg);
 
 private:
     static std::string const& serverName();

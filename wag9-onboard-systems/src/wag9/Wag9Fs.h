@@ -4,7 +4,6 @@
 #include "Wag9Configuration.h"
 #include "Wag9FsServer.h"
 #include "KeySwitchButton.h"
-#include "FaultStationMessages.pb.h"
 
 #include <QFrame>
 #include <QHash>
@@ -50,7 +49,6 @@ class Wag9Fs : public QFrame
         void closeFrame();
         void createServer();
         void reportStationState();
-        void handleInitMessage(const proto::FaultStationInitMessage& msg);
         void handleIncomingPackageFromSim(const proto::wag9::fs::FaultStationIncomingMessage& msg);
 
         Ui::Wag9Fs ui;

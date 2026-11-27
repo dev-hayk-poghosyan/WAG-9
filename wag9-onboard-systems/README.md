@@ -88,6 +88,8 @@ return app.exec();
 </FS>
 ```
 
+`Wag9Configuration` читает только узел `FS`: положение окна, `Debug`, `TopMost`, `BrakeSystem` и адрес. Других узлов ФС не использует.
+
 ## Главное окно
 
 Фон — `QLabel` `background`. Картинка зависит от тормозной системы: `WAG9_FS_Background_CCB.png` или `WAG9_FS_Background_E70.png`. Поверх фона лежат прозрачные кнопки без рамки:
@@ -234,7 +236,7 @@ VCB: без ошибки накладки нет; при `vcb_failure = true` к
 
 `Wag9FsServer` — ZMQ-сокет `SERVER` на адресе из `Wag9.xml`. Клиентом первым подключается симулятор. Пока клиента нет, исходящие пакеты не отправляются.
 
-**Входящие пакеты.** Сначала пакет разбирается как `TrainSimToFaultStationMessage`. Если в нём непустое поле `to_fault_station_bytes`, оттуда достаётся `FaultStationIncomingMessage`. Иначе пакет пробуют прочитать как `FaultStationInitMessage`. Порядок важен: поле 1 в обоих сообщениях строковое, и пакет с данными иначе разбирается как init.
+**Входящие пакеты.** Сначала пакет разбирается как `TrainSimToFaultStationMessage`. Если в нём непустое поле `to_fault_station_bytes`, оттуда достаётся `FaultStationIncomingMessage`. Любой другой пакет (например, keepalive тестера) просто показывает, что клиент жив. `FaultStationInitMessage` ФС не разбирает: номер локомотива всегда `WAG9`, так договорились с TrainSim.
 
 ```protobuf
 message FaultStationIncomingMessage
@@ -290,7 +292,3 @@ python tools/fs_send_to_server.py --sweep         :: swing needles, blink lamps,
 `--check` сверяет стартовый пакет с таблицей `STARTUP` в `fs_receive_from_server.py`: поля, которые у исправного поезда не равны нулю. При смене стартового кадра органа таблицу нужно поправить.
 
 Оба тестера можно держать открытыми одновременно.
-
-## Что ещё не решено
-
-- Номер локомотива: сейчас всегда `WAG9`. `FaultStationInitMessage` разбирается, но никто его не отправляет.

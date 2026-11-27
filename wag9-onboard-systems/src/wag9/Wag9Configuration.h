@@ -1,20 +1,12 @@
 #pragma once
 
-#include "neokon-shared/IntervalPropertyMap.h"
-
 #include <pugixml.hpp>
 
-#include <QRect>
-#include <QDir>
+#include <QPoint>
 #include <QString>
-#include <QStringList>
-#include <QHostAddress>
 
-#include <string>
-#include <vector>
-#include <unordered_map>
 #include <memory>
-#include <optional>
+#include <string>
 
 enum class BrakeSystem
 {
@@ -28,30 +20,9 @@ public:
     struct WindowSettings
     {
         QPoint position{ 0, 0 };
-        int transitionMs = 50;
         bool debug = false;
         bool topMost = false;
         std::string bindAddress;
-        QString audioOutputDevice;
-    };
-
-    struct NetworkAddress
-    {
-        QHostAddress address;
-        unsigned short remotePort{};
-        unsigned short localPort{};
-    };
-
-    struct ControllerSettings : public WindowSettings
-    {
-        NetworkAddress trainSimAddress;
-        NetworkAddress radioStationAddress;
-        NetworkAddress pultAddress;
-
-        IntervalPropertyMap<int> reverserTranslateTable;
-        IntervalPropertyMap<int> throttleTranslateTable;
-
-        int deskVersion = 1;
     };
 
     /**
@@ -59,35 +30,14 @@ public:
      */
     explicit Wag9Configuration(pugi::xml_node rootNode);
 
-    const WindowSettings& manometerSettings() const;
-    const WindowSettings& speedmeterSettings() const;
-    const WindowSettings& mcbSettings() const;
     const WindowSettings& fsSettings() const;
     BrakeSystem brakeSystem() const;
-    const ControllerSettings& controllerSettings() const;
 
-    const WindowSettings& pultScreen1Settings() const;
-    const WindowSettings& pultScreen2Settings() const;
-    const WindowSettings& pultScreen3Settings() const;
-
-    const std::string& remoteAddress() const;
 private:
     WindowSettings readWindowSettings(pugi::xml_node node) const;
-    ControllerSettings readControllerSettings(pugi::xml_node node) const;
 
-    WindowSettings m_manometerSettings;
-    WindowSettings m_speedmeterSettings;
-    WindowSettings m_mcbSettings;
     WindowSettings m_fsSettings;
-    ControllerSettings m_controllerSettings;
-
-    WindowSettings m_pultScreen1;
-    WindowSettings m_pultScreen2;
-    WindowSettings m_pultScreen3;
-
     BrakeSystem m_brakeSystem = BrakeSystem::Ccb;
-
-    std::string m_remoteAddress;
 };
 
 /**
