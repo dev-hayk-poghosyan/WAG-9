@@ -44,6 +44,9 @@ MESSAGES = {
         11: "sb1_electronics_traction_converter_1", 12: "sb1_power_supply_gate_units",
         13: "sb1_monitoring", 14: "sb1_electronics_aux_converter_1",
         15: "sb1_central_electronics_1", 16: "sb1_central_electronics_2", 17: "sb1_speed_sensor",
+        # 18, 21 (relays) are reserved: relay plates now come from the simulator.
+        # 19, 20 count how many times each contactor button was pushed in.
+        19: "sb1_power_supply_cab_contactor", 20: "sb1_auxiliary_contactor_vcb",
     },
     "Hb1": {
         1: "hb1_transformer_oil_pump", 2: "hb1_converter_oil_pump", 3: "hb1_main_compressor",
@@ -221,6 +224,8 @@ def describe(group, name, value):
         return CCB_PAN.get(value, str(value))
     if name in ("pass_goods", "gp"):
         return TRAIN_MODE.get(value, str(value))
+    if name in ("sb1_power_supply_cab_contactor", "sb1_auxiliary_contactor_vcb"):
+        return f"нажата {value} раз"
     return "true" if value else "false"
 
 

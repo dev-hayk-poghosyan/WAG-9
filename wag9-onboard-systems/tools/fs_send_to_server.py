@@ -47,6 +47,14 @@ PANTOGRAPHS = (
     (6, "pantograph_1", "Пантограф 1"),
     (7, "pantograph_2", "Пантограф 2"),
 )
+# SB1 relays and contactors: field number, key, caption, checkbox text, default.
+# A tripped relay shows a red plate; an open contactor pops its button out.
+SB1_STATES = (
+    (8, "relay_control_electronics_off_tripped", "SB1 RELAY CONTROL ELECTRONICS OFF", "сработало", False),
+    (9, "relay_time_delay_vcb_tripped", "SB1 RELAY TIME DELAY VCB", "сработало", False),
+    (10, "power_supply_cab_contactor_closed", "SB1 POWER SUPPLY CAB CONTACTOR", "замкнут", True),
+    (11, "auxiliary_contactor_vcb_closed", "SB1 AUXILIARY CONTACTOR VCB", "замкнут", True),
+)
 LAMP_STATES = ("off", "on")
 POSITIONS = ("down", "up")
 
@@ -82,6 +90,9 @@ def build_packet(state):
         if state.get(key) is not None:
             incoming += encode_double(number, state[key])
     for number, key, _ in LEDS + PANTOGRAPHS:
+        if state.get(key) is not None:
+            incoming += encode_bool(number, state[key])
+    for number, key, _, _, _ in SB1_STATES:
         if state.get(key) is not None:
             incoming += encode_bool(number, state[key])
     return encode_bytes(1, b"WAG9") + encode_bytes(2, incoming)
@@ -191,6 +202,20 @@ class SenderWindow:
             self._pantographs[key] = (enabled, raised)
             row += 1
 
+        ttk.Separator(self._root).grid(row=row, column=0, columnspan=4, sticky=tk.EW, pady=4)
+        row += 1
+
+        self._sb1 = {}
+        for _, key, title, text, default in SB1_STATES:
+            enabled = tk.BooleanVar(value=True)
+            value = tk.BooleanVar(value=default)
+            ttk.Checkbutton(self._root, text=title, variable=enabled).grid(
+                row=row, column=0, padx=8, sticky=tk.W)
+            ttk.Checkbutton(self._root, text=text, variable=value).grid(
+                row=row, column=1, padx=4, pady=2, sticky=tk.W)
+            self._sb1[key] = (enabled, value)
+            row += 1
+
         self._sweep = tk.BooleanVar(value=False)
         ttk.Checkbutton(self._root,
                         text=f"качать стрелки 0..{MAX_PRESSURE:g} за {SWEEP_PERIOD_S:g} с",
@@ -230,6 +255,9 @@ class SenderWindow:
             if self._toggle.get():
                 raised.set(cycle_pantograph(self._started, offset))
             state[key] = raised.get() if enabled.get() else None
+
+        for key, (enabled, value) in self._sb1.items():
+            state[key] = value.get() if enabled.get() else None
 
         with self._lock:
             self._current = state
