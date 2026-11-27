@@ -17,3 +17,4 @@ Wag9-log.txt
 *.html
 __pycache__/
 unused/
+request/

@@ -2,6 +2,7 @@
 
 #include <QLabel>
 #include <QMouseEvent>
+#include <QPair>
 #include <QPixmap>
 #include <QStringList>
 #include <QVector>
@@ -9,7 +10,8 @@
 enum class SwitchActuation
 {
     Cycle,
-    Lamp
+    Lamp,
+    Choose
 };
 
 class Wag9SpriteSwitch : public QLabel
@@ -21,6 +23,9 @@ class Wag9SpriteSwitch : public QLabel
         virtual ~Wag9SpriteSwitch() override = default;
 
         int position() const;
+
+        // Menu entries for SwitchActuation::Choose: label and the frame it selects.
+        void setChoices(const QVector<QPair<QString, int>>& choices);
 
     protected:
         void mousePressEvent(QMouseEvent* event) override;
@@ -34,9 +39,10 @@ class Wag9SpriteSwitch : public QLabel
         QPoint m_center;
         QVector<QPixmap> m_frames;
         SwitchActuation m_actuation = SwitchActuation::Cycle;
+        QVector<QPair<QString, int>> m_choices;
 };
 
 QStringList framesOf(const QString& folder, const QString& sprite, int frameCount);
 
-void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
+Wag9SpriteSwitch* addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
     const QString& name = {}, SwitchActuation actuation = SwitchActuation::Cycle, qreal scale = 1);

@@ -1,5 +1,7 @@
 #include "Wag9SpriteSwitch.h"
 
+#include <QMenu>
+
 Wag9SpriteSwitch::Wag9SpriteSwitch(const QStringList& frames, int initial, const QPoint& center,
     QWidget* parent, SwitchActuation actuation, qreal scale)
     : QLabel(parent)
@@ -33,6 +35,18 @@ void Wag9SpriteSwitch::mousePressEvent(QMouseEvent* event)
     {
         m_index = m_on ? 2 : 1;
     }
+    else if (m_actuation == SwitchActuation::Choose)
+    {
+        QMenu menu(this);
+
+        for (const auto& choice : m_choices)
+        {
+            const int frame = choice.second;
+            menu.addAction(choice.first, this, [this, frame] { m_index = frame; });
+        }
+
+        menu.exec(event->globalPos());
+    }
     else
     {
         m_index = (m_index + 1) % m_frames.size();
@@ -62,6 +76,11 @@ int Wag9SpriteSwitch::position() const
     return m_actuation == SwitchActuation::Lamp ? static_cast<int>(m_on) : m_index;
 }
 
+void Wag9SpriteSwitch::setChoices(const QVector<QPair<QString, int>>& choices)
+{
+    m_choices = choices;
+}
+
 void Wag9SpriteSwitch::applyFrame()
 {
     const QPixmap& pix = m_frames.at(m_index);
@@ -83,7 +102,7 @@ QStringList framesOf(const QString& folder, const QString& sprite, int frameCoun
     return frames;
 }
 
-void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
+Wag9SpriteSwitch* addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, int y,
     const QString& name, SwitchActuation actuation, qreal scale)
 {
     const QPixmap first(frames.at(initial));
@@ -93,4 +112,5 @@ void addSwitch(QWidget* parent, const QStringList& frames, int initial, int x, i
 
     auto* sw = new Wag9SpriteSwitch(frames, initial, center, parent, actuation, scale);
     sw->setObjectName(name);
+    return sw;
 }
